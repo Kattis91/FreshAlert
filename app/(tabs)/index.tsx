@@ -4,12 +4,17 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import StartScreen from '../StartScreen';
 
 export default function HomeScreen() {
+
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View>
-      <Text>Hej</Text>
-    </View>
+     <Stack.Navigator>
+      <Stack.Screen name="Home" component={StartScreen} />    
+    </Stack.Navigator>
   );
 }
 
