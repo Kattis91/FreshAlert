@@ -6,12 +6,17 @@ import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AddProduct from '../AddProduct';
 
-export default function TabTwoScreen() {
+export default function AddScreen() {
+
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View>
-      <Text>Hej</Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name="Add Product" component={AddProduct} />
+    </Stack.Navigator>
   );
 }
 
