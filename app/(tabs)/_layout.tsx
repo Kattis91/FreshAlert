@@ -4,6 +4,7 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -18,8 +19,8 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color="#0A7763" />
           ),
         }}
       />
@@ -27,8 +28,8 @@ export default function TabLayout() {
         name="add"
         options={{
           title: 'Add',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'add' : 'add-outline'} color={color} />
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'} color="#0A7763" size={30} />
           ),
         }}
       />
@@ -36,8 +37,8 @@ export default function TabLayout() {
         name="trash"
         options={{
           title: 'Trash',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'trash' : 'trash-outline'} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon name={focused ? 'trash' : 'trash-outline'} color="#0A7763"  />
           ),
         }}
       />
