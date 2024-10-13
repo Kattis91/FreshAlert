@@ -3,7 +3,7 @@ import { Button, Text, View } from "react-native";
 export default function GetStartedScreen({ navigation }) {
   
   return(
-    <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 30 }}>
+    <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 30, backgroundColor: "#f8edeb" }}>
 
       <Text style={{ textAlign: "center", fontSize: 45, marginBottom: 35 }}>Welcome to FreshAlert!</Text>
       
