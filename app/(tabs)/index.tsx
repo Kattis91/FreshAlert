@@ -6,6 +6,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import StartScreen from '../StartScreen';
+import GetStartedScreen from '../GetStartedScreen';
 
 export default function HomeScreen() {
 
@@ -14,6 +15,7 @@ export default function HomeScreen() {
   return (
      <Stack.Navigator>
       <Stack.Screen name="Home" component={StartScreen} />    
+      <Stack.Screen name="Get Started" component={GetStartedScreen} />    
     </Stack.Navigator>
   );
 }
