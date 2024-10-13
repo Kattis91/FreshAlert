@@ -16,6 +16,15 @@ export default function StartScreen({ navigation } : any) {
           }}
           />
       </View>
+      <View style={{ marginTop: 15, backgroundColor: "#0A7763" }}>
+        <Button 
+          title="VIEW YOUR PRODUCTS" 
+          color="white"
+          onPress={() => {
+            navigation.navigate("Your Products");
+          }}
+        />
+      </View>
     </View>
     );
   }
