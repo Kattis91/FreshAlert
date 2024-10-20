@@ -17,6 +17,10 @@ const [category, setCategory] = useState([
 const [openDate, setOpenDate] = useState(false);
 const [date, setDate] = useState(new Date());
 
+const formatDate = (date) => {
+  return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
+};
+
 return (
 
   <View>
@@ -30,21 +34,21 @@ return (
 
     <Text>Expiry Date:</Text>
     <TextInput
+      onFocus={() => setOpenDate(true)}
       onChangeText={setExpiryDate}
       value={expiryDate}
       placeholder="Add expiry date"
     />
-
-    <Button title="Open" onPress={() => setOpenDate(true)} />
 
     <DatePicker
       modal
       open={openDate}
       date={date}
       mode="date"
-      onConfirm={(date) => {
-        setOpenDate(false)
-        setDate(date)
+      onConfirm={(selectedDate) => {
+        setOpenDate(false);
+        setDate(selectedDate);
+        setExpiryDate(formatDate(selectedDate));
       }}
       onCancel={() => {
         setOpenDate(false)
