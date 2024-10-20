@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -15,7 +15,9 @@ const [category, setCategory] = useState([
 ]);
 
 const [openDate, setOpenDate] = useState(false);
+
 const [date, setDate] = useState(new Date());
+const inputRef = useRef<TextInput>(null);
 
 const formatDate = (date) => {
   return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
@@ -34,6 +36,7 @@ return (
 
     <Text>Expiry Date:</Text>
     <TextInput
+      ref={inputRef}
       onFocus={() => setOpenDate(true)}
       onChangeText={setExpiryDate}
       value={expiryDate}
@@ -49,9 +52,17 @@ return (
         setOpenDate(false);
         setDate(selectedDate);
         setExpiryDate(formatDate(selectedDate));
+
+        if (inputRef.current) {
+          inputRef.current.blur();
+        }
       }}
       onCancel={() => {
-        setOpenDate(false)
+        setOpenDate(false);
+        
+        if (inputRef.current) {
+          inputRef.current.blur();
+        }
       }}
     />
 
