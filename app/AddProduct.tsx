@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -21,6 +21,17 @@ const inputRef = useRef<TextInput>(null);
 
 const formatDate = (date) => {
   return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
+};
+
+const addProduct = () => {
+  if (productName && expiryDate && value) {
+    Alert.alert("Product added:", `Product: ${productName} \n Expiry date: ${expiryDate}`)
+    setProductName("");
+    setExpiryDate("");
+    setValue(null)
+  } else {
+    Alert.alert("Please ensure that all fields are filled out")
+  }
 };
 
 return (
@@ -95,6 +106,7 @@ return (
       <Button 
         title="ADD"
         color="white"
+        onPress={addProduct}
       />
     </View>
   </View>
