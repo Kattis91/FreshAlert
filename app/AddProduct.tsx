@@ -145,13 +145,24 @@ export default function AddProducts({ navigation }) {
         setValue={setCategoryValue}
         setItems={setCategory}
         placeholder="Choose category"
+        listMode="SCROLLVIEW"
         dropDownContainerStyle={{
           backgroundColor: "#0A7763",
           width: "100%",
+          maxHeight: 220,
         }}
         textStyle={{ color: "white" }}
         placeholderStyle={{ color: "black" }}
         labelStyle={{ color: "black" }}
+        scrollViewProps={{
+          indicatorStyle: 'white', // Change scrollbar color to white
+        }}
+        renderListItem={(props) => (
+          <View>
+            <Text style={{ color: "white", padding: 10 }}>{props.label}</Text>
+            <View style={{ height: 1, backgroundColor: "#f8edeb", marginVertical: 3 }} />
+          </View>
+        )}
       />
 
       <View style={styles.button}>
