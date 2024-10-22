@@ -1,55 +1,90 @@
-import { useRef, useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useRef, useState } from "react";
+import { Alert, Button, FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPicker from "react-native-dropdown-picker";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-export default function AddProduct({ navigation }) {
+export default function AddProducts({ navigation }) {
 
-const [productName, setProductName] = useState("");
-const [expiryDate, setExpiryDate] = useState("");
-const [openCategory, setOpenCategory] = useState(false);
-const [value, setValue] = useState(null);
-const [category, setCategory] = useState([
-  { label: "Diary", value: "diary" },
-  { label: "Meat", value: "meat" },
-  { label: "Seafood", value: "seafood" },
-  { label: "Fruits", value: "fruits" },
-  { label: "Vegetables", value: "vegetables" },
-  { label: "Condiments", value: "condiments" },
-  { label: "Beverages", value: "beverages" },
-  { label: "Prepared Foods", value: "prepared foods" },
-  { label: "Spreads", value: "spreads" },
-  { label: "Fresh Herbs", value: "fresh herbs" },
-  { label: "Frozen Foods", value: "frozen foods" }
-]);
-
-const [openDate, setOpenDate] = useState(false);
-
-const [date, setDate] = useState(new Date());
-const inputRef = useRef<TextInput>(null);
-
-const formatDate = (date) => {
-  return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
+type Product = {
+  id: number;
+  title: string;
+  name: string;
+  expiry: string;
+  category: string | null;
 };
 
-const addProduct = () => {
-  if (productName && expiryDate && value) {
-    Alert.alert("Product added:", `Product: ${productName} \n Expiry date: ${expiryDate}`)
-    setProductName("");
-    setExpiryDate("");
-    setValue(null)
-  } else {
-    Alert.alert("Please ensure that all fields are filled out")
-  }
-};
+  const [productData, setProductData] = useState<Product[]>([]);
+
+  const [productName, setProductName] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+
+  const [openCategory, setOpenCategory] = useState(false);
+  const [value, setValue] = useState(null);
+  const [category, setCategory] = useState([
+    { label: "Diary", value: "diary" },
+    { label: "Meat", value: "meat" },
+    { label: "Seafood", value: "seafood" },
+    { label: "Fruits", value: "fruits" },
+    { label: "Vegetables", value: "vegetables" },
+    { label: "Condiments", value: "condiments" },
+    { label: "Beverages", value: "beverages" },
+    { label: "Prepared Foods", value: "prepared foods" },
+    { label: "Spreads", value: "spreads" },
+    { label: "Fresh Herbs", value: "fresh herbs" },
+    { label: "Frozen Foods", value: "frozen foods" }
+  ]);
+  
+  const [openDate, setOpenDate] = useState(false);
+  const [date, setDate] = useState(new Date());
+
+  const inputRef = useRef<TextInput>(null);
+
+  const formatDate = (date) => {
+    return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
+  };
+
+  async function addProduct() {
+
+    if (productName && expiryDate && value) {
+
+      const product: Product = {
+        id: new Date().getTime(),
+        title: productName,
+        name: productName,
+        expiry: expiryDate,
+        category: value,  
+      };
+
+      const newlist = [...productData, product];
+
+      await AsyncStorage.setItem("my-list", JSON.stringify(newlist));
+
+      setProductData(newlist);
+
+      Alert.alert("Product added:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
+
+      setProductName("");
+      setExpiryDate("");
+      setValue(null);
+
+    } else {
+
+      Alert.alert("Please ensure that all fields are filled out");
+    }
+  };
+
+ 
 
 return (
-    
+
   <View style={styles.container}>
 
     <Text style={{ textTransform: "uppercase", fontSize: 25, textAlign: "center", marginBottom: 25 }}>Add Product:</Text>
-    
+
     <Text style={styles.label}>Product Name:</Text>
+
     <TextInput
       style={styles.inputs}
       onChangeText={setProductName}
@@ -59,10 +94,11 @@ return (
     />
 
     <Text style={styles.label}>Expiry Date:</Text>
+
     <TextInput
       style={styles.inputs}
       ref={inputRef}
-      onFocus={() => setOpenDate(true)}
+      onFocus={() => setOpenDate(true)} 
       onChangeText={setExpiryDate}
       value={expiryDate}
       placeholder="Add expiry date"
@@ -73,7 +109,7 @@ return (
       modal
       open={openDate}
       date={date}
-      mode="date"
+      mode="date" 
       onConfirm={(selectedDate) => {
         setOpenDate(false);
         setDate(selectedDate);
@@ -93,6 +129,7 @@ return (
     />
 
     <Text style={styles.label}>Category:</Text>
+
     <DropDownPicker
       style={styles.inputs}
       open={openCategory}
@@ -104,7 +141,7 @@ return (
       placeholder="Choose category"
       dropDownContainerStyle={{
         backgroundColor: "#0A7763",
-        width: "100%",        
+        width: "100%",       
       }}
       textStyle={{ color: "white" }}  
       placeholderStyle={{ color: "black" }}
@@ -118,8 +155,17 @@ return (
         onPress={addProduct}
       />
     </View>
+
+    <FlatList 
+      data={productData}
+      renderItem={({ item }) => (
+        <Text>{ item.title }</Text>
+      )}
+    />
+
   </View>
-  );
+
+);
 }
 
 const styles = StyleSheet.create({
@@ -145,7 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     width: "100%",
     paddingLeft: 5,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   button: {
     backgroundColor: "#0A7763",
@@ -153,4 +199,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
   }
-})
+
+});
