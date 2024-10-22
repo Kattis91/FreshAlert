@@ -10,8 +10,17 @@ const [expiryDate, setExpiryDate] = useState("");
 const [openCategory, setOpenCategory] = useState(false);
 const [value, setValue] = useState(null);
 const [category, setCategory] = useState([
-  { label: "Fridge", value: "fridge" },
-  { label: "Freezer", value: "freezer" }
+  { label: "Diary", value: "diary" },
+  { label: "Meat", value: "meat" },
+  { label: "Seafood", value: "seafood" },
+  { label: "Fruits", value: "fruits" },
+  { label: "Vegetables", value: "vegetables" },
+  { label: "Condiments", value: "condiments" },
+  { label: "Beverages", value: "beverages" },
+  { label: "Prepared Foods", value: "prepared foods" },
+  { label: "Spreads", value: "spreads" },
+  { label: "Fresh Herbs", value: "fresh herbs" },
+  { label: "Frozen Foods", value: "frozen foods" }
 ]);
 
 const [openDate, setOpenDate] = useState(false);
