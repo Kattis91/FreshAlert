@@ -156,16 +156,9 @@ return (
       />
     </View>
 
-    <FlatList 
-      data={productData}
-      renderItem={({ item }) => (
-        <Text>{ item.title }</Text>
-      )}
-    />
-
   </View>
 
-);
+);-
 }
 
 const styles = StyleSheet.create({
