@@ -50,32 +50,36 @@ type Product = {
     if (productName && expiryDate && value) {
 
       const product: Product = {
-        id: new Date().getTime(),
+        id: new Date().getTime(), 
         title: productName,
         name: productName,
         expiry: expiryDate,
-        category: value,  
+        category: value,
       };
-
-      const newlist = [...productData, product];
-
-      await AsyncStorage.setItem("my-list", JSON.stringify(newlist));
-
-      setProductData(newlist);
-
+  
+      // Retrieve the current list of products from AsyncStorage
+      const storedList = await AsyncStorage.getItem("my-list");
+      const currentList = storedList ? JSON.parse(storedList) : [];
+  
+      // Append the new product to the existing list
+      const newList = [...currentList, product];
+  
+      // Save the updated list back to AsyncStorage
+      await AsyncStorage.setItem("my-list", JSON.stringify(newList));
+  
+      setProductData(newList);
+  
       Alert.alert("Product added:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
-
+  
       setProductName("");
       setExpiryDate("");
       setValue(null);
-
+  
     } else {
-
       Alert.alert("Please ensure that all fields are filled out");
     }
-  };
+  }
 
- 
 
 return (
 
@@ -158,7 +162,7 @@ return (
 
   </View>
 
-);-
+);
 }
 
 const styles = StyleSheet.create({
