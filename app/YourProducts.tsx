@@ -1,19 +1,28 @@
 import React from 'react';
 import { useState } from "react";
 import { Text, TouchableHighlight, View, StyleSheet, Pressable, TextInput } from "react-native"; 
-import DropDownPicker from "react-native-dropdown-picker";
-//import AddProduct from './AddProduct';
+import DropDownPicker from 'react-native-dropdown-picker';
+
 
 export default function YourProducts({ navigation }) {
 
     // Initial state to track selected filter
     const [filterType, setFilterType] = useState("ALL");
 
-    const [categoryOpen, setCategoryOpen] = useState(false);
-    const [categoryValue, setCategoryValue] = useState(null);
-    const [items, setItems] = useState([
-        { label: 'Fridge', value: 'fridge' },
-        { label: 'Freezer', value: 'freezer' }
+    const [openCategory, setOpenCategory] = useState(false);
+    const [categoryValue, setCategoryValue] = useState<string | null>(null);
+    const [category, setCategory] = useState([
+      { label: "Dairy", value: "dairy" },
+      { label: "Meat", value: "meat" },
+      { label: "Seafood", value: "seafood" },
+      { label: "Fruits", value: "fruits" },
+      { label: "Vegetables", value: "vegetables" },
+      { label: "Condiments", value: "condiments" },
+      { label: "Beverages", value: "beverages" },
+      { label: "Prepared Foods", value: "prepared foods" },
+      { label: "Spreads", value: "spreads" },
+      { label: "Fresh Herbs", value: "fresh herbs" },
+      { label: "Frozen Foods", value: "frozen foods" }
     ]);
     const [searchText, setSearchText] = useState("");  // Për inputin e kërkimit
 
@@ -29,19 +38,31 @@ export default function YourProducts({ navigation }) {
         <Text style={{ fontSize: 24, fontWeight: 'bold', marginVertical: 20 }}>🧊 DATE TRACKING</Text>
       </View>
 
-      {/* View to organize DropDown and Button in a row */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: 20 }}>
         
         <DropDownPicker
-          open={categoryOpen}
+          open={openCategory}
           value={categoryValue}
-          items={items}
-          setOpen={setCategoryOpen}
+          items={category}
+          setOpen={setOpenCategory}
           setValue={setCategoryValue}
-          setItems={setItems}
-          style={{ backgroundColor: '#0A7763', borderColor: 'transparent' }}
-          placeholder="Category"
-          containerStyle={{ flex: 1 }} // Make dropdown fill half of the row
+          setItems={setCategory}
+          dropDownContainerStyle={{
+            backgroundColor: "#0A7763",
+            width: "100%",
+            maxHeight: 200,
+          }}
+          textStyle={{ color: "white" }}
+        placeholderStyle={{ color: "black" }}
+        labelStyle={{ color: "black" }}
+        listItemContainerStyle={{
+          borderBottomColor: "white",
+          borderBottomWidth: 1,
+        }}
+
+          placeholder="Choose category"
+          listMode='SCROLLVIEW'
+          containerStyle={{ flex: 1 }}
         />
         
         <Pressable style={{ backgroundColor: '#0A7763', padding: 8, borderRadius: 8, justifyContent: 'center', alignItems: 'center', flex: 0.8, marginLeft: 10 }}
