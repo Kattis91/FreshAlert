@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRef, useState } from "react";
-import { Alert, Button, FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -44,7 +44,60 @@ export default function AddProducts({ navigation }) {
     return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
   };
 
-  async function addProduct() {
+  useEffect(() => {
+    if (!date) return; // Prevent running the effect on initial render
+  
+    const resetTime = (date: Date) => {
+      const newDate = new Date(date);
+      newDate.setHours(0, 0, 0, 0);
+      return newDate;
+    };
+  
+    const currentDate = resetTime(new Date());
+    const selectedDateReset = resetTime(date);
+  
+    const timeDifference = selectedDateReset.getTime() - currentDate.getTime();
+    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  
+    if (daysDifference === 0) {
+      Alert.alert("Note: The expiry date is today.");
+    } else if (daysDifference > 0 && daysDifference <= 7) {
+      Alert.alert(`The expiry date is within ${daysDifference} days.`);
+    } else if (daysDifference < 0) {
+      Alert.alert("The expiry date cannot be in the past.");
+    }
+  }, [date]); // This effect runs every time 'date' changes
+
+  async function addProduct() {    
+
+    const trimmedName = productName.trim();
+
+    if (trimmedName.length === 0) {
+      Alert.alert("Product name cannot be empty");
+      return;
+    }
+
+    if (trimmedName.length < 2 || trimmedName.length > 50) {
+      Alert.alert("Product name must be between 2 and 50 characters");
+      return;
+    }
+
+    const nameRegex = /^[a-zA-Z0-9\s]+$/;
+
+    if (!nameRegex.test(productName.trim())) {
+      Alert.alert("Product name can only contain letters, numbers, and spaces");
+      return;
+    }
+
+    if (!expiryDate) {
+      Alert.alert("Please select an expiry date");
+      return;
+    }
+
+    if (!categoryValue) {
+      Alert.alert("Please select a category");
+      return;
+    }
 
     if (productName && expiryDate && categoryValue) {
 
@@ -149,7 +202,7 @@ export default function AddProducts({ navigation }) {
         dropDownContainerStyle={{
           backgroundColor: "#0A7763",
           width: "100%",
-          maxHeight: 220,
+          maxHeight: 200,
         }}
         textStyle={{ color: "white" }}
         placeholderStyle={{ color: "black" }}
@@ -157,12 +210,10 @@ export default function AddProducts({ navigation }) {
         scrollViewProps={{
           indicatorStyle: 'white', // Change scrollbar color to white
         }}
-        renderListItem={(props) => (
-          <View>
-            <Text style={{ color: "white", padding: 10 }}>{props.label}</Text>
-            <View style={{ height: 1, backgroundColor: "#f8edeb", marginVertical: 3 }} />
-          </View>
-        )}
+        listItemContainerStyle={{
+          borderBottomColor: "white",
+          borderBottomWidth: 1,
+        }}
       />
 
       <View style={styles.button}>
@@ -178,7 +229,7 @@ export default function AddProducts({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     backgroundColor: "#f8edeb",
     flex: 1,
@@ -208,6 +259,5 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingHorizontal: 20,
     borderRadius: 10,
-  }
-
+  },
 });
