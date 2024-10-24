@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPicker from "react-native-dropdown-picker";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 
-export default function AddProducts({ navigation }) {
+export default function AddProducts() {
 
   type Product = {
     id: number;
@@ -16,12 +17,11 @@ export default function AddProducts({ navigation }) {
   };
 
   const [productName, setProductName] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
 
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<string | null>(null);
 
-  const [category, setCategory] = useState([
+  const categories = [
     { label: "Dairy", value: "dairy" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
@@ -33,10 +33,12 @@ export default function AddProducts({ navigation }) {
     { label: "Spreads", value: "spreads" },
     { label: "Fresh Herbs", value: "fresh herbs" },
     { label: "Frozen Foods", value: "frozen foods" }
-  ]);
+  ];
 
-  const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [expiryDate, setExpiryDate] = useState("");
+  const [openDate, setOpenDate] = useState(false);
+  const [dateChanged, setDateChanged] = useState(false);
 
   const inputRef = useRef<TextInput>(null);
 
@@ -45,20 +47,20 @@ export default function AddProducts({ navigation }) {
   };
 
   useEffect(() => {
-    if (!date) return; // Prevent running the effect on initial render
-  
+    if (!dateChanged) return; // Prevent running the effect on initial render
+
     const resetTime = (date: Date) => {
       const newDate = new Date(date);
       newDate.setHours(0, 0, 0, 0);
       return newDate;
     };
-  
+
     const currentDate = resetTime(new Date());
     const selectedDateReset = resetTime(date);
-  
+
     const timeDifference = selectedDateReset.getTime() - currentDate.getTime();
     const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-  
+
     if (daysDifference === 0) {
       Alert.alert("Note: The expiry date is today.");
     } else if (daysDifference > 0 && daysDifference <= 7) {
@@ -66,9 +68,10 @@ export default function AddProducts({ navigation }) {
     } else if (daysDifference < 0) {
       Alert.alert("The expiry date cannot be in the past.");
     }
-  }, [date]); // This effect runs every time 'date' changes
+  }, [date, dateChanged]); // This effect runs every time 'date' changes
 
-  async function addProduct() {    
+
+  async function addProduct() {
 
     const trimmedName = productName.trim();
 
@@ -91,6 +94,16 @@ export default function AddProducts({ navigation }) {
 
     if (!expiryDate) {
       Alert.alert("Please select an expiry date");
+      return;
+    }
+
+    // Check if the expiry date is in the past
+    const selectedDate = new Date(expiryDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);    
+
+    if (selectedDate < today) {
+      Alert.alert("The expiry date cannot be in the past.");
       return;
     }
 
@@ -136,6 +149,7 @@ export default function AddProducts({ navigation }) {
   }
 
 
+  
   return (
 
     <View style={styles.container}>
@@ -173,6 +187,7 @@ export default function AddProducts({ navigation }) {
           setOpenDate(false);
           setDate(selectedDate);
           setExpiryDate(formatDate(selectedDate));
+          setDateChanged(true);
 
           if (inputRef.current) {
             inputRef.current.blur();
@@ -193,10 +208,9 @@ export default function AddProducts({ navigation }) {
         style={styles.inputs}
         open={openCategory}
         value={categoryValue}
-        items={category}
+        items={categories}
         setOpen={setOpenCategory}
         setValue={setCategoryValue}
-        setItems={setCategory}
         placeholder="Choose category"
         listMode="SCROLLVIEW"
         dropDownContainerStyle={{
