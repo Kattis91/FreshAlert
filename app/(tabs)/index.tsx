@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import StartScreen from '../StartScreen';
 import GetStartedScreen from '../GetStartedScreen';
 import YourProducts from '../YourProducts';
+import EditProduct from '../EditProduct';
 
 export default function HomeScreen() {
 
@@ -17,7 +18,8 @@ export default function HomeScreen() {
      <Stack.Navigator>
       <Stack.Screen name="Home" component={StartScreen} />    
       <Stack.Screen name="Get Started" component={GetStartedScreen} />    
-      <Stack.Screen name="Your Products" component={YourProducts} />    
+      <Stack.Screen name="Your Products" component={YourProducts} />  
+      <Stack.Screen name="Edit Product" component={EditProduct} />
     </Stack.Navigator>
   );
 }

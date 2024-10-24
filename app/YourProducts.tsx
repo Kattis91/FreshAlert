@@ -1,9 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from "react";
-import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions } from "react-native";
+import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-export default function YourProducts() {
+export default function YourProducts({ navigation }) {
+
+  type Product = {
+    id: number;
+    title: string;
+    name: string;
+    expiry: string;
+    category: string | null;
+    daysDifference: number;
+  };
 
   const screenWidth = Dimensions.get('window').width;
   const numColumns = 3;
@@ -12,8 +21,9 @@ export default function YourProducts() {
   const [filterType, setFilterType] = useState("ALL");
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<string | null>(null);
-  const [category, setCategory] = useState([
-    { label: "All Categories", value: null },
+
+  const categories = [
+    { label: "All Categories", value: "" },
     { label: "Dairy", value: "dairy" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
@@ -25,9 +35,12 @@ export default function YourProducts() {
     { label: "Spreads", value: "spreads" },
     { label: "Fresh Herbs", value: "fresh herbs" },
     { label: "Frozen Foods", value: "frozen foods" }
-  ]);
+  ];
 
   const [searchText, setSearchText] = useState("");
+
+  const [productData, setProductData] = useState<Product[]>([]);
+  const [filteredProductData, setFilteredProductData] = useState<Product[]>([]);
 
   const resetTime = (date: Date) => {
     const newDate = new Date(date);
@@ -67,18 +80,6 @@ export default function YourProducts() {
   async function showExpiringAfter7Days() {
     setFilterType("EXPIRING_AFTER_7_DAYS");
   }
-
-  type Product = {
-    id: number;
-    title: string;
-    name: string;
-    expiry: string;
-    category: string | null;
-    daysDifference: number;
-  };
-
-  const [productData, setProductData] = useState<Product[]>([]);
-  const [filteredProductData, setFilteredProductData] = useState<Product[]>([]);
 
   async function getProducts() {
     try {
@@ -156,10 +157,9 @@ export default function YourProducts() {
           style={styles.inputs}
           open={openCategory}
           value={categoryValue}
-          items={category}
+          items={categories}
           setOpen={setOpenCategory}
           setValue={setCategoryValue}
-          setItems={setCategory}
           dropDownContainerStyle={{
             backgroundColor: "#0A7763",
             width: "100%",
@@ -230,19 +230,21 @@ export default function YourProducts() {
           data={filteredProductData}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <View style={[styles.viewCon, { width: itemWidth }]}>
+            <TouchableOpacity onPress={() => navigation.navigate('Edit Product', { product: item })}>
+              <View style={[styles.viewCon, { width: itemWidth }]}>
 
-              <View style={styles.viewtext}>
-                <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, flexShrink: 1 }}>{item.title}</Text></View>
+                <View style={styles.viewtext}>
+                  <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, flexShrink: 1 }}>{item.title}</Text></View>
 
-              <View style={styles.viewicon}><Text style={{ fontSize: 50 }}>🧊 </Text></View>
+                <View style={styles.viewicon}><Text style={{ fontSize: 50 }}>🧊 </Text></View>
 
-              <View style={[styles.viewtext, { flex: 1, flexDirection: 'row', alignItems: 'center' }]}>
-                <Text >{item.expiry}</Text>
-                <View style={{
-                  width: 12, height: 12, borderRadius: 7.5, backgroundColor: getCircleColor(item.expiry) // Përdor funksionin për ngjyrën
-                }} /></View>
-            </View>
+                <View style={[styles.viewtext, { flex: 1, flexDirection: 'row', alignItems: 'center' }]}>
+                  <Text >{item.expiry}</Text>
+                  <View style={{
+                    width: 12, height: 12, borderRadius: 7.5, backgroundColor: getCircleColor(item.expiry) // Përdor funksionin për ngjyrën
+                  }} /></View>
+              </View>
+            </TouchableOpacity>
           )}
           numColumns={numColumns} // Cakto numrin e kolonave
         />
