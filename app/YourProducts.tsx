@@ -1,10 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
-import { useState } from "react";
-import { Text, TouchableHighlight, View, StyleSheet, Pressable, TextInput, FlatList, Button, SafeAreaView, Dimensions } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
-
-
 
 export default function YourProducts({ navigation }) {
 
@@ -12,15 +9,12 @@ export default function YourProducts({ navigation }) {
   const numColumns = 3;
   const itemWidth = screenWidth / numColumns - 20;
 
-
-
   const getCircleColor = (expiryDate) => {
     const currentDate = new Date();
     const expiry = new Date(expiryDate);
-    const timeDiff = expiry - currentDate; // Diferenca në milisekonda
-    const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Konverto në ditë
+    const timeDiff = expiry - currentDate;
+    const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-    // Kontrollo ditët mbetur
     if (dayDiff > 7) {
       return '#0A7763';
     } else if (dayDiff <= 7 && dayDiff > 3) {
@@ -28,9 +22,8 @@ export default function YourProducts({ navigation }) {
     } else if (dayDiff <= 3 && dayDiff >= 0) {
       return 'red';
     }
-    return 'blue'; // Default nëse ndodhin ndonjë gabim
+    return 'blue'; // Default color for errors
   };
-
 
   const [filterType, setFilterType] = useState("ALL");
   const [openCategory, setOpenCategory] = useState(false);
@@ -50,9 +43,19 @@ export default function YourProducts({ navigation }) {
   ]);
 
   const [searchText, setSearchText] = useState("");
-  const showExpiringSoon = () => setFilterType("EXPIRING_SOON");
-  const showExpiringIn7Days = () => setFilterType("EXPIRING_7_DAYS");
-  const showExpiringAfter7Days = () => setFilterType("EXPIRING_AFTER_7_DAYS");
+
+  async function showAll() {
+    setFilterType("ALL");
+  }
+  async function showExpiringSoon() {
+    setFilterType("EXPIRING_SOON");
+  }
+  async function showExpiringIn7Days() {
+    setFilterType("EXPIRING_7_DAYS");
+  }
+  async function showExpiringAfter7Days() {
+    setFilterType("EXPIRING_AFTER_7_DAYS");
+  }
 
   type Product = {
     id: number;
@@ -60,30 +63,75 @@ export default function YourProducts({ navigation }) {
     name: string;
     expiry: string;
     category: string | null;
+    daysDifference: number;
   };
+
   const [productData, setProductData] = useState<Product[]>([]);
+  const [filteredProductData, setFilteredProductData] = useState<Product[]>([]);
+
   async function getProducts() {
     try {
       const storedList = await AsyncStorage.getItem("my-list");
       const parsedList: Product[] = storedList ? JSON.parse(storedList) : [];
-      console.log(parsedList);
-      setProductData(parsedList);
+
+      const resetTime = (date: Date) => {
+        const newDate = new Date(date);
+        newDate.setHours(0, 0, 0, 0);
+        return newDate;
+      };
+
+      const updatedProducts = parsedList.map(product => {
+        const currentDate = new Date();
+        const expiryDate = resetTime(new Date(product.expiry));
+        const timeDifference = expiryDate.getTime() - currentDate.getTime();
+        const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+        return { ...product, daysDifference };
+      });
+
+      setProductData(updatedProducts);
+      setFilteredProductData(updatedProducts);
+
     } catch (error) {
       console.error("Failed to load products", error);
     }
   };
+
   useEffect(() => {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    filterProducts();
+  }, [filterType, categoryValue, searchText, productData]);
 
-  const filteredProducts = productData.filter(product => {
-    const matchesName = product.title.toLowerCase().includes(searchText.toLowerCase());
-    const matchesExpiry = product.expiry.includes(searchText);
-    const matchesCategory = categoryValue ? product.category === categoryValue : true; // Sigurohuni që filtrimi i kategorive të funksionojë
-    return (matchesName || matchesExpiry) && matchesCategory;
+  function filterProducts() {
+    console.log("Filtering products with type: ", filterType);
 
-  });
+    let filteredProducts = productData;
+
+    // Apply expiry date filter
+    if (filterType === "EXPIRING_SOON") {
+      filteredProducts = filteredProducts.filter(item => item.daysDifference >= 0 && item.daysDifference <= 3);
+    } else if (filterType === "EXPIRING_7_DAYS") {
+      filteredProducts = filteredProducts.filter(item => item.daysDifference > 3 && item.daysDifference <= 7);
+    } else if (filterType === "EXPIRING_AFTER_7_DAYS") {
+      filteredProducts = filteredProducts.filter(item => item.daysDifference > 7);
+    }
+
+    // Apply category filter
+    if (categoryValue) {
+      filteredProducts = filteredProducts.filter(item => item.category === categoryValue);
+    }
+
+    // Apply search filter
+    filteredProducts = filteredProducts.filter(product => {
+      const matchesName = product.title.toLowerCase().includes(searchText.toLowerCase());
+      const matchesExpiry = product.expiry.includes(searchText);
+      return matchesName || matchesExpiry;
+    });
+
+    setFilteredProductData(filteredProducts);
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', margin: 10 }}>
@@ -131,10 +179,16 @@ export default function YourProducts({ navigation }) {
       </View>
 
 
-
-
-
       <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+
+        <TouchableHighlight
+          style={filterType == "ALL" ? styles.filterTabActiveRed : styles.filterTab}
+          onPress={showAll}
+        >
+          <View>
+            <Text>All Products</Text>
+          </View>
+        </TouchableHighlight>
 
         <TouchableHighlight
           style={filterType == "EXPIRING_SOON" ? styles.filterTabActiveRed : styles.filterTab}
@@ -173,7 +227,7 @@ export default function YourProducts({ navigation }) {
       ) : (
         <FlatList
           key={numColumns}
-          data={filteredProducts}
+          data={filteredProductData}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={[styles.viewCon, { width: itemWidth }]}>
