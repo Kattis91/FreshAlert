@@ -37,6 +37,36 @@ export default function YourProducts({ navigation }) {
     { label: "Frozen Foods", value: "frozen foods" }
   ];
 
+  // Funksioni për të marrë emoji bazuar në kategori
+const getCategoryEmoji = (category: string | null) => {
+  switch (category) {
+    case "dairy":
+      return "🧀"; // Produkte qumështi
+    case "meat":
+      return "🥩"; // Mish
+    case "seafood":
+      return "🐟"; // Peshk
+    case "fruits":
+      return "🍎"; // Fruta
+    case "vegetables":
+      return "🥦"; // Perime
+    case "condiments":
+      return "🧂"; // Erëza
+    case "beverages":
+      return "🥤"; // Pije
+    case "prepared foods":
+      return "🍽️"; // Ushqime të gatshme
+    case "spreads":
+      return "🍯"; // Përhapje (mjaltë, gjalpë)
+    case "fresh herbs":
+      return "🌿"; // Erëza të freskëta
+    case "frozen foods":
+      return "🧊"; // Ushqime të ngrira
+    default:
+      return "❓"; // Emoji për kategori të panjohur
+  }
+};
+
   const [searchText, setSearchText] = useState("");
 
   const [productData, setProductData] = useState<Product[]>([]);
@@ -145,7 +175,7 @@ export default function YourProducts({ navigation }) {
       </View>
 
       <TextInput
-        style={{ width: '100%', padding: 8, borderRadius: 8, borderColor: '#6FCF97', borderWidth: 1, marginBottom: 20, textAlign: 'center' }}
+        style={styles.TextInputS}
         placeholder="Search by date or name"
         value={searchText}
         onChangeText={setSearchText}
@@ -182,7 +212,7 @@ export default function YourProducts({ navigation }) {
       <View style={{ flexDirection: "row", justifyContent: 'center' }}>
 
         <TouchableHighlight
-          style={filterType == "ALL" ? styles.filterTabActiveRed : styles.filterTab}
+          style={filterType == "ALL" ? styles.filterTabActiveALL : styles.filterTab}
           onPress={showAll}
         >
           <View>
@@ -236,7 +266,7 @@ export default function YourProducts({ navigation }) {
                 <View style={styles.viewtext}>
                   <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, flexShrink: 1 }}>{item.title}</Text></View>
 
-                <View style={styles.viewicon}><Text style={{ fontSize: 50 }}>🧊 </Text></View>
+                <View style={styles.viewicon}><Text style={{ fontSize: 50 }}>{getCategoryEmoji(item.category)}</Text></View>
 
                 <View style={[styles.viewtext, { flex: 1, flexDirection: 'row', alignItems: 'center' }]}>
                   <Text >{item.expiry}</Text>
@@ -266,15 +296,25 @@ const styles = StyleSheet.create({
   filterTab: {
     padding: 7,
     margin: 5,
-    borderRadius: 8,
+    borderRadius: 25,
     borderColor: '#6FCF97',
     borderWidth: 1,
     backgroundColor: '#fff',
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  filterTabActiveALL: {
+    padding: 10,
+    margin: 5,
+    borderRadius: 20,
+    backgroundColor: '#a2c3a4',
+    borderWidth: 1,
+    borderColor: '#a2c3a4',
   },
   filterTabActiveRed: {
     padding: 10,
     margin: 5,
-    borderRadius: 8,
+    borderRadius: 20,
     backgroundColor: 'red',
     borderWidth: 1,
     borderColor: 'red',
@@ -282,7 +322,7 @@ const styles = StyleSheet.create({
   filterTabActiveYellow: {
     padding: 10,
     margin: 5,
-    borderRadius: 8,
+    borderRadius: 20,
     backgroundColor: 'yellow',
     borderWidth: 1,
     borderColor: 'yellow',
@@ -290,7 +330,7 @@ const styles = StyleSheet.create({
   filterTabActiveGreen: {
     padding: 10,
     margin: 5,
-    borderRadius: 8,
+    borderRadius: 20,
     backgroundColor: 'green',
     borderWidth: 1,
     borderColor: 'green',
@@ -326,4 +366,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  TextInputS: { width: '100%',
+    padding: 8,
+    borderRadius: 25,
+    borderColor: '#6FCF97',
+    borderWidth: 1,
+    marginBottom: 20,
+    textAlign: 'center', 
+    opacity: 0.7, }
 });
