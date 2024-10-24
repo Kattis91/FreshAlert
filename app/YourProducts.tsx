@@ -3,32 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-export default function YourProducts({ navigation }) {
+export default function YourProducts() {
 
   const screenWidth = Dimensions.get('window').width;
   const numColumns = 3;
   const itemWidth = screenWidth / numColumns - 20;
 
-  const getCircleColor = (expiryDate) => {
-    const currentDate = new Date();
-    const expiry = new Date(expiryDate);
-    const timeDiff = expiry - currentDate;
-    const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-    if (dayDiff > 7) {
-      return '#0A7763';
-    } else if (dayDiff <= 7 && dayDiff > 3) {
-      return 'yellow';
-    } else if (dayDiff <= 3 && dayDiff >= 0) {
-      return 'red';
-    }
-    return 'blue'; // Default color for errors
-  };
-
   const [filterType, setFilterType] = useState("ALL");
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<string | null>(null);
   const [category, setCategory] = useState([
+    { label: "All Categories", value: null },
     { label: "Dairy", value: "dairy" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
@@ -43,6 +28,32 @@ export default function YourProducts({ navigation }) {
   ]);
 
   const [searchText, setSearchText] = useState("");
+
+  const resetTime = (date: Date) => {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  };
+
+  const calculateDaysDifference = (expiryDate: string) => {
+    const currentDate = resetTime(new Date());
+    const expiry = resetTime(new Date(expiryDate));
+    const timeDifference = expiry.getTime() - currentDate.getTime();
+    return Math.ceil(timeDifference / (1000 * 3600 * 24));
+  };
+
+  const getCircleColor = (expiryDate: string) => {
+    const dayDiff = calculateDaysDifference(expiryDate);
+
+    if (dayDiff > 7) {
+      return '#0A7763';
+    } else if (dayDiff <= 7 && dayDiff > 3) {
+      return 'yellow';
+    } else if (dayDiff <= 3 && dayDiff >= 0) {
+      return 'red';
+    }
+    return 'blue'; // Default color for errors
+  };
 
   async function showAll() {
     setFilterType("ALL");
@@ -74,17 +85,8 @@ export default function YourProducts({ navigation }) {
       const storedList = await AsyncStorage.getItem("my-list");
       const parsedList: Product[] = storedList ? JSON.parse(storedList) : [];
 
-      const resetTime = (date: Date) => {
-        const newDate = new Date(date);
-        newDate.setHours(0, 0, 0, 0);
-        return newDate;
-      };
-
       const updatedProducts = parsedList.map(product => {
-        const currentDate = new Date();
-        const expiryDate = resetTime(new Date(product.expiry));
-        const timeDifference = expiryDate.getTime() - currentDate.getTime();
-        const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+        const daysDifference = calculateDaysDifference(product.expiry);
         return { ...product, daysDifference };
       });
 
@@ -103,6 +105,7 @@ export default function YourProducts({ navigation }) {
   useEffect(() => {
     filterProducts();
   }, [filterType, categoryValue, searchText, productData]);
+
 
   function filterProducts() {
     console.log("Filtering products with type: ", filterType);
@@ -174,10 +177,7 @@ export default function YourProducts({ navigation }) {
           listMode='SCROLLVIEW'
           containerStyle={{ flex: 1 }}
         />
-
-
       </View>
-
 
       <View style={{ flexDirection: "row", justifyContent: 'center' }}>
 
