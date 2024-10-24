@@ -77,7 +77,7 @@ export default function YourProducts({ navigation }) {
   }, []);
 
 
-  const filteredProducts = productData.filter(product => {
+    const filteredProducts = productData.filter(product => {
     const matchesName = product.title.toLowerCase().includes(searchText.toLowerCase());
     const matchesExpiry = product.expiry.includes(searchText);
     const matchesCategory = categoryValue ? product.category === categoryValue : true; // Sigurohuni që filtrimi i kategorive të funksionojë
