@@ -37,33 +37,33 @@ export default function YourProducts({ navigation }) {
     { label: "Frozen Foods", value: "frozen foods" }
   ];
 
-  // Funksioni për të marrë emoji bazuar në kategori
+  // Products Icon
 const getCategoryEmoji = (category: string | null) => {
   switch (category) {
     case "dairy":
-      return "🧀"; // Produkte qumështi
+      return "🧀"; 
     case "meat":
-      return "🥩"; // Mish
+      return "🥩"; 
     case "seafood":
-      return "🐟"; // Peshk
+      return "🐟"; 
     case "fruits":
-      return "🍎"; // Fruta
+      return "🍎"; 
     case "vegetables":
-      return "🥦"; // Perime
+      return "🥦";
     case "condiments":
-      return "🧂"; // Erëza
+      return "🧂";
     case "beverages":
-      return "🥤"; // Pije
+      return "🥤"; 
     case "prepared foods":
-      return "🍽️"; // Ushqime të gatshme
+      return "🍽️"; 
     case "spreads":
-      return "🍯"; // Përhapje (mjaltë, gjalpë)
+      return "🍯"; 
     case "fresh herbs":
-      return "🌿"; // Erëza të freskëta
+      return "🌿";
     case "frozen foods":
-      return "🧊"; // Ushqime të ngrira
+      return "🧊"; 
     default:
-      return "❓"; // Emoji për kategori të panjohur
+      return "❓"; 
   }
 };
 
