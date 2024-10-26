@@ -28,7 +28,7 @@ const defaultProduct: Product = {
   category: null,
 };
 
-export default function EditProduct({ route }: EditProductProps) {
+export default function EditProduct({ route, navigation }: EditProductProps) {
   const { product } = route.params || { product: defaultProduct };
 
   const [productName, setProductName] = useState(product.name);
@@ -164,6 +164,23 @@ export default function EditProduct({ route }: EditProductProps) {
     }
   }
 
+  async function removeValue() {
+    try {
+      const storedList = await AsyncStorage.getItem("my-list");
+      const currentList = storedList ? JSON.parse(storedList) : [];
+
+      const updatedList = currentList.filter((p: Product) => p.id !== product.id);
+      await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
+
+      Alert.alert("Product removed:", `Product: ${product.name} \n Expiry date: ${product.expiry}`);
+
+      navigation.navigate("Your Products");
+     
+    } catch(e) {
+      console.error("Failed to remove item.", e);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={{ textTransform: "uppercase", fontSize: 25, textAlign: "center", marginBottom: 25 }}>Edit Product:</Text>
@@ -238,6 +255,15 @@ export default function EditProduct({ route }: EditProductProps) {
           title="EDIT"
           color="white"
           onPress={Edit}
+        />
+      </View>
+
+      <View>
+        <Text style={{ textTransform: "uppercase", fontSize: 25, textAlign: "center", marginBottom: 25 }}>Or delete the item:</Text>
+        <Button
+          title="Delete"
+          color="red"
+          onPress={removeValue}
         />
       </View>
     </View>
