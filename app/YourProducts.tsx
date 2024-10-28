@@ -2,6 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from "react";
 import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
+import AddProducts from './AddProduct';
+import { useFocusEffect } from 'expo-router';
+import DropDownPickerComponent from '@/components/DropDownPicker';
 
 export default function YourProducts({ navigation }) {
 
@@ -129,9 +132,11 @@ const getCategoryEmoji = (category: string | null) => {
     }
   };
 
-  useEffect(() => {
-    getProducts();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getProducts(); // Load products when the screen is focused
+    }, []) 
+  );
 
   useEffect(() => {
     filterProducts();
@@ -167,6 +172,8 @@ const getCategoryEmoji = (category: string | null) => {
     setFilteredProductData(filteredProducts);
   }
 
+  const filterButton = categoryValue ? `All ${categoryValue}` : "All products";
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', margin: 10 }}>
 
@@ -183,30 +190,14 @@ const getCategoryEmoji = (category: string | null) => {
 
       <View style={{ flexDirection: 'row', zIndex: 1000, marginBottom: 20 }}>
 
-        <DropDownPicker
-          style={styles.inputs}
-          open={openCategory}
-          value={categoryValue}
-          items={categories}
-          setOpen={setOpenCategory}
-          setValue={setCategoryValue}
-          dropDownContainerStyle={{
-            backgroundColor: "#0A7763",
-            width: "100%",
-            maxHeight: 200,
-          }}
-          textStyle={{ color: "white" }}
-          placeholderStyle={{ color: "#333333" }}
-          labelStyle={{ color: "black" }}
-          listItemContainerStyle={{
-            borderBottomColor: "white",
-            borderBottomWidth: 1,
-          }}
-
-          placeholder="Category"
-          listMode='SCROLLVIEW'
-          containerStyle={{ flex: 1 }}
-        />
+      <DropDownPickerComponent
+        openCategory={openCategory}
+        categoryValue={categoryValue}
+        categories={categories}
+        setCategoryValue={setCategoryValue}
+        setOpenCategory={setOpenCategory}       
+      />
+      
       </View>
 
       <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -216,7 +207,7 @@ const getCategoryEmoji = (category: string | null) => {
           onPress={showAll}
         >
           <View>
-            <Text>All Products</Text>
+            <Text>{ filterButton }</Text>
           </View>
         </TouchableHighlight>
 
