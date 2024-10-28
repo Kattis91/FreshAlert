@@ -45,13 +45,13 @@ const FormComponent = ({
 }: FormComponentProps) => {
     const inputRef = useRef<TextInput>(null);
 
-    const formatDate = (date: Date) => {
-    return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
-    };
+const formatDate = (date: Date) => {
+  return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
+};
 
 return (
 
-  <View>
+  <View style={styles.container}>
 
     <Text style={{ textTransform: "uppercase", fontSize: 25, textAlign: "center", marginBottom: 25 }}>{ addoredit }</Text>
 
