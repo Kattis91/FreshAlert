@@ -35,7 +35,8 @@ export default function YourProducts({ navigation }) {
     { label: "Prepared Foods", value: "prepared foods" },
     { label: "Spreads", value: "spreads" },
     { label: "Fresh Herbs", value: "fresh herbs" },
-    { label: "Frozen Foods", value: "frozen foods" }
+    { label: "Frozen Foods", value: "frozen foods" },
+    { label: "Other", value: "other" }
   ];
 
   // Products Icon
@@ -246,7 +247,7 @@ const getCategoryEmoji = (category: string | null) => {
       ) : (
         <FlatList
           key={numColumns}
-          data={filteredProductData}
+          data={[...filteredProductData].reverse()}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => navigation.navigate('Edit Product', { product: item })}>
