@@ -1,9 +1,8 @@
+import DropDownPickerComponent from "@/components/DropDownPicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Button, Platform, StyleSheet, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
-import DropDownPicker from "react-native-dropdown-picker";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 
 export default function AddProducts() {
@@ -32,7 +31,8 @@ export default function AddProducts() {
     { label: "Prepared Foods", value: "prepared foods" },
     { label: "Spreads", value: "spreads" },
     { label: "Fresh Herbs", value: "fresh herbs" },
-    { label: "Frozen Foods", value: "frozen foods" }
+    { label: "Frozen Foods", value: "frozen foods" },
+    { label: "Other", value: "other" }
   ];
 
   const [date, setDate] = useState(new Date());
@@ -148,8 +148,6 @@ export default function AddProducts() {
     }
   }
 
-
-  
   return (
 
     <View style={styles.container}>
@@ -204,36 +202,19 @@ export default function AddProducts() {
 
       <Text style={styles.label}>Category:</Text>
 
-      <DropDownPicker
-        style={styles.inputs}
-        open={openCategory}
-        value={categoryValue}
-        items={categories}
-        setOpen={setOpenCategory}
-        setValue={setCategoryValue}
-        placeholder="Choose category"
-        listMode="SCROLLVIEW"
-        dropDownContainerStyle={{
-          backgroundColor: "#0A7763",
-          width: "100%",
-          maxHeight: 200,
-        }}
-        textStyle={{ color: "white" }}
-        placeholderStyle={{ color: "black" }}
-        labelStyle={{ color: "black" }}
-        scrollViewProps={{
-          indicatorStyle: 'white', // Change scrollbar color to white
-        }}
-        listItemContainerStyle={{
-          borderBottomColor: "white",
-          borderBottomWidth: 1,
-        }}
+      <DropDownPickerComponent
+        openCategory={openCategory}
+        categoryValue={categoryValue}
+        categories={categories}
+        setCategoryValue={setCategoryValue}
+        setOpenCategory={setOpenCategory} 
+        placeholder="Choose category"      
       />
 
       <View style={styles.button}>
         <Button
           title="ADD"
-          color="white"
+          color={Platform.OS === "ios" ? "white" : "#0A7763"}
           onPress={addProduct}
         />
       </View>

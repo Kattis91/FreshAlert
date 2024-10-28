@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from "react";
 import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
-import AddProducts from './AddProduct';
 import { useFocusEffect } from 'expo-router';
 import DropDownPickerComponent from '@/components/DropDownPicker';
 
@@ -195,9 +193,9 @@ const getCategoryEmoji = (category: string | null) => {
         categoryValue={categoryValue}
         categories={categories}
         setCategoryValue={setCategoryValue}
-        setOpenCategory={setOpenCategory}       
+        setOpenCategory={setOpenCategory}  
+        placeholder="Filter by category"     
       />
-      
       </View>
 
       <View style={{ flexDirection: "row", justifyContent: 'center' }}>

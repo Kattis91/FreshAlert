@@ -1,8 +1,9 @@
+import DropDownPickerComponent from "@/components/DropDownPicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
-import DropDownPicker from "react-native-dropdown-picker";
+
 
 type Product = {
   id: number;
@@ -224,30 +225,12 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       />
 
       <Text style={styles.label}>Category:</Text>
-      <DropDownPicker
-        style={styles.inputs}
-        open={openCategory}
-        value={categoryValue}
-        items={categories}
-        setOpen={setOpenCategory}
-        setValue={setCategoryValue}
-        placeholder="Choose category"
-        listMode="SCROLLVIEW"
-        dropDownContainerStyle={{
-          backgroundColor: "#0A7763",
-          width: "100%",
-          maxHeight: 200,
-        }}
-        textStyle={{ color: "white" }}
-        placeholderStyle={{ color: "black" }}
-        labelStyle={{ color: "black" }}
-        scrollViewProps={{
-          indicatorStyle: 'white',
-        }}
-        listItemContainerStyle={{
-          borderBottomColor: "white",
-          borderBottomWidth: 1,
-        }}
+      <DropDownPickerComponent
+        openCategory={openCategory}
+        categoryValue={categoryValue}
+        categories={categories}
+        setCategoryValue={setCategoryValue}
+        setOpenCategory={setOpenCategory}       
       />
 
       <View style={styles.button}>
