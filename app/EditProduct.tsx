@@ -1,7 +1,8 @@
 import DropDownPickerComponent from "@/components/DropDownPicker";
+import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Button, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 
 
@@ -188,7 +189,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
       <Text style={styles.label}>Product Name:</Text>
       <TextInput
-        style={styles.inputs}
+        style={styles.formInputs}
         onChangeText={setProductName}
         value={productName}
         placeholder="Enter product name"
@@ -197,7 +198,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
       <Text style={styles.label}>Expiry Date:</Text>
       <TextInput
-        style={styles.inputs}
+        style={styles.formInputs}
         ref={inputRef}
         onFocus={() => setOpenDate(true)}
         value={expiryDate}
@@ -252,36 +253,3 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#f8edeb",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 40,
-  },
-  label: {
-    textTransform: "uppercase",
-    fontSize: 18,
-    marginBottom: 10,
-    marginTop: 10,
-    alignSelf: "flex-start",
-    marginLeft: 5,
-  },
-  inputs: {
-    borderColor: "#0A7763",
-    borderWidth: 2,
-    height: 38,
-    borderRadius: 14,
-    width: "100%",
-    paddingLeft: 5,
-    backgroundColor: "white"
-  },
-  button: {
-    backgroundColor: "#0A7763",
-    marginTop: 30,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-  },
-});

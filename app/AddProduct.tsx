@@ -1,10 +1,7 @@
-import DropDownPickerComponent from "@/components/DropDownPicker";
 import FormComponent from "@/components/FormComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useRef, useState } from "react";
-import { Alert, Button, Platform, StyleSheet, Text, TextInput, View } from "react-native";
-import DatePicker from "react-native-date-picker";
-
+import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 export default function AddProducts() {
 
@@ -167,36 +164,3 @@ export default function AddProducts() {
 
   );
 }
-
-export const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#f8edeb",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 40,
-  },
-  label: {
-    textTransform: "uppercase",
-    fontSize: 18,
-    marginBottom: 10,
-    marginTop: 10,
-    alignSelf: "flex-start",
-    marginLeft: 5,
-  },
-  inputs: {
-    borderColor: "#0A7763",
-    borderWidth: 2,
-    height: 38,
-    borderRadius: 14,
-    width: "100%",
-    paddingLeft: 5,
-    backgroundColor: "white"
-  },
-  button: {
-    backgroundColor: "#0A7763",
-    marginTop: 30,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-  },
-});

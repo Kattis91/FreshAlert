@@ -2,7 +2,7 @@ import { Button, Platform, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPickerComponent from "./DropDownPicker";
 import { useRef } from "react";
-import { styles } from "@/app/AddProduct";
+import { styles } from "@/styles/styles";
 
 type FormComponentProps = {
   productName: string;
@@ -58,7 +58,7 @@ return (
     <Text style={styles.label}>Product Name:</Text>
 
     <TextInput
-      style={styles.inputs}
+      style={styles.formInputs}
       onChangeText={setProductName}
       value={productName}
       placeholder="Enter product name"
@@ -68,7 +68,7 @@ return (
     <Text style={styles.label}>Expiry Date:</Text>
 
     <TextInput
-      style={styles.inputs}
+      style={styles.formInputs}
       ref={inputRef}
       onFocus={() => setOpenDate(true)}
       onChangeText={setExpiryDate}

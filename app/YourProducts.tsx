@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from "react";
-import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity, Image } from "react-native";
+import { Text, TouchableHighlight, View, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity, Image } from "react-native";
 import { useFocusEffect } from 'expo-router';
 import DropDownPickerComponent from '@/components/DropDownPicker';
+import { styles } from '@/styles/styles';
 
 export default function YourProducts({ navigation }) {
 
@@ -281,87 +282,3 @@ const getCategoryEmoji = (category: string | null) => {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  filterTab: {
-    padding: 7,
-    margin: 5,
-    borderRadius: 25,
-    borderColor: '#6FCF97',
-    borderWidth: 1,
-    backgroundColor: '#fff',
-    alignItems:'center',
-    justifyContent:'center',
-  },
-  filterTabActiveALL: {
-    padding: 10,
-    margin: 5,
-    borderRadius: 20,
-    backgroundColor: '#a2c3a4',
-    borderWidth: 1,
-    borderColor: '#a2c3a4',
-  },
-  filterTabActiveRed: {
-    padding: 10,
-    margin: 5,
-    borderRadius: 20,
-    backgroundColor: 'red',
-    borderWidth: 1,
-    borderColor: 'red',
-  },
-  filterTabActiveYellow: {
-    padding: 10,
-    margin: 5,
-    borderRadius: 20,
-    backgroundColor: 'yellow',
-    borderWidth: 1,
-    borderColor: 'yellow',
-  },
-  filterTabActiveGreen: {
-    padding: 10,
-    margin: 5,
-    borderRadius: 20,
-    backgroundColor: 'green',
-    borderWidth: 1,
-    borderColor: 'green',
-  },
-  inputs: {
-    borderColor: "#A5D6A7",
-    borderWidth: 1,
-    height: 30,
-    borderRadius: 14,
-    width: "100%",
-    paddingLeft: 5,
-    backgroundColor: "#E9F7EF",
-  },
-  viewCon: {
-    height: 120,
-    backgroundColor: 'transparent',
-    borderRadius: 8,
-    borderColor: "#0A7763",
-    borderWidth: 0.5,
-    margin: 7
-  },
-  viewtext: {
-    flexDirection: 'row',
-    height: 24,
-    backgroundColor: '#eff6e0',
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-  },
-  viewicon: {
-    height: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  TextInputS: { width: '100%',
-    padding: 8,
-    borderRadius: 25,
-    borderColor: '#6FCF97',
-    borderWidth: 1,
-    marginBottom: 20,
-    textAlign: 'center', 
-    opacity: 0.7, }
-});

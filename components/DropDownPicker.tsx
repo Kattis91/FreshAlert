@@ -1,3 +1,4 @@
+import { styles } from "@/styles/styles";
 import { StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -20,7 +21,7 @@ const DropDownPickerComponent = ({
 }: DropDownPickerProps) => {
   return (
     <DropDownPicker 
-      style={styles.inputs}
+      style={styles.formInputs}
       open={openCategory}
       value={categoryValue}
       items={categories}
@@ -55,15 +56,3 @@ const DropDownPickerComponent = ({
 };
 
 export default DropDownPickerComponent;
-
-const styles = StyleSheet.create({
-  inputs: {
-    borderColor: "#0A7763",
-    borderWidth: 2,
-    height: 38,
-    borderRadius: 14,
-    width: "100%",
-    paddingLeft: 5,
-    backgroundColor: "white"
-  },
-});
