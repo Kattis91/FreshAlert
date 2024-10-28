@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from "react";
-import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity } from "react-native";
+import { Text, TouchableHighlight, View, StyleSheet, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity, Image } from "react-native";
 import { useFocusEffect } from 'expo-router';
 import DropDownPickerComponent from '@/components/DropDownPicker';
 
@@ -42,27 +42,27 @@ export default function YourProducts({ navigation }) {
 const getCategoryEmoji = (category: string | null) => {
   switch (category) {
     case "dairy":
-      return "🧀"; 
+      return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 70, height: 70 }} />;
     case "meat":
-      return "🥩"; 
+      return <Image source={require('../assets//images/beef.png')} style={{ width: 70, height: 70 }} />;
     case "seafood":
-      return "🐟"; 
+      return <Image source={require('../assets//images/seafood.png')} style={{ width: 70, height: 70 }} />;
     case "fruits":
-      return "🍎"; 
+      return <Image source={require('../assets//images/fruits.png')} style={{ width: 70, height: 70 }} />;
     case "vegetables":
-      return "🥦";
+      return <Image source={require('../assets//images/vegetable.png')} style={{ width: 70, height: 70 }} />;
     case "condiments":
-      return "🧂";
+      return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 70, height: 70 }} />;
     case "beverages":
-      return "🥤"; 
+      return <Image source={require('../assets//images/beverages.png')} style={{ width: 70, height: 70 }} />;
     case "prepared foods":
-      return "🍽️"; 
+      return <Image source={require('../assets//images/meal.png')} style={{ width: 70, height: 70 }} />;
     case "spreads":
-      return "🍯"; 
+      return <Image source={require('../assets//images/toast.png')} style={{ width: 70, height: 70 }} />;
     case "fresh herbs":
-      return "🌿";
+      return <Image source={require('../assets//images/herbs.png')} style={{ width: 70, height: 70 }} />;
     case "frozen foods":
-      return "🧊"; 
+      return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 70, height: 70 }} />;
     default:
       return "❓"; 
   }
