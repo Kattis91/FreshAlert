@@ -42,27 +42,27 @@ export default function YourProducts({ navigation }) {
 const getCategoryEmoji = (category: string | null) => {
   switch (category) {
     case "dairy":
-      return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} />;
     case "meat":
-      return <Image source={require('../assets//images/beef.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} />;
     case "seafood":
-      return <Image source={require('../assets//images/seafood.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} />;
     case "fruits":
-      return <Image source={require('../assets//images/fruits.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} />;
     case "vegetables":
-      return <Image source={require('../assets//images/vegetable.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} />;
     case "condiments":
-      return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} />;
     case "beverages":
-      return <Image source={require('../assets//images/beverages.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} />;
     case "prepared foods":
-      return <Image source={require('../assets//images/meal.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} />;
     case "spreads":
-      return <Image source={require('../assets//images/toast.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} />;
     case "fresh herbs":
-      return <Image source={require('../assets//images/herbs.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} />;
     case "frozen foods":
-      return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 70, height: 70 }} />;
+      return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} />;
     default:
       return "❓"; 
   }
