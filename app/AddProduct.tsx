@@ -1,4 +1,5 @@
 import DropDownPickerComponent from "@/components/DropDownPicker";
+import FormComponent from "@/components/FormComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
 import { Alert, Button, Platform, StyleSheet, Text, TextInput, View } from "react-native";
@@ -39,12 +40,6 @@ export default function AddProducts() {
   const [expiryDate, setExpiryDate] = useState("");
   const [openDate, setOpenDate] = useState(false);
   const [dateChanged, setDateChanged] = useState(false);
-
-  const inputRef = useRef<TextInput>(null);
-
-  const formatDate = (date: Date) => {
-    return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
-  };
 
   useEffect(() => {
     if (!dateChanged) return; // Prevent running the effect on initial render
@@ -150,76 +145,25 @@ export default function AddProducts() {
 
   return (
 
-    <View style={styles.container}>
-
-      <Text style={{ textTransform: "uppercase", fontSize: 25, textAlign: "center", marginBottom: 25 }}>Add Product:</Text>
-
-      <Text style={styles.label}>Product Name:</Text>
-
-      <TextInput
-        style={styles.inputs}
-        onChangeText={setProductName}
-        value={productName}
-        placeholder="Enter product name"
-        placeholderTextColor="black"
-      />
-
-      <Text style={styles.label}>Expiry Date:</Text>
-
-      <TextInput
-        style={styles.inputs}
-        ref={inputRef}
-        onFocus={() => setOpenDate(true)}
-        onChangeText={setExpiryDate}
-        value={expiryDate}
-        placeholder="Add expiry date"
-        placeholderTextColor="black"
-      />
-
-      <DatePicker
-        modal
-        open={openDate}
-        date={date}
-        mode="date"
-        onConfirm={(selectedDate) => {
-          setOpenDate(false);
-          setDate(selectedDate);
-          setExpiryDate(formatDate(selectedDate));
-          setDateChanged(true);
-
-          if (inputRef.current) {
-            inputRef.current.blur();
-          }
-        }}
-        onCancel={() => {
-          setOpenDate(false);
-
-          if (inputRef.current) {
-            inputRef.current.blur();
-          }
-        }}
-      />
-
-      <Text style={styles.label}>Category:</Text>
-
-      <DropDownPickerComponent
-        openCategory={openCategory}
-        categoryValue={categoryValue}
-        categories={categories}
-        setCategoryValue={setCategoryValue}
-        setOpenCategory={setOpenCategory} 
-        placeholder="Choose category"      
-      />
-
-      <View style={styles.button}>
-        <Button
-          title="ADD"
-          color={Platform.OS === "ios" ? "white" : "#0A7763"}
-          onPress={addProduct}
-        />
-      </View>
-
-    </View>
+    <FormComponent
+      productName={productName}
+      setProductName={setProductName}
+      expiryDate={expiryDate}
+      setExpiryDate={setExpiryDate}
+      date={date}
+      openDate={openDate}
+      setOpenDate={setOpenDate}
+      setDate={setDate}
+      setDateChanged={setDateChanged}
+      openCategory={openCategory}
+      categoryValue={categoryValue}
+      setCategoryValue={setCategoryValue}
+      categories={categories}
+      setOpenCategory={setOpenCategory}
+      addoredit="Add Product"
+      buttontext="ADD"
+      buttonclick={addProduct}
+    />
 
   );
 }
