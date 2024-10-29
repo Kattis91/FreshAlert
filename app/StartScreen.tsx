@@ -5,13 +5,9 @@ export default function StartScreen({ navigation } : any) {
  
   return (
     <LinearGradient
-      colors={['#b8dbd9', '#ddbea9', '#ffe8d6', '#a8ba9a']} // Katër ngjyra për gradientin
-      style={{
-        flex: 1, // Bëje që gradienti të mbulojë të gjithë hapësirën
-        justifyContent: 'center', // Qëndroje qendror
-        alignItems: 'center',
-      }}
-    >
+      colors={['#b8dbd9', '#ddbea9', '#ffe8d6', '#a8ba9a']} 
+      style={{flex: 1, justifyContent: 'center', alignItems: 'center', }} >
+        
       <Text style={{ fontSize: 50, color: "white" }}>FreshAlert</Text>
       <Text style={{ fontSize: 26, color: "#534b52" }}>Keep it Fresh, Keep it Safe</Text>
 

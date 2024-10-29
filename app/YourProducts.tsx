@@ -4,6 +4,7 @@ import { Text, TouchableHighlight, View, TextInput, FlatList, Button, SafeAreaVi
 import { useFocusEffect } from 'expo-router';
 import DropDownPickerComponent from '@/components/DropDownPicker';
 import { styles } from '@/styles/styles';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function YourProducts({ navigation }) {
 
@@ -175,7 +176,12 @@ export default function YourProducts({ navigation }) {
   const filterButton = categoryValue ? `All ${categoryValue}` : "All products";
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', margin: 10 }}>
+    <LinearGradient
+    colors={['#b8dbd9', '#e3f2fd', '#ffe8d6', '#e0ddcf']} 
+    style={{flex: 1 }} >
+
+
+    <SafeAreaView style={{ flex: 1, margin: 10 }}>
 
       <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
         <Image
@@ -192,7 +198,7 @@ export default function YourProducts({ navigation }) {
         onChangeText={setSearchText}
       />
 
-      <View style={{ flexDirection: 'row', zIndex: 1000, marginBottom: 20 }}>
+      <View style={{ flexDirection: 'row', zIndex: 1000 }}>
 
         <DropDownPickerComponent
           openCategory={openCategory}
@@ -246,49 +252,52 @@ export default function YourProducts({ navigation }) {
       </View>
 
 
-
       {productData.length === 0 ? (
-        <Text>No products</Text>
-      ) : (
-        <FlatList
-          key={numColumns}
-          data={[...filteredProductData].reverse()}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => navigation.navigate('Edit Product', { product: item })}>
-              <View style={[styles.viewCon, { width: itemWidth }]}>
+  <Text style={styles.emptyText}>Nuk ka produkte</Text>
+) : (
+  <FlatList
+    key={numColumns}
+    data={[...filteredProductData].reverse()}
+    keyExtractor={(item) => item.id.toString()}
+    renderItem={({ item }) => (
+      <TouchableOpacity 
+        onPress={() => navigation.navigate('Edit Product', { product: item })} 
+        activeOpacity={0.7}
+      >
+        <View style={[styles.viewCon, { width: itemWidth }]}>
+         
+          <View style={styles.viewIcon}>
+            {Platform.OS === "ios" ? (
+              <Text style={styles.categoryEmoji}>{getCategoryEmoji(item.category)}</Text>
+            ) : (
+              getCategoryEmoji(item.category)
+            )}
+          </View>
+         
+          <Text style={styles.titleText} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
+     
+          <View style={styles.expiryContainer}>
+            <Text style={styles.expiryText}>{item.expiry}</Text>
+            <View style={[styles.circleIndicator, { backgroundColor: getCircleColor(item.expiry) }]} />
+          </View>
+        </View>
+      </TouchableOpacity>
+    )}
+    numColumns={numColumns}
+  />
+)}
 
-                <View style={styles.viewtext}>
-                  <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, flexShrink: 1 }}>{item.title}</Text></View>
-
-                <View style={styles.viewicon}>
-                  {Platform.OS === "ios" ? (
-                    <Text>{getCategoryEmoji(item.category)}</Text>
-                  ) : (
-                    getCategoryEmoji(item.category)
-                  )}
-                </View>
-
-                <View style={[styles.viewtext, { flex: 1, flexDirection: 'row', alignItems: 'center' }]}>
-                  <Text >{item.expiry}</Text>
-                  <View style={{
-                    width: 12, height: 12, borderRadius: 7.5, backgroundColor: getCircleColor(item.expiry) // Përdor funksionin për ngjyrën
-                  }} /></View>
-              </View>
-            </TouchableOpacity>
-          )}
-          numColumns={numColumns} // Cakto numrin e kolonave
-        />
-      )}
-
-      <Button title="Delete all products" onPress={async () => {
-        await AsyncStorage.removeItem("my-list");
-        getProducts();
-      }
-      }
-      />
+<Button 
+  title="Fshij të gjitha produktet" 
+  onPress={async () => {
+    await AsyncStorage.removeItem("my-list");
+    getProducts();
+  }}
+  color="#0A7763"
+/>
 
 
     </SafeAreaView>
+    </LinearGradient>
   );
 }

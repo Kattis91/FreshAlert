@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ffe8d6",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -81,6 +80,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 30,
     alignItems: "center",
+    justifyContent:"center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
@@ -108,7 +108,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: '#fff',
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'center',
   },
   filterTabActiveALL: {
     padding: 10,
@@ -151,37 +151,70 @@ export const styles = StyleSheet.create({
     paddingLeft: 5,
     backgroundColor: "#E9F7EF",
   },
-  viewCon: {
-    height: 120,
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    borderColor: "#0A7763",
-    borderWidth: 0.5,
-    margin: 7
+  emptyText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#0A7763',
+    fontWeight: 'bold',
+    marginVertical: 20,
   },
-  viewtext: {
-    flexDirection: 'row',
-    height: 24,
-    backgroundColor: '#eff6e0',
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    flex:1,
- },
-  viewicon: {
-    width:'100%',
-    height: 70,
+  viewCon: {
+    height: 140,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    margin: 6.5,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 3, // Dropshadow Android
+    shadowColor: '#000', // Dropshadow iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
   },
-  TextInputS: { width: '100%',
+  viewIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#e0f7ef',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  categoryEmoji: {
+    fontSize: 30,
+  },
+  titleText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  expiryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  expiryText: {
+    fontSize: 12,
+    color: '#555',
+  },
+  circleIndicator: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginLeft: 6,
+  },
+  TextInputS: { 
     padding: 8,
-    borderRadius: 25,
-    borderColor: '#6FCF97',
+    borderRadius: 12,
+    backgroundColor:"white",
+    borderColor: '#bfc0c0',
     borderWidth: 1,
     marginBottom: 20,
     textAlign: 'center', 
-    opacity: 0.7, 
+    opacity: 0.9, 
   },
 });
