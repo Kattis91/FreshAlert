@@ -177,9 +177,13 @@ const getCategoryEmoji = (category: string | null) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', margin: 10 }}>
 
-      <View style={{ alignItems: 'center' }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginVertical: 10 }}>🧊 DATE TRACKING</Text>
-      </View>
+<View style={{ justifyContent:'center', alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
+  <Image 
+    source={require('../assets/images/fridge.gif')} 
+    style={{ width: 45, height: 45, marginRight: 8 }}
+  />
+  <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Fresh Alert</Text>
+</View>
 
       <TextInput
         style={styles.TextInputS}
@@ -207,7 +211,7 @@ const getCategoryEmoji = (category: string | null) => {
           onPress={showAll}
         >
           <View>
-            <Text>{ filterButton }</Text>
+            <Text style={{ color: filterType === "ALL" ? '#ffffff' : '#000000' }}>{ filterButton }</Text>
           </View>
         </TouchableHighlight>
 
@@ -257,7 +261,7 @@ const getCategoryEmoji = (category: string | null) => {
                 <View style={styles.viewtext}>
                   <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, flexShrink: 1 }}>{item.title}</Text></View>
 
-                <View style={styles.viewicon}><Text style={{ fontSize: 50 }}>{getCategoryEmoji(item.category)}</Text></View>
+                <View style={styles.viewicon}>{getCategoryEmoji(item.category)}</View>
 
                 <View style={[styles.viewtext, { flex: 1, flexDirection: 'row', alignItems: 'center' }]}>
                   <Text >{item.expiry}</Text>
