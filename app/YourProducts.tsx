@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from "react";
-import { Text, TouchableHighlight, View, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity, Image } from "react-native";
+import { Text, TouchableHighlight, View, TextInput, FlatList, Button, SafeAreaView, Dimensions, TouchableOpacity, Image, Platform } from "react-native";
 import { useFocusEffect } from 'expo-router';
 import DropDownPickerComponent from '@/components/DropDownPicker';
 import { styles } from '@/styles/styles';
@@ -41,34 +41,34 @@ export default function YourProducts({ navigation }) {
   ];
 
   // Products Icon
-const getCategoryEmoji = (category: string | null) => {
-  switch (category) {
-    case "dairy":
-      return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} />;
-    case "meat":
-      return <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} />;
-    case "seafood":
-      return <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} />;
-    case "fruits":
-      return <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} />;
-    case "vegetables":
-      return <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} />;
-    case "condiments":
-      return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} />;
-    case "beverages":
-      return <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} />;
-    case "prepared foods":
-      return <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} />;
-    case "spreads":
-      return <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} />;
-    case "fresh herbs":
-      return <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} />;
-    case "frozen foods":
-      return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} />;
-    default:
-      return "❓"; 
-  }
-};
+  const getCategoryEmoji = (category: string | null) => {
+    switch (category) {
+      case "dairy":
+        return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} />;
+      case "meat":
+        return <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} />;
+      case "seafood":
+        return <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} />;
+      case "fruits":
+        return <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} />;
+      case "vegetables":
+        return <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} />;
+      case "condiments":
+        return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} />;
+      case "beverages":
+        return <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} />;
+      case "prepared foods":
+        return <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} />;
+      case "spreads":
+        return <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} />;
+      case "fresh herbs":
+        return <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} />;
+      case "frozen foods":
+        return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} />;
+      default:
+        return "❓";
+    }
+  };
 
   const [searchText, setSearchText] = useState("");
 
@@ -135,7 +135,7 @@ const getCategoryEmoji = (category: string | null) => {
   useFocusEffect(
     React.useCallback(() => {
       getProducts(); // Load products when the screen is focused
-    }, []) 
+    }, [])
   );
 
   useEffect(() => {
@@ -177,13 +177,13 @@ const getCategoryEmoji = (category: string | null) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', margin: 10 }}>
 
-<View style={{ justifyContent:'center', alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
-  <Image 
-    source={require('../assets/images/fridge.gif')} 
-    style={{ width: 45, height: 45, marginRight: 8 }}
-  />
-  <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Fresh Alert</Text>
-</View>
+      <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
+        <Image
+          source={require('../assets/images/fridge.gif')}
+          style={{ width: 45, height: 45, marginRight: 8 }}
+        />
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Fresh Alert</Text>
+      </View>
 
       <TextInput
         style={styles.TextInputS}
@@ -194,14 +194,14 @@ const getCategoryEmoji = (category: string | null) => {
 
       <View style={{ flexDirection: 'row', zIndex: 1000, marginBottom: 20 }}>
 
-      <DropDownPickerComponent
-        openCategory={openCategory}
-        categoryValue={categoryValue}
-        categories={categories}
-        setCategoryValue={setCategoryValue}
-        setOpenCategory={setOpenCategory}  
-        placeholder="Filter by category"     
-      />
+        <DropDownPickerComponent
+          openCategory={openCategory}
+          categoryValue={categoryValue}
+          categories={categories}
+          setCategoryValue={setCategoryValue}
+          setOpenCategory={setOpenCategory}
+          placeholder="Filter by category"
+        />
       </View>
 
       <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -211,7 +211,7 @@ const getCategoryEmoji = (category: string | null) => {
           onPress={showAll}
         >
           <View>
-            <Text style={{ color: filterType === "ALL" ? '#ffffff' : '#000000' }}>{ filterButton }</Text>
+            <Text style={{ color: filterType === "ALL" ? '#ffffff' : '#000000' }}>{filterButton}</Text>
           </View>
         </TouchableHighlight>
 
@@ -261,7 +261,13 @@ const getCategoryEmoji = (category: string | null) => {
                 <View style={styles.viewtext}>
                   <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, flexShrink: 1 }}>{item.title}</Text></View>
 
-                <View style={styles.viewicon}>{getCategoryEmoji(item.category)}</View>
+                <View style={styles.viewicon}>
+                  {Platform.OS === "ios" ? (
+                    <Text>{getCategoryEmoji(item.category)}</Text>
+                  ) : (
+                    getCategoryEmoji(item.category)
+                  )}
+                </View>
 
                 <View style={[styles.viewtext, { flex: 1, flexDirection: 'row', alignItems: 'center' }]}>
                   <Text >{item.expiry}</Text>
