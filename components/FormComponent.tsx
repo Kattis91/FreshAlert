@@ -22,6 +22,8 @@ type FormComponentProps = {
   addoredit: string;
   buttontext: string;
   buttonclick: () => void;
+  button2text?: string;
+  button2click?: () => void;
 };
 
 const FormComponent = ({
@@ -42,6 +44,8 @@ const FormComponent = ({
   addoredit,
   buttontext,
   buttonclick,
+  button2text,
+  button2click,
 }: FormComponentProps) => {
     const inputRef = useRef<TextInput>(null);
 
@@ -116,10 +120,20 @@ return (
       <Button
         title={ buttontext}
         color={Platform.OS === "ios" ? "white" : "#0A7763"}
-        onPress={ buttonclick}
-    />
-      </View>
+        onPress={ buttonclick }
+      />
+    </View>
 
+    { button2text && button2click &&
+    <View>
+      <Text style={{ textTransform: "uppercase", fontSize: 15, textAlign: "center", marginBottom: 25, marginTop: 30 }}>Or delete the item:</Text>
+        <Button
+          title={ button2text }
+          color="red"
+          onPress={ button2click }
+        />
+     </View>
+    }
   </View>
 
   );

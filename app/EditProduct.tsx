@@ -1,9 +1,7 @@
-import DropDownPickerComponent from "@/components/DropDownPicker";
-import { styles } from "@/styles/styles";
+import FormComponent from "@/components/FormComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
-import DatePicker from "react-native-date-picker";
+import { Alert, TextInput } from "react-native";
 
 
 type Product = {
@@ -184,72 +182,28 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={{ textTransform: "uppercase", fontSize: 25, textAlign: "center", marginBottom: 25 }}>Edit Product:</Text>
-
-      <Text style={styles.label}>Product Name:</Text>
-      <TextInput
-        style={styles.formInputs}
-        onChangeText={setProductName}
-        value={productName}
-        placeholder="Enter product name"
-        placeholderTextColor="black"
-      />
-
-      <Text style={styles.label}>Expiry Date:</Text>
-      <TextInput
-        style={styles.formInputs}
-        ref={inputRef}
-        onFocus={() => setOpenDate(true)}
-        value={expiryDate}
-        placeholder="Add expiry date"
-        placeholderTextColor="black"
-
-      />
-
-      <DatePicker
-        modal
-        open={openDate}
-        date={date}
-        mode="date"
-        onConfirm={(selectedDate) => {
-          setOpenDate(false);
-          setDate(selectedDate);
-          setExpiryDate(formatDate(selectedDate));
-          setDateChanged(true);
-          inputRef.current?.blur();
-        }}
-        onCancel={() => {
-          setOpenDate(false);
-          inputRef.current?.blur();
-        }}
-      />
-
-      <Text style={styles.label}>Category:</Text>
-      <DropDownPickerComponent
-        openCategory={openCategory}
-        categoryValue={categoryValue}
-        categories={categories}
-        setCategoryValue={setCategoryValue}
-        setOpenCategory={setOpenCategory}       
-      />
-
-      <View style={styles.button}>
-        <Button
-          title="EDIT"
-          color="white"
-          onPress={Edit}
-        />
-      </View>
-
-      <View>
-        <Text style={{ textTransform: "uppercase", fontSize: 25, textAlign: "center", marginBottom: 25 }}>Or delete the item:</Text>
-        <Button
-          title="Delete"
-          color="red"
-          onPress={removeValue}
-        />
-      </View>
-    </View>
+    
+    <FormComponent
+      productName={productName}
+      setProductName={setProductName}
+      expiryDate={expiryDate}
+      setExpiryDate={setExpiryDate}
+      date={date}
+      openDate={openDate}
+      setOpenDate={setOpenDate}
+      setDate={setDate}
+      setDateChanged={setDateChanged}
+      openCategory={openCategory}
+      categoryValue={categoryValue}
+      setCategoryValue={setCategoryValue}
+      categories={categories}
+      setOpenCategory={setOpenCategory}
+      addoredit="Edit Product"
+      buttontext="EDIT"
+      buttonclick={Edit} 
+      button2text="DELETE"
+      button2click={removeValue}
+    />
+    
   );
 }
