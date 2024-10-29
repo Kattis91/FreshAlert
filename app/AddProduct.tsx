@@ -1,7 +1,8 @@
 import FormComponent from "@/components/FormComponent";
 import useDateValidation from "@/hooks/useDateValidation";
+import useProductValidation from "@/hooks/useProductValidation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Alert } from "react-native";
 
 export default function AddProducts() {
@@ -41,80 +42,44 @@ export default function AddProducts() {
 
   useDateValidation(date, dateChanged);
 
+  const validateProduct = useProductValidation();
+
   async function addProduct() {
 
-    const trimmedName = productName.trim();
-
-    if (trimmedName.length === 0) {
-      Alert.alert("Product name cannot be empty");
+    const isValid = validateProduct(productName, expiryDate, categoryValue);
+    if (!isValid) {
+      console.log('Validation failed'); // Log validation failure
       return;
     }
 
-    if (trimmedName.length < 2 || trimmedName.length > 50) {
-      Alert.alert("Product name must be between 2 and 50 characters");
-      return;
-    }
+    const product: Product = {
+      id: new Date().getTime(),
+      title: productName,
+      name: productName,
+      expiry: expiryDate,
+      category: categoryValue,
+    };
 
-    const nameRegex = /^[a-zA-Z0-9\s]+$/;
+    try {
+      // Retrieve the current list of products from AsyncStorage
+      const storedList = await AsyncStorage.getItem("my-list");
+      const currentList = storedList ? JSON.parse(storedList) : [];
 
-    if (!nameRegex.test(productName.trim())) {
-      Alert.alert("Product name can only contain letters, numbers, and spaces");
-      return;
-    }
+      // Append the new product to the existing list
+      const newList = [...currentList, product];
 
-    if (!expiryDate) {
-      Alert.alert("Please select an expiry date");
-      return;
-    }
+      // Save the updated list back to AsyncStorage
+      await AsyncStorage.setItem("my-list", JSON.stringify(newList));
 
-    // Check if the expiry date is in the past
-    const selectedDate = new Date(expiryDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);    
+      Alert.alert("Product added:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
 
-    if (selectedDate < today) {
-      Alert.alert("The expiry date cannot be in the past.");
-      return;
-    }
+      setProductName("");
+      setExpiryDate("");
+      setCategoryValue(null);
 
-    if (!categoryValue) {
-      Alert.alert("Please select a category");
-      return;
-    }
-
-    if (productName && expiryDate && categoryValue) {
-
-      const product: Product = {
-        id: new Date().getTime(),
-        title: productName,
-        name: productName,
-        expiry: expiryDate,
-        category: categoryValue,
-      };
-
-      try {
-        // Retrieve the current list of products from AsyncStorage
-        const storedList = await AsyncStorage.getItem("my-list");
-        const currentList = storedList ? JSON.parse(storedList) : [];
-
-        // Append the new product to the existing list
-        const newList = [...currentList, product];
-
-        // Save the updated list back to AsyncStorage
-        await AsyncStorage.setItem("my-list", JSON.stringify(newList));
-
-        Alert.alert("Product added:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
-
-        setProductName("");
-        setExpiryDate("");
-        setCategoryValue(null);
-
-      } catch (error) {
-        console.error("Failed to add product", error);
-        Alert.alert("Failed to add product");
-      }
-    } else {
-      Alert.alert("Please ensure that all fields are filled out");
+    } catch (error) {
+      console.error("Failed to add product", error);
+      Alert.alert("Failed to add product");
     }
   }
 
@@ -141,4 +106,4 @@ export default function AddProducts() {
     />
 
   );
-}
+} 
