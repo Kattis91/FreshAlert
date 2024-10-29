@@ -84,7 +84,7 @@ export const styles = StyleSheet.create({
   },
   viewCon: {
     height: 120,
-    backgroundColor: 'transparent',
+    backgroundColor: '#ffffff',
     borderRadius: 8,
     borderColor: "#0A7763",
     borderWidth: 0.5,
@@ -98,8 +98,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    flex:1,
  },
   viewicon: {
+    width:'100%',
     height: 70,
     alignItems: 'center',
     justifyContent: 'center',

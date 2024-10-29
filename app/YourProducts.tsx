@@ -257,7 +257,7 @@ const getCategoryEmoji = (category: string | null) => {
                 <View style={styles.viewtext}>
                   <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1, flexShrink: 1 }}>{item.title}</Text></View>
 
-                <View style={styles.viewicon}><Text style={{ fontSize: 50 }}>{getCategoryEmoji(item.category)}</Text></View>
+                <View style={styles.viewicon}>{getCategoryEmoji(item.category)}</View>
 
                 <View style={[styles.viewtext, { flex: 1, flexDirection: 'row', alignItems: 'center' }]}>
                   <Text >{item.expiry}</Text>
