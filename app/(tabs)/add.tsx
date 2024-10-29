@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, View, Text } from 'react-native';
+import { StyleSheet, Image, Platform, View, Text, Button } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
@@ -15,7 +15,16 @@ export default function AddScreen() {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Add Product" component={AddProduct} />
+      <Stack.Screen name="Add Product" component={AddProduct}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <Button
+              title="Info"
+              onPress={() => navigation.navigate('Info')}
+            />
+          ),
+        })}
+      />
     </Stack.Navigator>
   );
 }
