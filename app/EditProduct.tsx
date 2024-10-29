@@ -1,8 +1,9 @@
 import FormComponent from "@/components/FormComponent";
 import useDateValidation from "@/hooks/useDateValidation";
+import useProductValidation from "@/hooks/useProductValidation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useRef, useState } from "react";
-import { Alert, TextInput } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 
 type Product = {
@@ -40,8 +41,6 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   const [openDate, setOpenDate] = useState(false);
   const [dateChanged, setDateChanged] = useState(false);
 
-  const inputRef = useRef<TextInput>(null);
-
   const categories = [
     { label: "Dairy", value: "dairy" },
     { label: "Meat", value: "meat" },
@@ -53,12 +52,9 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
     { label: "Prepared Foods", value: "prepared foods" },
     { label: "Spreads", value: "spreads" },
     { label: "Fresh Herbs", value: "fresh herbs" },
-    { label: "Frozen Foods", value: "frozen foods" }
+    { label: "Frozen Foods", value: "frozen foods" },
+    { label: "Other", value: "other" }
   ];
-
-  const formatDate = (date: Date) => {
-    return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
-  };
 
   useEffect(() => {
     console.log('Product prop:', product);
@@ -71,75 +67,41 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   }, [product]);
 
   useDateValidation(date, dateChanged);
+  const validateProduct = useProductValidation();
 
   async function Edit() {
-    const trimmedName = productName.trim();
 
-    if (trimmedName.length === 0) {
-      Alert.alert("Product name cannot be empty");
+    const isValid = validateProduct(productName, expiryDate, categoryValue);
+    if (!isValid) {
+      console.log('Validation failed'); // Log validation failure
       return;
     }
 
-    if (trimmedName.length < 2 || trimmedName.length > 50) {
-      Alert.alert("Product name must be between 2 and 50 characters");
-      return;
-    }
+    const updatedProduct: Product = {
+      ...product,
+      title: productName,
+      name: productName,
+      expiry: expiryDate,
+      category: categoryValue,
+    };
 
-    const nameRegex = /^[a-zA-Z0-9\s]+$/;
+    try {
+      const storedList = await AsyncStorage.getItem("my-list");
+      const currentList = storedList ? JSON.parse(storedList) : [];
+      const productIndex = currentList.findIndex((p: Product) => p.id === product.id);
 
-    if (!nameRegex.test(trimmedName)) {
-      Alert.alert("Product name can only contain letters, numbers, and spaces");
-      return;
-    }
+      if (productIndex !== -1) {
+        currentList[productIndex] = updatedProduct;
+        await AsyncStorage.setItem("my-list", JSON.stringify(currentList));
 
-    if (!expiryDate) {
-      Alert.alert("Please select an expiry date");
-      return;
-    }
+        Alert.alert("Product updated:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
 
-    const selectedDate = new Date(expiryDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (selectedDate < today) {
-      Alert.alert("The expiry date cannot be in the past.");
-      return;
-    }
-
-    if (!categoryValue) {
-      Alert.alert("Please select a category");
-      return;
-    }
-
-    if (productName && expiryDate && categoryValue) {
-      const updatedProduct: Product = {
-        ...product,
-        title: productName,
-        name: productName,
-        expiry: expiryDate,
-        category: categoryValue,
-      };
-
-      try {
-        const storedList = await AsyncStorage.getItem("my-list");
-        const currentList = storedList ? JSON.parse(storedList) : [];
-        const productIndex = currentList.findIndex((p: Product) => p.id === product.id);
-
-        if (productIndex !== -1) {
-          currentList[productIndex] = updatedProduct;
-          await AsyncStorage.setItem("my-list", JSON.stringify(currentList));
-
-          Alert.alert("Product updated:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
-
-        } else {
-          Alert.alert("Product not found in the list");
-        }
-      } catch (error) {
-        console.error("Failed to update product", error);
-        Alert.alert("Failed to update product");
+      } else {
+        Alert.alert("Product not found in the list");
       }
-    } else {
-      Alert.alert("Please ensure that all fields are filled out");
+    } catch (error) {
+      console.error("Failed to update product", error);
+      Alert.alert("Failed to update product");
     }
   }
 
@@ -154,14 +116,14 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       Alert.alert("Product removed:", `Product: ${product.name} \n Expiry date: ${product.expiry}`);
 
       navigation.navigate("Your Products");
-     
-    } catch(e) {
+
+    } catch (e) {
       console.error("Failed to remove item.", e);
     }
   }
 
   return (
-    
+
     <FormComponent
       productName={productName}
       setProductName={setProductName}
@@ -179,10 +141,10 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       setOpenCategory={setOpenCategory}
       addoredit="Edit Product"
       buttontext="EDIT"
-      buttonclick={Edit} 
+      buttonclick={Edit}
       button2text="DELETE"
       button2click={removeValue}
     />
-    
+
   );
 }
