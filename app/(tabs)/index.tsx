@@ -1,9 +1,5 @@
-import { Image, StyleSheet, Platform, View, Text, ActivityIndicator, Button } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Button } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import StartScreen from '../StartScreen';
 import GetStartedScreen from '../GetStartedScreen';
@@ -51,7 +47,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <Stack.Navigator>
+  <Stack.Navigator>
       {hasProducts ? (
         <Stack.Screen name="Your Products" component={YourProducts}
           options={({ navigation }) => ({
