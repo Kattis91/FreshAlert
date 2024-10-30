@@ -43,6 +43,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   const [openDate, setOpenDate] = useState(false);
   const [dateChanged, setDateChanged] = useState(false);
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   const categories = [
     { label: "Dairy", value: "dairy" },
     { label: "Meat", value: "meat" },
@@ -132,6 +134,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
     <SafeAreaView style={{ flex: 1, margin: 8 }}>
 
     <FormComponent
+      product={product}
       productName={productName}
       setProductName={setProductName}
       expiryDate={expiryDate}
@@ -151,6 +154,9 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       buttonclick={Edit}
       button2text="DELETE"
       button2click={removeValue}
+      modalOpen={modalOpen}
+      setModalOpen={setModalOpen}
+      navigation={navigation}
     />
 </SafeAreaView>
 </LinearGradient>

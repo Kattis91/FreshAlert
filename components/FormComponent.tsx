@@ -1,10 +1,21 @@
-import { Button, Platform, Text, TextInput, View } from "react-native";
+import { Alert, Button, Platform, Text, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPickerComponent from "./DropDownPicker";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { styles } from "@/styles/styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import DeleteModal from "./deleteModal";
+
+type Product = {
+  id: number;
+  title: string;
+  name: string;
+  expiry: string;
+  category: string | null;
+};
 
 type FormComponentProps = {
+  product: Product | null;
   productName: string;
   setProductName: (name: string) => void;
   expiryDate: string;
@@ -24,9 +35,13 @@ type FormComponentProps = {
   buttonclick: () => void;
   button2text?: string;
   button2click?: () => void;
+  modalOpen: boolean;
+  setModalOpen: (open: boolean) => void;
+  navigation: any;
 };
 
 const FormComponent = ({
+  product,
   productName,
   setProductName,
   expiryDate,
@@ -46,12 +61,41 @@ const FormComponent = ({
   buttonclick,
   button2text,
   button2click,
+  navigation,
+  modalOpen,
+  setModalOpen,
 }: FormComponentProps) => {
     const inputRef = useRef<TextInput>(null);
 
 const formatDate = (date: Date) => {
   return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
 };
+
+async function removeValue() {
+  try {
+    const storedList = await AsyncStorage.getItem('my-list');
+    const currentList = storedList ? JSON.parse(storedList) : [];
+
+    const updatedList = currentList.filter((p: Product) => p.id !== product?.id);
+    await AsyncStorage.setItem('my-list', JSON.stringify(updatedList));
+
+    Alert.alert('Product removed:', `Product: ${product?.name} \n Expiry date: ${product?.expiry}`);
+
+    navigation.navigate('Your Products');
+  } catch (e) {
+    console.error('Failed to remove item.', e);
+  }
+}
+
+useEffect(() => {
+  console.log('Product prop:', product);
+  if (product) {
+    setProductName(product.name);
+    setCategoryValue(product.category);
+    setExpiryDate(product.expiry);
+    setDate(new Date(product.expiry || Date.now()));
+  }
+}, [product]);
 
 return (
 
@@ -130,8 +174,8 @@ return (
         <Button
           title={ button2text }
           color="red"
-          onPress={ button2click }
-        />
+          onPress={() => setModalOpen(true)} />
+        <DeleteModal visible={modalOpen} onClose={() => setModalOpen(false)} onDelete={removeValue} />
      </View>
     }
   </View>
