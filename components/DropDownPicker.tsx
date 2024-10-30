@@ -1,5 +1,4 @@
 import { styles } from "@/styles/styles";
-import { StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 type DropDownPickerProps = {
