@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   Text,
@@ -7,75 +7,34 @@ import {
   ScrollView,
   Modal,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Trash() {
-  const products = [
-    {
-      name: "Milk",
-      expiryDate: "2024-08-20",
-      dateAdded: "2024-08-10",
-      category: "Dairy",
-    },
-    {
-      name: "Cheddar Cheese",
-      expiryDate: "2024-09-05",
-      dateAdded: "2024-08-12",
-      category: "Dairy",
-    },
-    {
-      name: "Chicken Breast",
-      expiryDate: "2024-10-15",
-      dateAdded: "2024-10-14",
-      category: "Meat",
-    },
-    {
-      name: "Broccoli",
-      expiryDate: "2024-10-17",
-      dateAdded: "2024-10-13",
-      category: "Vegetables",
-    },
-    {
-      name: "Apples",
-      expiryDate: "2024-10-30",
-      dateAdded: "2024-10-08",
-      category: "Fruits",
-    },
-    {
-      name: "Greek Yogurt",
-      expiryDate: "2024-09-01",
-      dateAdded: "2024-08-11",
-      category: "Dairy",
-    },
-    {
-      name: "Spinach",
-      expiryDate: "2024-10-16",
-      dateAdded: "2024-10-09",
-      category: "Vegetables",
-    },
-    {
-      name: "Ground Beef",
-      expiryDate: "2024-10-22",
-      dateAdded: "2024-10-15",
-      category: "Meat",
-    },
-    {
-      name: "Orange Juice",
-      expiryDate: "2024-10-25",
-      dateAdded: "2024-10-12",
-      category: "Beverages",
-    },
-    {
-      name: "Butter",
-      expiryDate: "2024-12-15",
-      dateAdded: "2024-10-05",
-      category: "Dairy",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+//   let test = [
+//     {
+//     id: new Date().getTime(),
+//     title: "productName",
+//     name: "productName",
+//     expiry: "2024-10-27",
+//     category: "fruits",
+//   }
+// ]
+//   AsyncStorage.setItem("my-list", JSON.stringify(test))
+
+  const getProducts = async () => {
+    const storedList = await AsyncStorage.getItem("my-list");
+    setProducts(storedList ? JSON.parse(storedList) : []);
+  };
 
   const expiredProducts = products.filter(
-    (item) => new Date(item.expiryDate) < new Date()
+    (item) => new Date(item.expiry) < new Date()
   );
-  console.log(expiredProducts);
 
   return expiredProducts.length > 0 ? (
     <ScrollView>
@@ -88,10 +47,10 @@ export default function Trash() {
             margin: 15,
           }}
         >
-          Your expired products
+          Expired Products
         </Text>
         {expiredProducts.map((item, i) => (
-          <ExpiredProductCard product={item} key={i} />
+          <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
         ))}
       </View>
     </ScrollView>
@@ -110,7 +69,6 @@ const EmptyBin = () => {
         backgroundColor: "#f8edeb",
       }}
     >
-      {/* <Text style={{ fontSize: 50, color: "#003366" }}>FreshAlert</Text> */}
       <Text style={{ fontSize: 28, color: "#003366", textAlign: "center" }}>
         You do not have any expired products right now.
       </Text>
@@ -118,8 +76,52 @@ const EmptyBin = () => {
   );
 };
 
-const ExpiredProductCard = ({ product }) => {
+const ExpiredProductCard = ({ product, getProducts }) => {
   const [modalOpen, setModalOpen] = useState(false);
+
+  async function removeValue() {
+    try {
+      const storedList = await AsyncStorage.getItem("my-list");
+      const currentList = storedList ? JSON.parse(storedList) : [];
+
+      const updatedList = currentList.filter((p) => p.id !== product.id);
+      await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
+
+      getProducts();
+      setModalOpen(false);
+    } catch (e) {
+      console.error("Failed to remove item.", e);
+    }
+  }
+  const getCategoryImage = (category) => {
+    switch (category) {
+      case "dairy":
+        return require('../assets/images/dairy-products.png');
+      case "meat":
+        return require('../assets/images/beef.png');
+      case "seafood":
+        return require('../assets/images/seafood.png');
+      case "fruits":
+        return require('../assets/images/fruits.png');
+      case "vegetables":
+        return require('../assets/images/vegetable.png');
+      case "condiments":
+        return require('../assets/images/condiment-ingredient.png');
+      case "beverages":
+        return require('../assets/images/beverages.png');
+      case "prepared foods":
+        return require('../assets/images/meal.png');
+      case "spreads":
+        return require('../assets/images/toast.png');
+      case "fresh herbs":
+        return require('../assets/images/herbs.png');
+      case "frozen foods":
+        return require('../assets/images/frozen-food.png');
+        default:
+          return "❓";
+    }
+  };
+
   return (
     <View
       style={{
@@ -130,34 +132,19 @@ const ExpiredProductCard = ({ product }) => {
       }}
     >
       <View style={{ width: "30%", height: 100 }}>
+        
         <Image
-          source={require("../assets/images/favicon.png")}
-          width={"100%"}
-          height={"100%"}
+          source={getCategoryImage(product.category)} 
+          style={{ width: "80%", height: "80%" }} 
+          resizeMode="cover" 
         />
       </View>
       <View>
         <Text style={{ color: "#003366", fontSize: 20 }}>{product.name}</Text>
         <Text style={{ color: "#003366", fontSize: 20 }}>
-          {product.expiryDate}
+          Expiry Date: {product.expiry}
         </Text>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#0A7763",
-              height: 35,
-              justifyContent: "center",
-              minWidth: 80,
-              maxWidth: 100,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 10,
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
-              Edit
-            </Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={{
               backgroundColor: "#900101",
@@ -167,6 +154,7 @@ const ExpiredProductCard = ({ product }) => {
               maxWidth: 100,
               marginTop: 5,
               marginBottom: 5,
+              borderRadius: 20,
             }}
             onPress={() => setModalOpen(true)}
           >
@@ -219,11 +207,11 @@ const ExpiredProductCard = ({ product }) => {
                   marginTop: 5,
                   marginBottom: 5,
                   marginRight: 10,
+                  borderRadius: 20,
                 }}
+                onPress={removeValue}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, textAlign: "center" }}
-                >
+                <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
                   Delete
                 </Text>
               </TouchableOpacity>
@@ -236,12 +224,11 @@ const ExpiredProductCard = ({ product }) => {
                   maxWidth: 100,
                   marginTop: 5,
                   marginBottom: 5,
+                  borderRadius: 20,
                 }}
                 onPress={() => setModalOpen(false)}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, textAlign: "center" }}
-                >
+                <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
                   Cancel
                 </Text>
               </TouchableOpacity>
