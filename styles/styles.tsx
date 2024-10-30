@@ -3,15 +3,16 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
+    justifyContent:"center"
   },
   label: {
     textTransform: "uppercase",
     fontSize: 16,
     color: "#6b7a82",
-    marginBottom: 6,
+    marginBottom: 10,
+    marginLeft: 4,
     alignSelf: "flex-start",
     fontWeight: "500",
     letterSpacing: 0.5,
@@ -31,7 +32,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   dropdown: {
     borderColor: "#c4d2d9",
@@ -153,10 +154,10 @@ export const styles = StyleSheet.create({
   },
   emptyText: {
     textAlign: 'center',
-    fontSize: 16,
-    color: '#0A7763',
-    fontWeight: 'bold',
-    marginVertical: 20,
+    fontSize: 20,
+    color: '#534b52',
+    fontWeight: 'regular',
+    marginVertical: 30,
   },
   viewCon: {
     height: 140,
@@ -215,6 +216,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     textAlign: 'center', 
-    opacity: 0.9, 
+    opacity: 10, 
   },
 });
