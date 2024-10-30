@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Image,
   Text,
@@ -6,74 +6,39 @@ import {
   View,
   ScrollView,
   Modal,
+  Button
 } from "react-native";
+import { styles } from "@/styles/styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "expo-router";
 
 export default function Trash() {
-  const products = [
-    {
-      name: "Milk",
-      expiryDate: "2024-08-20",
-      dateAdded: "2024-08-10",
-      category: "Dairy",
-    },
-    {
-      name: "Cheddar Cheese",
-      expiryDate: "2024-09-05",
-      dateAdded: "2024-08-12",
-      category: "Dairy",
-    },
-    {
-      name: "Chicken Breast",
-      expiryDate: "2024-10-15",
-      dateAdded: "2024-10-14",
-      category: "Meat",
-    },
-    {
-      name: "Broccoli",
-      expiryDate: "2024-10-17",
-      dateAdded: "2024-10-13",
-      category: "Vegetables",
-    },
-    {
-      name: "Apples",
-      expiryDate: "2024-10-30",
-      dateAdded: "2024-10-08",
-      category: "Fruits",
-    },
-    {
-      name: "Greek Yogurt",
-      expiryDate: "2024-09-01",
-      dateAdded: "2024-08-11",
-      category: "Dairy",
-    },
-    {
-      name: "Spinach",
-      expiryDate: "2024-10-16",
-      dateAdded: "2024-10-09",
-      category: "Vegetables",
-    },
-    {
-      name: "Ground Beef",
-      expiryDate: "2024-10-22",
-      dateAdded: "2024-10-15",
-      category: "Meat",
-    },
-    {
-      name: "Orange Juice",
-      expiryDate: "2024-10-25",
-      dateAdded: "2024-10-12",
-      category: "Beverages",
-    },
-    {
-      name: "Butter",
-      expiryDate: "2024-12-15",
-      dateAdded: "2024-10-05",
-      category: "Dairy",
-    },
-  ];
+  const [products, setProducts] = useState([])
+  
+  useEffect(() => {
+    getProducts()
+  }, [])
+
+  // let test = [{
+  //   id: new Date().getTime(),
+  //   title: "productName",
+  //   name: "productName",
+  //   expiry: "2024-10-27",
+  //   category: "categoryValue",
+  // }]
+
+  // AsyncStorage.setItem("my-list", JSON.stringify(test))
+
+  const getProducts = async () => {
+    const storedList = await AsyncStorage.getItem("my-list");
+
+    setProducts(storedList ? JSON.parse(storedList) : [])
+  }
+
+  console.log(products)
 
   const expiredProducts = products.filter(
-    (item) => new Date(item.expiryDate) < new Date()
+    (item) => new Date(item.expiry) < new Date()
   );
   console.log(expiredProducts);
 
@@ -91,7 +56,7 @@ export default function Trash() {
           Your expired products
         </Text>
         {expiredProducts.map((item, i) => (
-          <ExpiredProductCard product={item} key={i} />
+          <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
         ))}
       </View>
     </ScrollView>
@@ -118,8 +83,23 @@ const EmptyBin = () => {
   );
 };
 
-const ExpiredProductCard = ({ product }) => {
+const ExpiredProductCard = ({ product, getProducts }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  async function removeValue() {
+    try {
+      const storedList = await AsyncStorage.getItem("my-list");
+      const currentList = storedList ? JSON.parse(storedList) : [];
+
+      const updatedList = currentList.filter((p: Product) => p.id !== product.id);
+      await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
+
+      getProducts(); // Reload products
+      setModalOpen(false); // Close modal
+
+    } catch (e) {
+      console.error("Failed to remove item.", e);
+    }
+  }
   return (
     <View
       style={{
@@ -139,25 +119,9 @@ const ExpiredProductCard = ({ product }) => {
       <View>
         <Text style={{ color: "#003366", fontSize: 20 }}>{product.name}</Text>
         <Text style={{ color: "#003366", fontSize: 20 }}>
-          {product.expiryDate}
+          {product.expiry}
         </Text>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#0A7763",
-              height: 35,
-              justifyContent: "center",
-              minWidth: 80,
-              maxWidth: 100,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 10,
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
-              Edit
-            </Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={{
               backgroundColor: "#900101",
@@ -167,6 +131,7 @@ const ExpiredProductCard = ({ product }) => {
               maxWidth: 100,
               marginTop: 5,
               marginBottom: 5,
+              borderRadius: 20
             }}
             onPress={() => setModalOpen(true)}
           >
@@ -175,6 +140,13 @@ const ExpiredProductCard = ({ product }) => {
             </Text>
           </TouchableOpacity>
         </View>
+        {/* <View style={{...styles.button, backgroundColor: "#900101"}}>
+          <Button
+            title="Delete"
+            color="white"
+            onPress={() => setModalOpen(true)}
+          />
+        </View> */}
       </View>
       <Modal
         animationType="slide"
@@ -219,6 +191,10 @@ const ExpiredProductCard = ({ product }) => {
                   marginTop: 5,
                   marginBottom: 5,
                   marginRight: 10,
+                  borderRadius: 20
+                }}
+                onPress={() => {
+                  removeValue()
                 }}
               >
                 <Text
@@ -236,6 +212,7 @@ const ExpiredProductCard = ({ product }) => {
                   maxWidth: 100,
                   marginTop: 5,
                   marginBottom: 5,
+                  borderRadius: 20
                 }}
                 onPress={() => setModalOpen(false)}
               >
