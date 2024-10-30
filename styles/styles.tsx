@@ -218,4 +218,15 @@ export const styles = StyleSheet.create({
     textAlign: 'center', 
     opacity: 10, 
   },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "transparent",
+    zIndex: 1000,
+  },
+  
+  
 });

@@ -1,11 +1,12 @@
 import FormComponent from "@/components/FormComponent";
 import useDateValidation from "@/hooks/useDateValidation";
 import useProductValidation from "@/hooks/useProductValidation";
+import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, TouchableWithoutFeedback, View } from "react-native";
 
-export default function AddProducts( { navigation } ) {
+export default function AddProducts({ navigation }) {
 
   type Product = {
     id: number;
@@ -89,25 +90,36 @@ export default function AddProducts( { navigation } ) {
 
   return (
 
-    <FormComponent
-      productName={productName}
-      setProductName={setProductName}
-      expiryDate={expiryDate}
-      setExpiryDate={setExpiryDate}
-      date={date}
-      openDate={openDate}
-      setOpenDate={setOpenDate}
-      setDate={setDate}
-      setDateChanged={setDateChanged}
-      openCategory={openCategory}
-      categoryValue={categoryValue}
-      setCategoryValue={setCategoryValue}
-      categories={categories}
-      setOpenCategory={setOpenCategory}
-      addoredit="Add Product"
-      buttontext="ADD"
-      buttonclick={addProduct}
-    />
+    <View style={{ flex: 1 }}>
+      {/* Conditional Overlay */}
+      {openCategory && (
+        <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
+          <View style={styles.overlay} />
+        </TouchableWithoutFeedback>
+      )}
+
+      <View style={{ flex: 1 }}>
+        <FormComponent
+          productName={productName}
+          setProductName={setProductName}
+          expiryDate={expiryDate}
+          setExpiryDate={setExpiryDate}
+          date={date}
+          openDate={openDate}
+          setOpenDate={setOpenDate}
+          setDate={setDate}
+          setDateChanged={setDateChanged}
+          openCategory={openCategory}
+          categoryValue={categoryValue}
+          setCategoryValue={setCategoryValue}
+          categories={categories}
+          setOpenCategory={setOpenCategory}
+          addoredit="Add Product"
+          buttontext="ADD"
+          buttonclick={addProduct}
+        />
+      </View>
+    </View>
 
   );
 } 
