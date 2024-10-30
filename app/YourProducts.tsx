@@ -177,7 +177,7 @@ export default function YourProducts({ navigation }) {
 
   return (
     <LinearGradient
-    colors={['#b8dbd9', '#e3f2fd', '#ffe8d6', '#e0ddcf']} 
+    colors={['#FBFFF3', '#FCE4D3', '#ffe8d6', '#f4f9e9']} 
     style={{flex: 1 }} >
 
 
@@ -188,7 +188,7 @@ export default function YourProducts({ navigation }) {
           source={require('../assets/images/fridge.gif')}
           style={{ width: 45, height: 45, marginRight: 8 }}
         />
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Fresh Alert</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>FreshAlert</Text>
       </View>
 
       <TextInput
@@ -235,7 +235,7 @@ export default function YourProducts({ navigation }) {
           onPress={showExpiringIn7Days}
         >
           <View>
-            <Text>7 Days</Text>
+            <Text>4-7 Days</Text>
           </View>
         </TouchableHighlight>
 
@@ -253,7 +253,7 @@ export default function YourProducts({ navigation }) {
 
 
       {productData.length === 0 ? (
-  <Text style={styles.emptyText}>Nuk ka produkte</Text>
+  <Text style={styles.emptyText}>- You Have No Products -</Text>
 ) : (
   <FlatList
     key={numColumns}
@@ -286,15 +286,6 @@ export default function YourProducts({ navigation }) {
     numColumns={numColumns}
   />
 )}
-
-<Button 
-  title="Fshij të gjitha produktet" 
-  onPress={async () => {
-    await AsyncStorage.removeItem("my-list");
-    getProducts();
-  }}
-  color="#0A7763"
-/>
 
 
     </SafeAreaView>

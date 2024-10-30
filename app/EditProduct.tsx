@@ -3,7 +3,8 @@ import useDateValidation from "@/hooks/useDateValidation";
 import useProductValidation from "@/hooks/useProductValidation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, SafeAreaView } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 
 
 type Product = {
@@ -124,6 +125,11 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   return (
 
+    <LinearGradient
+    colors={['#FBFFF3', '#FCE4D3', '#ffe8d6', '#f4f9e9']} 
+    style={{flex: 1 }} >
+    <SafeAreaView style={{ flex: 1, margin: 8 }}>
+
     <FormComponent
       productName={productName}
       setProductName={setProductName}
@@ -145,6 +151,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       button2text="DELETE"
       button2click={removeValue}
     />
-
+</SafeAreaView>
+</LinearGradient>
   );
 }
