@@ -39,7 +39,6 @@ export default function Trash() {
 
   const expiredProducts = products.filter(
     (item) => new Date(item.expiry) < new Date()
-    (item) => new Date(item.expiry) < new Date()
   );
 
   return expiredProducts.length > 0 ? (
@@ -56,7 +55,6 @@ export default function Trash() {
           Expired Products
         </Text>
         {expiredProducts.map((item, i) => (
-          <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
           <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
         ))}
       </View>
@@ -83,7 +81,6 @@ const EmptyBin = () => {
   );
 };
 
-const ExpiredProductCard = ({ product, getProducts }) => {
 const ExpiredProductCard = ({ product, getProducts }) => {
   const [modalOpen, setModalOpen] = useState(false);
   async function removeValue() {
