@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   Text,
@@ -6,11 +6,9 @@ import {
   View,
   ScrollView,
   Modal,
-  Button
 } from "react-native";
-import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "expo-router";
+import DeleteModal from "@/components/deleteModal";
 
 export default function Trash() {
   const [products, setProducts] = useState([])
@@ -82,6 +80,45 @@ const EmptyBin = () => {
 };
 
 const ExpiredProductCard = ({ product, getProducts }) => {
+
+  type Product = {
+    id: number;
+    title: string;
+    name: string;
+    expiry: string;
+    category: string | null;
+    daysDifference: number;
+  };
+
+  const getCategoryEmoji = (category: string | null) => {
+    switch (category) {
+      case "dairy":
+        return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Dairy"/>;
+      case "meat":
+        return <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Meat" />;
+      case "seafood":
+        return <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Seafood" />;
+      case "fruits":
+        return <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Fruits" />;
+      case "vegetables":
+        return <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Vegetables" />;
+      case "condiments":
+        return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Condiments" />;
+      case "beverages":
+        return <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Beverages"/>;
+      case "prepared foods":
+        return <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Prepared Foods"/>;
+      case "spreads":
+        return <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Spreads"/>;
+      case "fresh herbs":
+        return <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Fresh Herbs"/>;
+      case "frozen foods":
+        return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Frozen Foods" />;
+      default:
+        return "❓";
+    }
+  };
+  
   const [modalOpen, setModalOpen] = useState(false);
   async function removeValue() {
     try {
@@ -109,11 +146,7 @@ const ExpiredProductCard = ({ product, getProducts }) => {
     >
       <View style={{ width: "30%", height: 100 }}>
         
-        <Image
-          source={getCategoryImage(product.category)} 
-          style={{ width: "80%", height: "80%" }} 
-          resizeMode="cover" 
-        />
+      {getCategoryEmoji(product.category)}
       </View>
       <View>
         <Text style={{ color: "#003366", fontSize: 20 }}>{product.name}</Text>
@@ -147,81 +180,7 @@ const ExpiredProductCard = ({ product, getProducts }) => {
           />
         </View> */}
       </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalOpen}
-        onRequestClose={() => setModalOpen(false)}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              alignSelf: "center",
-              backgroundColor: "white",
-              borderRadius: 8,
-              height: 200,
-              width: "80%",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 25,
-                color: "#003366",
-              }}
-            >
-              Are you sure you want to delete this product?
-            </Text>
-            <View style={{ flexDirection: "row", margin: 15 }}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#900101",
-                  height: 35,
-                  justifyContent: "center",
-                  minWidth: 80,
-                  maxWidth: 100,
-                  marginTop: 5,
-                  marginBottom: 5,
-                  marginRight: 10,
-                  borderRadius: 20
-                }}
-                onPress={() => {
-                  removeValue()
-                }}
-                onPress={removeValue}
-              >
-                <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
-                  Delete
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#0A7763",
-                  height: 35,
-                  justifyContent: "center",
-                  minWidth: 80,
-                  maxWidth: 100,
-                  marginTop: 5,
-                  marginBottom: 5,
-                  borderRadius: 20
-                }}
-                onPress={() => setModalOpen(false)}
-              >
-                <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
-                  Cancel
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <DeleteModal visible={modalOpen} onClose={() => setModalOpen(false)} onDelete={removeValue} />
     </View>
   );
 };
