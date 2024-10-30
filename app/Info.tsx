@@ -8,9 +8,9 @@ import { styles } from '@/styles/styles';
 export default function Info({ navigation }) {
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", paddingHorizontal: 10, paddingVertical: 10, backgroundColor: "#eff7f6" }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", paddingHorizontal: 10, paddingVertical: 10, backgroundColor: "#eee2df" }}>
       <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 25 }}>
-        <Text style={{ textAlign: "center", fontSize: 30, color: "#534b52", paddingVertical: 15 }}>
+        <Text style={{ textAlign: "center", fontSize: 30, color: "#5a2a27", paddingVertical: 15 }}>
           FreshAlert
         </Text>
 

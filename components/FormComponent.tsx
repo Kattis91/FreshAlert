@@ -1,4 +1,4 @@
-import { Alert, Button, Platform, Text, TextInput, View } from "react-native";
+import { Alert, Button, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPickerComponent from "./DropDownPicker";
 import { useEffect, useRef } from "react";
@@ -180,14 +180,41 @@ return (
     </View>
 
     { button2text && button2click &&
-    <View>
-      <Text style={{ textTransform: "uppercase", fontSize: 15, textAlign: "center", marginBottom: 25, marginTop: 30 }}>Or delete the item:</Text>
-        <Button
-          title={ button2text }
-          color="red"
-          onPress={() => setModalOpen(true)} />
-        <DeleteModal visible={modalOpen} onClose={() => setModalOpen(false)} onDelete={removeValue} />
-     </View>
+      <View style={{ alignItems: "center" }}>
+      <Text
+        style={{
+          textTransform: "uppercase",
+          fontSize: 15,
+          textAlign: "center",
+          marginBottom: 25,
+          marginTop: 20,
+        }}
+      >
+        Or delete the item:
+      </Text>
+      
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#900101", 
+          padding: 15, 
+          borderRadius: 30, 
+          alignItems: "center",
+          width: "80%", 
+          elevation: 3, //(Just for Android)
+        }}
+        onPress={() => setModalOpen(true)}
+      >
+        <Text style={{ color: "white", fontSize: 16 }}>
+          {button2text}
+        </Text>
+      </TouchableOpacity>
+
+      <DeleteModal
+        visible={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onDelete={removeValue}
+      />
+    </View>
     }
   </View>
 

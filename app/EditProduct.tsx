@@ -141,7 +141,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   return (
 
     <LinearGradient
-    colors={['#FBFFF3', '#FCE4D3', '#ffe8d6', '#f4f9e9']} 
+    colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']} 
     style={{flex: 1 }} >
     <SafeAreaView style={{ flex: 1, margin: 8 }}>
 
@@ -162,7 +162,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       categories={categories}
       setOpenCategory={setOpenCategory}
       addoredit="Edit Product"
-      buttontext="EDIT"
+      buttontext="SAVE"
       buttonclick={Edit}
       button2text="DELETE"
       button2click={removeValue}
