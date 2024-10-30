@@ -14,8 +14,13 @@ export default function Trash() {
   const [products, setProducts] = useState([])
   
   useEffect(() => {
-    getProducts()
-  }, [])
+    getProducts();
+    const interval = setInterval(() => {
+      checkExpiredProducts();
+    }, 60000); // Check every minute
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   // let test = [{
   //   id: new Date().getTime(),
@@ -35,8 +40,14 @@ export default function Trash() {
 
   console.log(products)
 
+  const resetTime = (date: Date) => {
+      const newDate = new Date(date);
+      newDate.setHours(0, 0, 0, 0);
+      return newDate;
+    };
+
   const expiredProducts = products.filter(
-    (item) => new Date(item.expiry) < new Date()
+    (item) => resetTime(new Date(item.expiry)) < resetTime(new Date())
   );
 
   return expiredProducts.length > 0 ? (
