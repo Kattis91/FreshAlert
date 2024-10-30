@@ -39,8 +39,8 @@ export default function Trash() {
 
   const expiredProducts = products.filter(
     (item) => new Date(item.expiry) < new Date()
+    (item) => new Date(item.expiry) < new Date()
   );
-  console.log(expiredProducts);
 
   return expiredProducts.length > 0 ? (
     <ScrollView>
@@ -53,9 +53,10 @@ export default function Trash() {
             margin: 15,
           }}
         >
-          Your expired products
+          Expired Products
         </Text>
         {expiredProducts.map((item, i) => (
+          <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
           <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
         ))}
       </View>
@@ -75,7 +76,6 @@ const EmptyBin = () => {
         backgroundColor: "#f8edeb",
       }}
     >
-      {/* <Text style={{ fontSize: 50, color: "#003366" }}>FreshAlert</Text> */}
       <Text style={{ fontSize: 28, color: "#003366", textAlign: "center" }}>
         You do not have any expired products right now.
       </Text>
@@ -83,6 +83,7 @@ const EmptyBin = () => {
   );
 };
 
+const ExpiredProductCard = ({ product, getProducts }) => {
 const ExpiredProductCard = ({ product, getProducts }) => {
   const [modalOpen, setModalOpen] = useState(false);
   async function removeValue() {
@@ -110,10 +111,11 @@ const ExpiredProductCard = ({ product, getProducts }) => {
       }}
     >
       <View style={{ width: "30%", height: 100 }}>
+        
         <Image
-          source={require("../assets/images/favicon.png")}
-          width={"100%"}
-          height={"100%"}
+          source={getCategoryImage(product.category)} 
+          style={{ width: "80%", height: "80%" }} 
+          resizeMode="cover" 
         />
       </View>
       <View>
@@ -196,10 +198,9 @@ const ExpiredProductCard = ({ product, getProducts }) => {
                 onPress={() => {
                   removeValue()
                 }}
+                onPress={removeValue}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, textAlign: "center" }}
-                >
+                <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
                   Delete
                 </Text>
               </TouchableOpacity>
@@ -216,9 +217,7 @@ const ExpiredProductCard = ({ product, getProducts }) => {
                 }}
                 onPress={() => setModalOpen(false)}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, textAlign: "center" }}
-                >
+                <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
                   Cancel
                 </Text>
               </TouchableOpacity>
