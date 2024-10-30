@@ -125,44 +125,34 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* Conditional Overlay */}
-      {openCategory && (
-        <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
-          <View style={styles.overlay} />
-        </TouchableWithoutFeedback>
-      )}
-  
-      <LinearGradient
-        colors={['#FBFFF3', '#FCE4D3', '#ffe8d6', '#f4f9e9']}
-        style={{ flex: 1 }}
-      >
-        <SafeAreaView style={{ flex: 1, margin: 8 }}>
-          <View style={{ flex: 1 }}>
-            <FormComponent
-              productName={productName}
-              setProductName={setProductName}
-              expiryDate={expiryDate}
-              setExpiryDate={setExpiryDate}
-              date={date}
-              openDate={openDate}
-              setOpenDate={setOpenDate}
-              setDate={setDate}
-              setDateChanged={setDateChanged}
-              openCategory={openCategory}
-              categoryValue={categoryValue}
-              setCategoryValue={setCategoryValue}
-              categories={categories}
-              setOpenCategory={setOpenCategory}
-              addoredit="Edit Product"
-              buttontext="EDIT"
-              buttonclick={Edit}
-              button2text="DELETE"
-              button2click={removeValue}
-            />
-          </View>
-        </SafeAreaView>
-      </LinearGradient>
-    </View>
+
+    <LinearGradient
+    colors={['#FBFFF3', '#FCE4D3', '#ffe8d6', '#f4f9e9']} 
+    style={{flex: 1 }} >
+    <SafeAreaView style={{ flex: 1, margin: 8 }}>
+
+    <FormComponent
+      productName={productName}
+      setProductName={setProductName}
+      expiryDate={expiryDate}
+      setExpiryDate={setExpiryDate}
+      date={date}
+      openDate={openDate}
+      setOpenDate={setOpenDate}
+      setDate={setDate}
+      setDateChanged={setDateChanged}
+      openCategory={openCategory}
+      categoryValue={categoryValue}
+      setCategoryValue={setCategoryValue}
+      categories={categories}
+      setOpenCategory={setOpenCategory}
+      addoredit="Edit Product"
+      buttontext="EDIT"
+      buttonclick={Edit}
+      button2text="DELETE"
+      button2click={removeValue}
+    />
+</SafeAreaView>
+</LinearGradient>
   );
 }
