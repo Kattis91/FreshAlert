@@ -79,9 +79,20 @@ async function removeValue() {
     const updatedList = currentList.filter((p: Product) => p.id !== product?.id);
     await AsyncStorage.setItem('my-list', JSON.stringify(updatedList));
 
-    Alert.alert('Product removed:', `Product: ${product?.name} \n Expiry date: ${product?.expiry}`);
-
-    navigation.navigate('Your Products');
+      Alert.alert(
+        "Product removed:",
+        `Product: ${product?.name} \n Expiry date: ${product?.expiry}`,
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              console.log("OK pressed");
+              navigation.navigate("Your Products");
+            }
+          }
+        ]
+      );
+      
   } catch (e) {
     console.error('Failed to remove item.', e);
   }

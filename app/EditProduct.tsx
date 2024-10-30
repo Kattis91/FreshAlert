@@ -98,7 +98,19 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         currentList[productIndex] = updatedProduct;
         await AsyncStorage.setItem("my-list", JSON.stringify(currentList));
 
-        Alert.alert("Product updated:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
+        Alert.alert(
+          "Product updated:",
+          `Product: ${productName} \n Expiry date: ${expiryDate}`,
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                console.log("OK pressed");
+                navigation.navigate("Your Products");
+              }
+            }
+          ]
+        );
 
       } else {
         Alert.alert("Product not found in the list");
