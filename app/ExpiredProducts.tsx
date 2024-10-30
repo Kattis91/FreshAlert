@@ -15,11 +15,6 @@ export default function Trash() {
   
   useEffect(() => {
     getProducts();
-    const interval = setInterval(() => {
-      checkExpiredProducts();
-    }, 60000); // Check every minute
-
-    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   // let test = [{
