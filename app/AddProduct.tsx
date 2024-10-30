@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import { Alert } from "react-native";
 
-export default function AddProducts() {
+export default function AddProducts( { navigation } ) {
 
   type Product = {
     id: number;
@@ -76,6 +76,10 @@ export default function AddProducts() {
       setProductName("");
       setExpiryDate("");
       setCategoryValue(null);
+
+      if (newList.length === 1) {
+        navigation.navigate('Home');
+      }
 
     } catch (error) {
       console.error("Failed to add product", error);

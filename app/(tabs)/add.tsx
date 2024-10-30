@@ -8,6 +8,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddProduct from '../AddProduct';
+import Info from '../Info';
 
 export default function AddScreen() {
 
@@ -25,6 +26,18 @@ export default function AddScreen() {
           ),
         })}
       />
+      <Stack.Screen
+       name="Info"
+       component={Info}
+       options={({ navigation }) => ({
+         headerLeft: () => (
+           <Button
+             title="< Back"
+             onPress={() => navigation.goBack()}
+           />
+         ),
+       })}
+     />
     </Stack.Navigator>
   );
 }

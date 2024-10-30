@@ -9,9 +9,10 @@ import StartScreen from '../StartScreen';
 import GetStartedScreen from '../GetStartedScreen';
 import YourProducts from '../YourProducts';
 import EditProduct from '../EditProduct';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Info from '../Info';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HomeScreen() {
 
@@ -20,16 +21,26 @@ export default function HomeScreen() {
   const [hasProducts, setHasProducts] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function checkProducts() {
-      const products = await AsyncStorage.getItem("my-list");
-      if (products && JSON.parse(products).length > 0) {
-        setHasProducts(true);
-      };
-      setLoading(false);
+  const checkProducts = async () => {
+    setLoading(true);
+    const products = await AsyncStorage.getItem("my-list");
+    if (products && JSON.parse(products).length > 0) {
+      setHasProducts(true);
+    } else {
+      setHasProducts(false);
     }
+    setLoading(false);
+  };
+
+  useEffect(() => {
     checkProducts();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      checkProducts();
+    }, [])
+  );
 
   if (loading) {
     return (
@@ -38,7 +49,6 @@ export default function HomeScreen() {
       </View>
     );
   }
-
 
   return (
     <Stack.Navigator>
@@ -77,7 +87,18 @@ export default function HomeScreen() {
           ),
         })}
       />
-      <Stack.Screen name="Info" component={Info} />
+      <Stack.Screen
+       name="Info"
+       component={Info}
+       options={({ navigation }) => ({
+         headerLeft: () => (
+           <Button
+             title="< Back"
+             onPress={() => navigation.goBack()}
+           />
+         ),
+       })}
+     />
     </Stack.Navigator>
   );
 }
