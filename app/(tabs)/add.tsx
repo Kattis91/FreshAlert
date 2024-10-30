@@ -1,14 +1,9 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, View, Text, Button } from 'react-native';
+import { Platform, Button } from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddProduct from '../AddProduct';
 import Info from '../Info';
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 
 export default function AddScreen() {
 
@@ -19,8 +14,9 @@ export default function AddScreen() {
       <Stack.Screen name="Add Product" component={AddProduct}
         options={({ navigation }) => ({
           headerRight: () => (
-            <Button
-              title="Info"
+            <TabBarIcon
+              name='information-circle-outline'
+              color="#0A7763"
               onPress={() => navigation.navigate('Info')}
             />
           ),
@@ -30,27 +26,16 @@ export default function AddScreen() {
        name="Info"
        component={Info}
        options={({ navigation }) => ({
-         headerLeft: () => (
-           <Button
-             title="< Back"
-             onPress={() => navigation.goBack()}
-           />
-         ),
-       })}
-     />
+        headerLeft: () => (
+          Platform.OS === "ios" ? (
+            <Button
+              title="< Back"
+              onPress={() => navigation.goBack()}
+            />
+          ) : null
+        ),
+      })}
+    />
     </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
