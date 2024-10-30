@@ -45,27 +45,27 @@ export default function YourProducts({ navigation }) {
   const getCategoryEmoji = (category: string | null) => {
     switch (category) {
       case "dairy":
-        return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Dairy"/>;
       case "meat":
-        return <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Meat" />;
       case "seafood":
-        return <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} />;
+        return <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Seafood" />;
       case "fruits":
-        return <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Fruits" />;
       case "vegetables":
-        return <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} />;
+        return <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Vegetables" />;
       case "condiments":
-        return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Condiments" />;
       case "beverages":
-        return <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Beverages"/>;
       case "prepared foods":
-        return <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Prepared Foods"/>;
       case "spreads":
-        return <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Spreads"/>;
       case "fresh herbs":
-        return <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} />;
+        return <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Fresh Herbs"/>;
       case "frozen foods":
-        return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} />;
+        return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Frozen Foods" />;
       default:
         return "❓";
     }
@@ -175,6 +175,20 @@ export default function YourProducts({ navigation }) {
 
   const filterButton = categoryValue ? `All ${categoryValue}` : "All products";
 
+  const getCategoryMessage = () => {
+    let categoryMessage = categoryValue ? `within the ${categoryValue} category` : "";
+    switch (filterType) {
+      case "EXPIRING_SOON":
+        return `No products found ${categoryMessage} that expire within 3 days`;
+      case "EXPIRING_7_DAYS":
+        return `No products found ${categoryMessage} that expire within 4-7 days`;
+      case "EXPIRING_AFTER_7_DAYS":
+        return `No products found ${categoryMessage} that are safe to consume`;
+      default:
+        return `No products found ${categoryMessage}.`;
+    }
+  };
+
   return (
     <LinearGradient
     colors={['#FBFFF3', '#FCE4D3', '#ffe8d6', '#f4f9e9']} 
@@ -255,6 +269,9 @@ export default function YourProducts({ navigation }) {
       {productData.length === 0 ? (
   <Text style={styles.emptyText}>- You Have No Products -</Text>
 ) : (
+  filteredProductData.length === 0 ? (
+    <Text style={styles.emptyText}>- {getCategoryMessage()} -</Text>
+  ) : (
   <FlatList
     key={numColumns}
     data={[...filteredProductData].reverse()}
@@ -285,6 +302,7 @@ export default function YourProducts({ navigation }) {
     )}
     numColumns={numColumns}
   />
+)
 )}
 
 
