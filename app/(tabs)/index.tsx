@@ -16,6 +16,7 @@ export default function HomeScreen() {
 
   const [hasProducts, setHasProducts] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [info, setInfo] = useState(false)
 
   const checkProducts = async () => {
     setLoading(true);
@@ -28,8 +29,17 @@ export default function HomeScreen() {
     setLoading(false);
   };
 
+  const checkInfo = async () => {
+    const data = await AsyncStorage.getItem("info");
+    if(JSON.parse(data)) {
+      setInfo(true)
+    }
+  }
+
   useEffect(() => {
     checkProducts();
+    checkInfo()
+    console.log()
   }, []);
 
   useFocusEffect(
@@ -48,7 +58,22 @@ export default function HomeScreen() {
 
   return (
   <Stack.Navigator>
-      {hasProducts ? (
+      {/* {hasProducts ? (
+        <Stack.Screen name="Your Products" component={YourProducts}
+          options={({ navigation }) => ({
+            title: "Home",
+            headerRight: () => (
+              <Button
+                title="Info"
+                onPress={() => navigation.navigate('Info')}
+              />
+            ),
+          })}
+        />
+      ) : (
+        <Stack.Screen name="Home" component={StartScreen} />
+      )} */}
+      { info ? (
         <Stack.Screen name="Your Products" component={YourProducts}
           options={({ navigation }) => ({
             title: "Home",
