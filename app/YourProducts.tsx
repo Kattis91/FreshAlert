@@ -118,7 +118,10 @@ export default function YourProducts({ navigation }) {
   async function getProducts() {
     try {
       const storedList = await AsyncStorage.getItem("my-list");
-      const parsedList: Product[] = storedList ? JSON.parse(storedList) : [];
+      let parsedList: Product[] = storedList ? JSON.parse(storedList) : [];
+
+      parsedList = parsedList.filter(item => new Date(item.expiry) > new Date());
+      
 
       const updatedProducts = parsedList.map(product => {
         const daysDifference = calculateDaysDifference(product.expiry);
