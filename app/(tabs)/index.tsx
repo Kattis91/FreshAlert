@@ -33,6 +33,7 @@ export default function HomeScreen() {
   const checkInfo = async () => {
     const data = await AsyncStorage.getItem("info");
     if(JSON.parse(data)) {
+      console.log(JSON.parse(data))
       setInfo(true)
     }
   }
@@ -67,7 +68,7 @@ export default function HomeScreen() {
 
   return (
   <Stack.Navigator>
-      { info ? (
+      { hasProducts || info ? (
         <Stack.Screen name="Your Products" component={YourProducts}
           options={({ navigation }) => ({
             title: "Home",

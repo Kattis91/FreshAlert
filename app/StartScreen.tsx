@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button, Text, View, TouchableOpacity } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
@@ -18,7 +19,12 @@ export default function StartScreen({ navigation } : any) {
           padding: 15,
           borderRadius: 25,
         }}
-        onPress={() => navigation.navigate("Get Started")}
+        onPress={() => {
+          navigation.navigate("Get Started")
+          AsyncStorage.setItem("info", JSON.stringify({
+            "gotStarted": false
+          }))
+        }}
       >
         <Text style={{ color: 'white', fontSize: 16 }}>GET STARTED</Text>
       </TouchableOpacity>
