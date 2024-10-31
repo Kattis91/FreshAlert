@@ -20,14 +20,12 @@ export default function HomeScreen() {
   const [info, setInfo] = useState(false)
 
   const checkProducts = async () => {
-    setLoading(true);
     const products = await AsyncStorage.getItem("my-list");
     if (products && JSON.parse(products).length > 0) {
       setHasProducts(true);
     } else {
       setHasProducts(false);
     }
-    setLoading(false);
   };
 
   const checkInfo = async () => {
@@ -39,9 +37,13 @@ export default function HomeScreen() {
   }
 
   useEffect(() => {
-    checkProducts();
-    checkInfo()
-    console.log()
+    const initialize = async () => {
+      setLoading(true);
+      await checkProducts();
+      await checkInfo();
+      setLoading(false);
+    };
+    initialize();
   }, []);
 
   useFocusEffect(
