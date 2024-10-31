@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Button, Text, View } from "react-native";
+import { Button, Platform, Text, View } from "react-native";
 import Trash from "../ExpiredProducts";
-import { useNavigation } from "expo-router";
 import Info from "../Info";
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 
 export default function TrashScreen() {
 
@@ -14,8 +14,9 @@ export default function TrashScreen() {
        options={({ navigation }) => ({
          headerBackTitleVisible: false, // hides the header back title to avoid "(tabs)"
          headerRight: () => (
-           <Button
-             title="Info"
+          <TabBarIcon
+            name='information-circle-outline'
+            color="#0A7763"
              onPress={() => navigation.navigate('Info')}
            />
          ),
@@ -25,14 +26,16 @@ export default function TrashScreen() {
        name="Info"
        component={Info}
        options={({ navigation }) => ({
-         headerLeft: () => (
-           <Button
-             title="< Back"
-             onPress={() => navigation.goBack()}
-           />
-         ),
-       })}
-     />
+        headerLeft: () => (
+          Platform.OS === "ios" ? (
+            <Button
+              title="< Back"
+              onPress={() => navigation.goBack()}
+            />
+          ) : null
+        ),
+      })}
+    />
    </Stack.Navigator>
  )
 }

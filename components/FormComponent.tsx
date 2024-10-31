@@ -1,10 +1,21 @@
-import { Button, Platform, Text, TextInput, View } from "react-native";
+import { Alert, Button, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPickerComponent from "./DropDownPicker";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { styles } from "@/styles/styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import DeleteModal from "./deleteModal";
+
+type Product = {
+  id: number;
+  title: string;
+  name: string;
+  expiry: string;
+  category: string | null;
+};
 
 type FormComponentProps = {
+  product: Product | null;
   productName: string;
   setProductName: (name: string) => void;
   expiryDate: string;
@@ -24,9 +35,13 @@ type FormComponentProps = {
   buttonclick: () => void;
   button2text?: string;
   button2click?: () => void;
+  modalOpen: boolean;
+  setModalOpen: (open: boolean) => void;
+  navigation: any;
 };
 
 const FormComponent = ({
+  product,
   productName,
   setProductName,
   expiryDate,
@@ -46,12 +61,52 @@ const FormComponent = ({
   buttonclick,
   button2text,
   button2click,
+  navigation,
+  modalOpen,
+  setModalOpen,
 }: FormComponentProps) => {
     const inputRef = useRef<TextInput>(null);
 
 const formatDate = (date: Date) => {
   return date.toISOString().split('T')[0]; // Returns in format YYYY-MM-DD
 };
+
+async function removeValue() {
+  try {
+    const storedList = await AsyncStorage.getItem('my-list');
+    const currentList = storedList ? JSON.parse(storedList) : [];
+
+    const updatedList = currentList.filter((p: Product) => p.id !== product?.id);
+    await AsyncStorage.setItem('my-list', JSON.stringify(updatedList));
+
+      Alert.alert(
+        "Product removed:",
+        `Product: ${product?.name} \n Expiry date: ${product?.expiry}`,
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              console.log("OK pressed");
+              navigation.navigate("Your Products");
+            }
+          }
+        ]
+      );
+      
+  } catch (e) {
+    console.error('Failed to remove item.', e);
+  }
+}
+
+useEffect(() => {
+  console.log('Product prop:', product);
+  if (product) {
+    setProductName(product.name);
+    setCategoryValue(product.category);
+    setExpiryDate(product.expiry);
+    setDate(new Date(product.expiry || Date.now()));
+  }
+}, [product]);
 
 return (
 
@@ -125,14 +180,41 @@ return (
     </View>
 
     { button2text && button2click &&
-    <View>
-      <Text style={{ textTransform: "uppercase", fontSize: 15, textAlign: "center", marginBottom: 25, marginTop: 30 }}>Or delete the item:</Text>
-        <Button
-          title={ button2text }
-          color="red"
-          onPress={ button2click }
-        />
-     </View>
+      <View style={{ alignItems: "center" }}>
+      <Text
+        style={{
+          textTransform: "uppercase",
+          fontSize: 15,
+          textAlign: "center",
+          marginBottom: 25,
+          marginTop: 20,
+        }}
+      >
+        Or delete the item:
+      </Text>
+      
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#900101", 
+          padding: 15, 
+          borderRadius: 30, 
+          alignItems: "center",
+          width: "80%", 
+          elevation: 3, //(Just for Android)
+        }}
+        onPress={() => setModalOpen(true)}
+      >
+        <Text style={{ color: "white", fontSize: 16 }}>
+          {button2text}
+        </Text>
+      </TouchableOpacity>
+
+      <DeleteModal
+        visible={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onDelete={removeValue}
+      />
+    </View>
     }
   </View>
 

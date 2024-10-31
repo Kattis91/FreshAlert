@@ -4,7 +4,8 @@ import useProductValidation from "@/hooks/useProductValidation";
 import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
-import { Alert, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 
 export default function AddProducts({ navigation }) {
 
@@ -90,15 +91,11 @@ export default function AddProducts({ navigation }) {
 
   return (
 
-    <View style={{ flex: 1 }}>
-      {/* Conditional Overlay */}
-      {openCategory && (
-        <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
-          <View style={styles.overlay} />
-        </TouchableWithoutFeedback>
-      )}
+    <LinearGradient
+      colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']}
+      style={{ flex: 1 }} >
+      <SafeAreaView style={{ flex: 1, margin: 8 }}>
 
-      <View style={{ flex: 1 }}>
         <FormComponent
           productName={productName}
           setProductName={setProductName}
@@ -118,8 +115,8 @@ export default function AddProducts({ navigation }) {
           buttontext="ADD"
           buttonclick={addProduct}
         />
-      </View>
-    </View>
+      </SafeAreaView>
+    </LinearGradient>
 
   );
 } 

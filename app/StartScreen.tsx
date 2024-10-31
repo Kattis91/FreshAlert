@@ -22,18 +22,6 @@ export default function StartScreen({ navigation } : any) {
       >
         <Text style={{ color: 'white', fontSize: 16 }}>GET STARTED</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        style={{
-          marginTop: 15,
-          backgroundColor: "#0A7763",
-          padding: 15,
-          borderRadius: 25,
-        }}
-        onPress={() => navigation.navigate("Your Products")}
-      >
-        <Text style={{ color: 'white', fontSize: 16 }}>VIEW YOUR PRODUCTS</Text>
-      </TouchableOpacity>
     </LinearGradient>
   );
 }
