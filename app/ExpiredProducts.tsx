@@ -6,9 +6,11 @@ import {
   View,
   ScrollView,
   Modal,
+  SafeAreaView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "@/components/deleteModal";
+import LinearGradient from "react-native-linear-gradient";
 
 export default function Trash() {
   const [products, setProducts] = useState([])
@@ -22,7 +24,7 @@ export default function Trash() {
   //   title: "productName",
   //   name: "productName",
   //   expiry: "2024-10-27",
-  //   category: "categoryValue",
+  //   category: "fruits",
   // }]
 
   // AsyncStorage.setItem("my-list", JSON.stringify(test))
@@ -46,7 +48,11 @@ export default function Trash() {
   );
 
   return expiredProducts.length > 0 ? (
-    <ScrollView>
+    <LinearGradient
+      colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']}
+      style={{ flex: 1 }} >
+      <SafeAreaView style={{ flex: 1, margin: 8 }}>
+    <ScrollView >
       <View>
         <Text
           style={{
@@ -63,6 +69,8 @@ export default function Trash() {
         ))}
       </View>
     </ScrollView>
+    </SafeAreaView>
+    </LinearGradient>
   ) : (
     <EmptyBin />
   );
@@ -70,18 +78,23 @@ export default function Trash() {
 
 const EmptyBin = () => {
   return (
+    <LinearGradient
+      colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']}
+      style={{ flex: 1 }} >
+      <SafeAreaView style={{ flex: 1, margin: 8 }}>
     <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f8edeb",
       }}
     >
       <Text style={{ fontSize: 28, color: "#003366", textAlign: "center" }}>
         You do not have any expired products right now.
       </Text>
     </View>
+    </SafeAreaView>
+    </LinearGradient>
   );
 };
 
@@ -99,29 +112,73 @@ const ExpiredProductCard = ({ product, getProducts }) => {
   const getCategoryEmoji = (category: string | null) => {
     switch (category) {
       case "dairy":
-        return <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Dairy"/>;
+        return (
+        <Text>
+          <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Dairy"/>;
+        </Text>
+        );
       case "meat":
-        return <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Meat" />;
+        return (
+        <Text>
+          <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Meat"/>;
+        </Text>
+        );
       case "seafood":
-        return <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Seafood" />;
+        return (
+        <Text>
+          <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Seafood"/>;
+        </Text>
+        );
       case "fruits":
-        return <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Fruits" />;
+        return (
+        <Text>
+          <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Fruits"/>;
+        </Text>
+        );
       case "vegetables":
-        return <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Vegetables" />;
+        return (
+        <Text>
+          <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Vegetables"/>;
+        </Text>
+        );
       case "condiments":
-        return <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Condiments" />;
+        return (
+        <Text>
+          <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Condiments"/>;
+        </Text>
+        );
       case "beverages":
-        return <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Beverages"/>;
+        return (
+        <Text>
+          <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Beverages"/>;
+        </Text>
+        );
       case "prepared foods":
-        return <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Prepared Foods"/>;
+        return (
+        <Text>
+          <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Prepared Foods"/>;
+        </Text>
+        );
       case "spreads":
-        return <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Spreads"/>;
+        return (
+        <Text>
+          <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Spreads"/>;
+        </Text>
+        );
       case "fresh herbs":
-        return <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Fresh Herbs"/>;
+        return (
+        <Text>
+          <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Fresh Herbs"/>;
+        </Text>
+        );
       case "frozen foods":
-        return <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Frozen Foods" />;
+        return (
+        <Text>
+          <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Frozen Foods" />;
+        </Text>
+        );
       default:
-        return "❓";
+        return ":question:";
     }
   };
   
