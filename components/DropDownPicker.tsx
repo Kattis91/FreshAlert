@@ -38,6 +38,7 @@ const DropDownPickerComponent = ({
         backgroundColor: "#0A7763",
         width: "100%",
         maxHeight: 160,
+        zIndex: 2,
       }}
       textStyle={{ color: "white" }}
       placeholderStyle={{ color: "black" }}
