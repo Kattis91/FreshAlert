@@ -1,13 +1,19 @@
 import { Alert } from "react-native";
 
 const useProductValidation = () => {
+  
   const validateProduct = (
     productName : string, 
     expiryDate: string, 
-    categoryValue: string | null) =>  {
+    categoryValue: string | null,
+    setErrorMessages: (errors: { productName?: string; expiryDate?: string; categoryValue?: string }) => void
+  ) => {
+    const errors: { productName?: string; expiryDate?: string; categoryValue?: string } = {};
 
     const trimmedName = productName.trim();
     const nameRegex = /^[a-zA-Z0-9\såäöÅÄÖ]+$/;
+
+    let isValid = true;
 
     if (
       trimmedName.length === 0 ||
@@ -15,13 +21,15 @@ const useProductValidation = () => {
       trimmedName.length > 50 ||
       !nameRegex.test(trimmedName)
   ) {
-    Alert.alert("Product name cannot be empty, must be between 2 and 50 characters, and can only contain letters, numbers and spaces.");
-    return false;
+    console.log("Product name validation failed.");
+    errors.productName = "Product name cannot be empty, must be between 2 and 50 characters, and can only contain letters, numbers and spaces.";
+    isValid = false;
     }
 
     if (!expiryDate) {
-      Alert.alert("Please select an expiry date");
-      return false;
+      console.log("Expiry Date is missing.");
+      errors.expiryDate = "Please select an expiry date";
+      isValid = false;
     }
 
     // Check if the expiry date is in the past
@@ -30,16 +38,20 @@ const useProductValidation = () => {
     today.setHours(0, 0, 0, 0);
 
     if (selectedDate < today) {
-        Alert.alert("The expiry date cannot be in the past.");
-        return false;
+      console.log("Expiry Date is in the past.");
+      errors.expiryDate = "The expiry date cannot be in the past.";
+      isValid = false;
     }
 
     if (!categoryValue) {
-        Alert.alert("Please select a category");
-        return false;
+      console.log("Category is missing.");
+      errors.categoryValue = "Please select a category";
+      isValid = false;
     }
 
-    return true;
+    setErrorMessages(errors);
+
+    return isValid;
   }
 
   return validateProduct;

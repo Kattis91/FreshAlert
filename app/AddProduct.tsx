@@ -21,6 +21,7 @@ export default function AddProducts({ navigation }) {
 
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<string | null>(null);
+  const [errorMessages, setErrorMessages] = useState({});
 
   const categories = [
     { label: "Dairy", value: "dairy" },
@@ -48,7 +49,7 @@ export default function AddProducts({ navigation }) {
 
   async function addProduct() {
 
-    const isValid = validateProduct(productName, expiryDate, categoryValue);
+    const isValid = validateProduct(productName, expiryDate, categoryValue, setErrorMessages);
     if (!isValid) {
       console.log('Validation failed'); // Log validation failure
       return;

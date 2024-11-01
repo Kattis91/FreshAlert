@@ -218,4 +218,10 @@ export const styles = StyleSheet.create({
     textAlign: 'center', 
     opacity: 10, 
   },  
+  errorText: {
+    color: 'red',
+    marginBottom: 5,
+    alignSelf: 'flex-start',
+    marginLeft: 2,
+  },
 });

@@ -45,6 +45,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [errorMessages, setErrorMessages] = useState({});
+
   const categories = [
     { label: "Dairy", value: "dairy" },
     { label: "Meat", value: "meat" },
@@ -75,7 +77,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   async function Edit() {
 
-    const isValid = validateProduct(productName, expiryDate, categoryValue);
+    const isValid = validateProduct(productName, expiryDate, categoryValue, setErrorMessages );
     if (!isValid) {
       console.log('Validation failed'); // Log validation failure
       return;

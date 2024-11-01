@@ -11,10 +11,11 @@ import {
 } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPickerComponent from "./DropDownPicker";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "./deleteModal";
+import useProductValidation from "@/hooks/useProductValidation";
 
 type Product = {
   id: number;
@@ -75,7 +76,20 @@ const FormComponent = ({
   modalOpen,
   setModalOpen,
 }: FormComponentProps) => {
+
   const inputRef = useRef<TextInput>(null);
+
+  const [errorMessages, setErrorMessages] = useState<{ productName?: string; expiryDate?: string; categoryValue?: string }>({});
+  const validateProduct = useProductValidation();
+
+  const handleButtonClick = () => {
+    const isValid = validateProduct(productName, expiryDate, categoryValue, setErrorMessages);
+    console.log("Validation Result:", isValid);  // Logs validation result (true or false)
+    if (isValid) {
+      buttonclick();  // Only calls buttonclick if validation passes
+    }
+  };
+
 
   const formatDate = (date: Date) => {
     return date.toISOString().split("T")[0]; // Returns in format YYYY-MM-DD
@@ -148,6 +162,8 @@ const FormComponent = ({
           placeholderTextColor="black"
         />
 
+        {errorMessages.productName && <Text style={styles.errorText}>{errorMessages.productName}</Text>}
+
         <Text style={styles.label}>Expiry Date:</Text>
 
         <TextInput
@@ -159,6 +175,7 @@ const FormComponent = ({
           placeholder="Add expiry date"
           placeholderTextColor="black"
         />
+         {errorMessages.expiryDate && <Text style={styles.errorText}>{errorMessages.expiryDate}</Text>}
 
         <DatePicker
           modal
@@ -170,6 +187,7 @@ const FormComponent = ({
             setDate(selectedDate);
             setExpiryDate(formatDate(selectedDate));
             setDateChanged(true);
+            setErrorMessages((prev) => ({ ...prev, expiryDate: undefined }));
 
             if (inputRef.current) {
               inputRef.current.blur();
@@ -190,16 +208,20 @@ const FormComponent = ({
           openCategory={openCategory}
           categoryValue={categoryValue}
           categories={categories}
-          setCategoryValue={setCategoryValue}
+          setCategoryValue={(value) => {
+            setCategoryValue(value);
+            setErrorMessages((prev) => ({ ...prev, categoryValue: undefined }));
+          }}
           setOpenCategory={setOpenCategory}
           placeholder="Choose category"
         />
+         {errorMessages.categoryValue && <Text style={styles.errorText}>{errorMessages.categoryValue}</Text>}
 
         <View style={styles.button}>
           <Button
             title={buttontext}
             color={Platform.OS === "ios" ? "white" : "#0A7763"}
-            onPress={buttonclick}
+            onPress={ handleButtonClick}
           />
         </View>
 
