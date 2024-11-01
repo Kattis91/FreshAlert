@@ -11,11 +11,12 @@ import {
 } from "react-native";
 import DatePicker from "react-native-date-picker";
 import DropDownPickerComponent from "./DropDownPicker";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "./deleteModal";
 import useProductValidation from "@/hooks/useProductValidation";
+import { useFocusEffect } from "expo-router";
 
 type Product = {
   id: number;
@@ -132,6 +133,19 @@ const FormComponent = ({
       setDate(new Date(product.expiry || Date.now()));
     }
   }, [product]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // This function will be called when the screen is focused
+      return () => {
+        // This function will be called when the screen is unfocused
+        setOpenCategory(false);
+        setProductName("");
+        setExpiryDate("");
+        setCategoryValue(null);
+      };
+    }, [])
+  );
 
   return (
     <TouchableWithoutFeedback
