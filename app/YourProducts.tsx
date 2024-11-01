@@ -392,9 +392,18 @@ export default function YourProducts({ navigation }) {
         </View>
 
         {productData.length === 0 ? (
-          <Text style={styles.emptyText}>- You Have No Products -</Text>
+          <View>
+            <Text style={styles.emptyText}>- You Have No Products -</Text>
+            <Image
+              source={require("../assets//images/man.png")}
+              style={{ width: 165, height: 165, alignSelf: "center" }}
+              accessibilityLabel="Seafood"
+            />
+          </View>
         ) : filteredProductData.length === 0 ? (
-          <Text style={styles.emptyText}>- {getCategoryMessage()} -</Text>
+          <Text style={styles.emptyText}>
+            <Text>- {getCategoryMessage()}</Text> -
+          </Text>
         ) : (
           <FlatList
             key={numColumns}
