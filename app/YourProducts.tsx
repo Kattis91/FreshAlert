@@ -198,8 +198,14 @@ export default function YourProducts({ navigation }) {
       const storedList = await AsyncStorage.getItem("my-list");
       let parsedList: Product[] = storedList ? JSON.parse(storedList) : [];
 
+      const resetTime = (date: Date) => {
+        const newDate = new Date(date);
+        newDate.setHours(0, 0, 0, 0);
+        return newDate;
+      };
+
       parsedList = parsedList.filter(
-        (item) => new Date(item.expiry) > new Date()
+        (item) => resetTime(new Date(item.expiry)) >= resetTime(new Date())
       );
 
       const updatedProducts = parsedList.map((product) => {
@@ -223,6 +229,16 @@ export default function YourProducts({ navigation }) {
   useEffect(() => {
     filterProducts();
   }, [filterType, categoryValue, searchText, productData]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // This function will be called when the screen is focused
+      return () => {
+        // This function will be called when the screen is unfocused
+        setOpenCategory(false);
+      };
+    }, [])
+  );
 
   function filterProducts() {
     console.log("Filtering products with type: ", filterType);

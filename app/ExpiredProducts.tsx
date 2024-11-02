@@ -114,71 +114,71 @@ const ExpiredProductCard = ({ product, getProducts }) => {
       case "dairy":
         return (
         <Text>
-          <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Dairy"/>;
+          <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Dairy"/>
         </Text>
         );
       case "meat":
         return (
         <Text>
-          <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Meat"/>;
+          <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Meat"/>
         </Text>
         );
       case "seafood":
         return (
         <Text>
-          <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Seafood"/>;
+          <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Seafood"/>
         </Text>
         );
       case "fruits":
         return (
         <Text>
-          <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Fruits"/>;
+          <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Fruits"/>
         </Text>
         );
       case "vegetables":
         return (
         <Text>
-          <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Vegetables"/>;
+          <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Vegetables"/>
         </Text>
         );
       case "condiments":
         return (
         <Text>
-          <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Condiments"/>;
+          <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Condiments"/>
         </Text>
         );
       case "beverages":
         return (
         <Text>
-          <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Beverages"/>;
+          <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Beverages"/>
         </Text>
         );
       case "prepared foods":
         return (
         <Text>
-          <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Prepared Foods"/>;
+          <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Prepared Foods"/>
         </Text>
         );
       case "spreads":
         return (
         <Text>
-          <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Spreads"/>;
+          <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Spreads"/>
         </Text>
         );
       case "fresh herbs":
         return (
         <Text>
-          <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Fresh Herbs"/>;
+          <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Fresh Herbs"/>
         </Text>
         );
       case "frozen foods":
         return (
         <Text>
-          <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Frozen Foods" />;
+          <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Frozen Foods" />
         </Text>
         );
       default:
-        return ":question:";
+        return ":question:"
     }
   };
   

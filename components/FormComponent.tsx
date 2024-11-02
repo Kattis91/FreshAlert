@@ -143,6 +143,7 @@ const FormComponent = ({
         setProductName("");
         setExpiryDate("");
         setCategoryValue(null);
+        setErrorMessages({});
       };
     }, [])
   );

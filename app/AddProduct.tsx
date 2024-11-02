@@ -80,10 +80,6 @@ export default function AddProducts({ navigation }) {
       setExpiryDate("");
       setCategoryValue(null);
 
-      if (newList.length === 1) {
-        navigation.navigate('Home');
-      }
-
     } catch (error) {
       console.error("Failed to add product", error);
       Alert.alert("Failed to add product");
