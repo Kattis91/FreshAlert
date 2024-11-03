@@ -149,6 +149,14 @@ const FormComponent = ({
     }, [])
   );
 
+  const handleProductNameChange = (text: string) => {
+    setProductName(text);
+    if (errorMessages.productName) {
+      setErrorMessages((prev) => ({ ...prev, productName: undefined }));
+    }
+  };
+
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -172,7 +180,7 @@ const FormComponent = ({
 
         <TextInput
           style={styles.formInputs2}
-          onChangeText={setProductName}
+          onChangeText={handleProductNameChange}
           value={productName}
           placeholder="Enter product name"
           placeholderTextColor="black"
