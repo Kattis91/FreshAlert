@@ -88,10 +88,8 @@ export default function AddProducts({ navigation }) {
 
   return (
 
-    <LinearGradient
-      colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']}
-      style={{ flex: 1 }} >
-      <SafeAreaView style={{ flex: 1, margin: 8 }}>
+   
+      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#f4f4f6" }}>
 
         <FormComponent
           productName={productName}
@@ -113,7 +111,6 @@ export default function AddProducts({ navigation }) {
           buttonclick={addProduct}
         />
       </SafeAreaView>
-    </LinearGradient>
 
   );
 } 

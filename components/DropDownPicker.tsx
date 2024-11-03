@@ -8,6 +8,7 @@ type DropDownPickerProps = {
   setCategoryValue: (category: string | null) => void;
   setOpenCategory: (open: boolean) => void;
   placeholder?: string;
+  changeColor?: string;
 };
 
 const DropDownPickerComponent = ({
@@ -17,10 +18,11 @@ const DropDownPickerComponent = ({
   setCategoryValue,
   setOpenCategory,
   placeholder,
+  changeColor
 }: DropDownPickerProps) => {
   return (
     <DropDownPicker 
-      style={styles.formInputs}
+      style={{...styles.formInputs, backgroundColor: changeColor === 'true' ? "red" : "#10A78B", }}
       open={openCategory}
       value={categoryValue}
       items={categories}
@@ -35,21 +37,29 @@ const DropDownPickerComponent = ({
       placeholder={placeholder}
       listMode="SCROLLVIEW"
       dropDownContainerStyle={{
-        backgroundColor: "#0A7763",
+        backgroundColor: "#fff1e6", 
         width: "100%",
         maxHeight: 160,
         zIndex: 2,
+        borderRadius: 8, 
+        padding: 10,
       }}
-      textStyle={{ color: "white" }}
-      placeholderStyle={{ color: "black" }}
-      labelStyle={{ color: "black" }}
+      textStyle={{ color: "black", fontSize: 16 }} // Tekst modern
+      placeholderStyle={{ color: "white", fontSize: 14 }} 
+      labelStyle={{ color: "white", fontSize: 14 }} 
       scrollViewProps={{
         nestedScrollEnabled: true,
-        indicatorStyle: 'white', // Change scrollbar color to white
+        indicatorStyle: 'black', // Change scrollbar color to white
       }}
       listItemContainerStyle={{
-        borderBottomColor: "white",
+        backgroundColor: "#fff1e6", 
+        borderBottomColor: "#10A78B", 
         borderBottomWidth: 1,
+        paddingVertical: 10, 
+      }}
+      listItemLabelStyle={{ color: "black", fontSize: 14 }} 
+      selectedItemContainerStyle={{
+        backgroundColor: '#10A78B', 
       }}
     />
   );

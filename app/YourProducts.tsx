@@ -298,11 +298,8 @@ export default function YourProducts({ navigation }) {
   };
 
   return (
-    <LinearGradient
-      colors={["#CEECEB", "#F9CAA9", "#E4CFBE", "#C6D3BB"]}
-      style={{ flex: 1 }}
-    >
-      <SafeAreaView style={{ flex: 1, margin: 10 }}>
+    
+      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor:"#f4f4f6" }}>
         <View
           style={{
             justifyContent: "center",
@@ -323,6 +320,7 @@ export default function YourProducts({ navigation }) {
           placeholder="Search by date or name"
           value={searchText}
           onChangeText={setSearchText}
+           placeholderTextColor="black"
         />
 
         {openCategory && (
@@ -375,7 +373,8 @@ export default function YourProducts({ navigation }) {
             onPress={showExpiringSoon}
           >
             <View>
-              <Text>3 Days</Text>
+            <Text style={{ color: filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000" }}>
+    3 Days</Text>
             </View>
           </TouchableHighlight>
 
@@ -402,14 +401,14 @@ export default function YourProducts({ navigation }) {
             onPress={showExpiringAfter7Days}
           >
             <View>
-              <Text> Safe</Text>
+              <Text style={{ color: filterType === "EXPIRING_AFTER_7_DAYS" ? "#ffffff" : "#000000" }}> Safe</Text>
             </View>
           </TouchableHighlight>
         </View>
 
         {productData.length === 0 ? (
           <View>
-            <Text style={styles.emptyText}>- You Have No Products -</Text>
+            <Text style={{ fontSize: 26, color: "#003366", textAlign: "center", marginTop: 40, marginBottom:10 }}>- You Have No Products -</Text>
             <Image
               source={require("../assets//images/man.png")}
               style={{ width: 165, height: 165, alignSelf: "center" }}
@@ -417,8 +416,8 @@ export default function YourProducts({ navigation }) {
             />
           </View>
         ) : filteredProductData.length === 0 ? (
-          <Text style={styles.emptyText}>
-            <Text>- {getCategoryMessage()}</Text> -
+          <Text style={{marginTop: 150}}>
+            <Text style={{fontSize: 26, color: "#003366", textAlign: "center"}}>  {getCategoryMessage()}</Text> 
           </Text>
         ) : (
           <FlatList
@@ -467,6 +466,5 @@ export default function YourProducts({ navigation }) {
           />
         )}
       </SafeAreaView>
-    </LinearGradient>
   );
 }

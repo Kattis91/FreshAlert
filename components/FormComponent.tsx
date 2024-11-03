@@ -170,7 +170,7 @@ const FormComponent = ({
         <Text style={styles.label}>Product Name:</Text>
 
         <TextInput
-          style={styles.formInputs}
+          style={styles.formInputs2}
           onChangeText={setProductName}
           value={productName}
           placeholder="Enter product name"
@@ -182,7 +182,7 @@ const FormComponent = ({
         <Text style={styles.label}>Expiry Date:</Text>
 
         <TextInput
-          style={styles.formInputs}
+          style={styles.formInputs2}
           ref={inputRef}
           onFocus={() => setOpenDate(true)}
           onChangeText={setExpiryDate}
@@ -229,6 +229,7 @@ const FormComponent = ({
           }}
           setOpenCategory={setOpenCategory}
           placeholder="Choose category"
+          changeColor="true"
         />
          {errorMessages.categoryValue && <Text style={styles.errorText}>{errorMessages.categoryValue}</Text>}
 

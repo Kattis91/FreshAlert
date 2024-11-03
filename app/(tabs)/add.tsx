@@ -10,13 +10,20 @@ export default function AddScreen() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#10A78B', // Change header background color
+      },
+      headerTintColor: '#fff', // Change header text color
+    }}
+  >
       <Stack.Screen name="Add Product" component={AddProduct}
         options={({ navigation }) => ({
           headerRight: () => (
             <TabBarIcon
               name='information-circle-outline'
-              color="#0A7763"
+              color="#fff"
               onPress={() => navigation.navigate('Info')}
             />
           ),
@@ -31,6 +38,7 @@ export default function AddScreen() {
             <Button
               title="< Back"
               onPress={() => navigation.goBack()}
+               color="white"
             />
           ) : null
         ),

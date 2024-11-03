@@ -63,13 +63,20 @@ export default function HomeScreen() {
   const renderInfoIcon = ({navigation} : any) => (
     <TabBarIcon
       name='information-circle-outline'
-      color="#0A7763"
+      color="#fff"
       onPress={() => navigation.navigate('Info')}
     />
   );
 
   return (
-  <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#10A78B', // Change header background color
+      },
+      headerTintColor: '#fff', // Change header text color
+    }}
+  >
       { hasProducts || info ? (
         <Stack.Screen name="Your Products" component={YourProducts}
           options={({ navigation }) => ({
@@ -99,6 +106,7 @@ export default function HomeScreen() {
               <Button
                 title="< Back"
                 onPress={() => navigation.goBack()}
+                 color="white"
               />
             ) : null
           ),

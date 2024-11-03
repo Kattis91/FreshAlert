@@ -26,7 +26,7 @@ export default function Info({ navigation }) {
         justifyContent: "center",
         paddingHorizontal: 10,
         paddingVertical: 10,
-        backgroundColor: "#eee2df",
+        backgroundColor: "#f4f4f6",
       }}
     >
       <View
@@ -35,8 +35,8 @@ export default function Info({ navigation }) {
         <Text
           style={{
             textAlign: "center",
-            fontSize: 30,
-            color: "#5a2a27",
+            fontSize: 40,
+            color: "#10A78B",
             paddingVertical: 15,
           }}
         >

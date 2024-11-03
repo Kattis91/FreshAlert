@@ -11,16 +11,18 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+    screenOptions={{
+      tabBarActiveTintColor: 'white', 
+      tabBarInactiveTintColor: '#fff',
+      tabBarStyle: { backgroundColor: '#10A78B' }, 
+      headerShown: false,
+    }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color="#0A7763" />
+            <TabBarIcon name={focused ? 'home' : 'home-outline'}  size={focused ? 37 : 30} color={'white'} />
           ),
         }}
       />
@@ -29,7 +31,7 @@ export default function TabLayout() {
         options={{
           title: 'Add',
           tabBarIcon: ({ focused, size }) => (
-            <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'} color="#0A7763" size={30} />
+            <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'}  size={focused ? 37 : 30} color={'white'}/>
           ),
         }}
       />
@@ -38,7 +40,7 @@ export default function TabLayout() {
         options={{
           title: 'Trash',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name={focused ? 'trash' : 'trash-outline'} color="#0A7763"  />
+            <TabBarIcon name={focused ? 'trash' : 'trash-outline'} size={focused ? 37 : 30} color={'white'}/>
           ),
         }}
       />

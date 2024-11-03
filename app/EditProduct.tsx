@@ -142,10 +142,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   return (
 
-    <LinearGradient
-    colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']} 
-    style={{flex: 1 }} >
-    <SafeAreaView style={{ flex: 1, margin: 8 }}>
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#f4f4f6" }}>
 
     <FormComponent
       product={product}
@@ -173,6 +170,5 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       navigation={navigation}
     />
 </SafeAreaView>
-</LinearGradient>
   );
 }

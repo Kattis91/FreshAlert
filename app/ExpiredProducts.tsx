@@ -10,10 +10,12 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "@/components/deleteModal";
-import LinearGradient from "react-native-linear-gradient";
+import ConfirmDeleteAllModal from "./ConfirmDeleteAllModal";
 
 export default function Trash() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
+  const [deleteMessage, setDeleteMessage] = useState("");
+  const [confirmDeleteAllVisible, setConfirmDeleteAllVisible] = useState(false);
   
   useEffect(() => {
     getProducts();
@@ -25,13 +27,19 @@ export default function Trash() {
   //   name: "productName",
   //   expiry: "2024-10-27",
   //   category: "fruits",
+  // },
+  // {
+  //   id: new Date().getTime(),
+  //   title: "productName",
+  //   name: "productName",
+  //   expiry: "2024-10-27",
+  //   category: "vegetables",
   // }]
 
   // AsyncStorage.setItem("my-list", JSON.stringify(test))
 
   const getProducts = async () => {
     const storedList = await AsyncStorage.getItem("my-list");
-
     setProducts(storedList ? JSON.parse(storedList) : [])
   }
 
@@ -46,31 +54,61 @@ export default function Trash() {
   const expiredProducts = products.filter(
     (item) => resetTime(new Date(item.expiry)) < resetTime(new Date())
   );
+  const deleteAllExpiredProducts = async () => {
+    try {
+      const updatedList = products.filter(
+        (item) => resetTime(new Date(item.expiry)) >= resetTime(new Date())
+      );
+      await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
+      setProducts(updatedList); // Update state to reflect changes
+      setDeleteMessage("All expired products have been deleted."); 
+    } catch (error) {
+      console.error("Failed to delete all expired products.", error);
+    }
+  };
+
 
   return expiredProducts.length > 0 ? (
-    <LinearGradient
-      colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']}
-      style={{ flex: 1 }} >
-      <SafeAreaView style={{ flex: 1, margin: 8 }}>
+    
+      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"white" }}>
     <ScrollView >
       <View>
-        <Text
-          style={{
-            color: "#003366",
-            fontSize: 30,
-            textAlign: "center",
-            margin: 15,
-          }}
-        >
+        <Text style={{color: "#003366", fontSize: 30, textAlign: "center", margin: 15, }} >
           Expired Products
         </Text>
-        {expiredProducts.map((item, i) => (
-          <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
-        ))}
-      </View>
-    </ScrollView>
+        <View style={{ paddingHorizontal: 270}}>
+        <TouchableOpacity
+              style={{
+                width: 150,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+              onPress={() => setConfirmDeleteAllVisible(true)} 
+            >
+              <Text style={{ color: "#00a5cf", fontSize: 16, textDecorationLine: "underline" }}>
+              DELETE ALL
+              </Text>
+            </TouchableOpacity>
+          
+            {/* Display delete message */}
+            {deleteMessage ? (
+              <Text style={{ color: "green", textAlign: "center", marginTop: 5 }}>
+                {deleteMessage}
+              </Text>
+            ) : null}
+          </View>
+          {expiredProducts.map((item, i) => (
+            <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
+          ))}
+        </View>
+      </ScrollView>
+      {/* Confirmation modal for deleting all expired products */}
+      <ConfirmDeleteAllModal
+        visible={confirmDeleteAllVisible}
+        onClose={() => setConfirmDeleteAllVisible(false)}
+        onConfirm={deleteAllExpiredProducts}
+      />
     </SafeAreaView>
-    </LinearGradient>
   ) : (
     <EmptyBin />
   );
@@ -78,10 +116,7 @@ export default function Trash() {
 
 const EmptyBin = () => {
   return (
-    <LinearGradient
-      colors={['#CEECEB', '#F9CAA9', '#E4CFBE', '#C6D3BB']}
-      style={{ flex: 1 }} >
-      <SafeAreaView style={{ flex: 1, margin: 8 }}>
+      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"white" }}>
     <View
       style={{
         flex: 1,
@@ -94,7 +129,6 @@ const EmptyBin = () => {
       </Text>
     </View>
     </SafeAreaView>
-    </LinearGradient>
   );
 };
 
@@ -187,63 +221,50 @@ const ExpiredProductCard = ({ product, getProducts }) => {
     try {
       const storedList = await AsyncStorage.getItem("my-list");
       const currentList = storedList ? JSON.parse(storedList) : [];
-
       const updatedList = currentList.filter((p: Product) => p.id !== product.id);
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
-
-      getProducts(); // Reload products
+      getProducts(); // Refresh product list
       setModalOpen(false); // Close modal
-
     } catch (e) {
       console.error("Failed to remove item.", e);
     }
   }
   return (
     <View
-      style={{
-        flexDirection: "row",
-        borderBottomColor: "black",
-        borderBottomWidth: 1,
-        margin: 20,
-      }}
-    >
-      <View style={{ width: "30%", height: 100 }}>
-        
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      borderBottomColor: "black",
+      borderBottomWidth: 1,
+      padding: 10,
+      marginHorizontal: 20,
+      marginVertical: 10
+    }}
+  >
+    <View style={{ width: "20%", justifyContent: "center", alignItems: "center" }}>
       {getCategoryEmoji(product.category)}
-      </View>
-      <View>
-        <Text style={{ color: "#003366", fontSize: 20 }}>{product.name}</Text>
-        <Text style={{ color: "#003366", fontSize: 20 }}>
-          {product.expiry}
-        </Text>
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#900101",
-              height: 35,
-              justifyContent: "center",
-              minWidth: 80,
-              maxWidth: 100,
-              marginTop: 5,
-              marginBottom: 5,
-              borderRadius: 20
-            }}
-            onPress={() => setModalOpen(true)}
-          >
-            <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
-              Delete
-            </Text>
-          </TouchableOpacity>
-        </View>
-        {/* <View style={{...styles.button, backgroundColor: "#900101"}}>
-          <Button
-            title="Delete"
-            color="white"
-            onPress={() => setModalOpen(true)}
-          />
-        </View> */}
-      </View>
-      <DeleteModal visible={modalOpen} onClose={() => setModalOpen(false)} onDelete={removeValue} />
+    </View>
+  
+    <View style={{ flex: 1, paddingHorizontal: 10 }}>
+      <Text style={{ color: "#003366", fontSize: 20 }}>{product.name}</Text>
+      <Text style={{ color: "#003366", fontSize: 16 }}>{product.expiry}</Text>
+    </View>
+  
+    <TouchableOpacity
+      style={{
+        backgroundColor: "#900101",
+        height: 35,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 15,
+        borderRadius: 20,
+      }}
+      onPress={() => setModalOpen(true)}
+    >
+      <Text style={{ color: "white", fontSize: 16 }}>Delete</Text>
+    </TouchableOpacity>
+  
+    <DeleteModal visible={modalOpen} onClose={() => setModalOpen(false)} onDelete={removeValue} />
     </View>
   );
 };
