@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Text } from 'react-native';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -20,9 +21,25 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: "Home",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'}  size={focused ? 37 : 30} color={'white'} />
+            <TabBarIcon
+              name={focused ? "home" : "home-outline"}
+              color="white"
+              size={focused ? 33 : 30}
+            />
+          ),
+          tabBarLabel: ({ focused }) => (
+            <Text
+              style={{
+                fontSize: focused ? 13 : 12,
+                color: "white",
+                marginTop: focused ? 4 : 0,
+                fontWeight: focused ? "bold" : "normal",
+              }}
+            >
+              Home
+            </Text>
           ),
         }}
       />
@@ -30,8 +47,24 @@ export default function TabLayout() {
         name="add"
         options={{
           title: 'Add',
-          tabBarIcon: ({ focused, size }) => (
-            <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'}  size={focused ? 37 : 30} color={'white'}/>
+          tabBarIcon: ({ focused }) => (
+            <Ionicons 
+              name={focused ? 'add-circle' : 'add-circle-outline'}
+              size={focused ? 32 : 30} 
+              color="white"
+            />
+          ),
+          tabBarLabel: ({ focused }) => (
+            <Text
+              style={{
+                fontSize: focused ? 13 : 12,
+                color: "white",
+                marginTop: focused ? 4 : 0,
+                fontWeight: focused ? "bold" : "normal",
+              }}
+            >
+              Add
+            </Text>
           ),
         }}
       />
@@ -40,7 +73,23 @@ export default function TabLayout() {
         options={{
           title: 'Trash',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name={focused ? 'trash' : 'trash-outline'} size={focused ? 37 : 30} color={'white'}/>
+            <TabBarIcon 
+              name={focused ? 'trash' : 'trash-outline'} 
+              size={focused ? 33 : 30} 
+              color="white"
+            />
+          ),
+          tabBarLabel: ({ focused }) => (
+            <Text
+              style={{
+                fontSize: focused ? 13 : 12,
+                color: "white",
+                marginTop: focused ? 4 : 0,
+                fontWeight: focused ? "bold" : "normal",
+              }}
+            >
+              Trash
+            </Text>
           ),
         }}
       />
