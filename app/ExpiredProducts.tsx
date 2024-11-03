@@ -7,6 +7,7 @@ import {
   ScrollView,
   Modal,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "@/components/deleteModal";
@@ -16,7 +17,7 @@ export default function Trash() {
   const [products, setProducts] = useState([]);
   const [deleteMessage, setDeleteMessage] = useState("");
   const [confirmDeleteAllVisible, setConfirmDeleteAllVisible] = useState(false);
-  
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -40,16 +41,16 @@ export default function Trash() {
 
   const getProducts = async () => {
     const storedList = await AsyncStorage.getItem("my-list");
-    setProducts(storedList ? JSON.parse(storedList) : [])
-  }
+    setProducts(storedList ? JSON.parse(storedList) : []);
+  };
 
-  console.log(products)
+  console.log(products);
 
   const resetTime = (date: Date) => {
-      const newDate = new Date(date);
-      newDate.setHours(0, 0, 0, 0);
-      return newDate;
-    };
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  };
 
   const expiredProducts = products.filter(
     (item) => resetTime(new Date(item.expiry)) < resetTime(new Date())
@@ -61,44 +62,61 @@ export default function Trash() {
       );
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
       setProducts(updatedList); // Update state to reflect changes
-      setDeleteMessage("All expired products have been deleted."); 
+      setDeleteMessage("All expired products have been deleted.");
     } catch (error) {
       console.error("Failed to delete all expired products.", error);
     }
   };
 
-
   return expiredProducts.length > 0 ? (
-    
-      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"white" }}>
-    <ScrollView >
-      <View>
-        <Text style={{color: "#003366", fontSize: 30, textAlign: "center", margin: 15, }} >
-          Expired Products
-        </Text>
-        <View style={{ paddingHorizontal: 270}}>
-        <TouchableOpacity
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "white" }}>
+      <ScrollView>
+        <View>
+          <Text
+            style={{
+              color: "#003366",
+              fontSize: 30,
+              textAlign: "center",
+              margin: 15,
+            }}
+          >
+            Expired Products
+          </Text>
+          <View style={{ paddingHorizontal: 270 }}>
+            <TouchableOpacity
               style={{
                 width: 150,
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",
               }}
-              onPress={() => setConfirmDeleteAllVisible(true)} 
+              onPress={() => setConfirmDeleteAllVisible(true)}
             >
-              <Text style={{ color: "#00a5cf", fontSize: 16, textDecorationLine: "underline" }}>
-              DELETE ALL
+              <Text
+                style={{
+                  color: "#00a5cf",
+                  fontSize: 16,
+                  textDecorationLine: "underline",
+                }}
+              >
+                DELETE ALL
               </Text>
             </TouchableOpacity>
-          
+
             {/* Display delete message */}
             {deleteMessage ? (
-              <Text style={{ color: "green", textAlign: "center", marginTop: 5 }}>
+              <Text
+                style={{ color: "green", textAlign: "center", marginTop: 5 }}
+              >
                 {deleteMessage}
               </Text>
             ) : null}
           </View>
           {expiredProducts.map((item, i) => (
-            <ExpiredProductCard product={item} key={i} getProducts={getProducts} />
+            <ExpiredProductCard
+              product={item}
+              key={i}
+              getProducts={getProducts}
+            />
           ))}
         </View>
       </ScrollView>
@@ -116,24 +134,23 @@ export default function Trash() {
 
 const EmptyBin = () => {
   return (
-      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"white" }}>
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text style={{ fontSize: 28, color: "#003366", textAlign: "center" }}>
-        You do not have any expired products right now.
-      </Text>
-    </View>
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "white" }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 28, color: "#003366", textAlign: "center" }}>
+          You do not have any expired products right now.
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };
 
 const ExpiredProductCard = ({ product, getProducts }) => {
-
   type Product = {
     id: number;
     title: string;
@@ -147,81 +164,105 @@ const ExpiredProductCard = ({ product, getProducts }) => {
     switch (category) {
       case "dairy":
         return (
-        <Text>
-          <Image source={require('../assets//images/dairy-products.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Dairy"/>
-        </Text>
+          <Image
+            source={require("../assets//images/dairy-products.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Dairy"
+          />
         );
       case "meat":
         return (
-        <Text>
-          <Image source={require('../assets//images/beef.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Meat"/>
-        </Text>
+          <Image
+            source={require("../assets//images/beef.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Meat"
+          />
         );
       case "seafood":
         return (
-        <Text>
-          <Image source={require('../assets//images/seafood.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Seafood"/>
-        </Text>
+          <Image
+            source={require("../assets//images/seafood.png")}
+            style={{ width: 65, height: 65 }}
+            accessibilityLabel="Seafood"
+          />
         );
       case "fruits":
         return (
-        <Text>
-          <Image source={require('../assets//images/fruits.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Fruits"/>
-        </Text>
+          <Image
+            source={require("../assets//images/fruits.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Fruits"
+          />
         );
       case "vegetables":
         return (
-        <Text>
-          <Image source={require('../assets//images/vegetable.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Vegetables"/>
-        </Text>
+          <Image
+            source={require("../assets//images/vegetable.png")}
+            style={{ width: 65, height: 65 }}
+            accessibilityLabel="Vegetables"
+          />
         );
       case "condiments":
         return (
-        <Text>
-          <Image source={require('../assets//images/condiment-ingredient.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Condiments"/>
-        </Text>
+          <Image
+            source={require("../assets//images/condiment-ingredient.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Condiments"
+          />
         );
       case "beverages":
         return (
-        <Text>
-          <Image source={require('../assets//images/beverages.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Beverages"/>
-        </Text>
+          <Image
+            source={require("../assets//images/beverages.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Beverages"
+          />
         );
       case "prepared foods":
         return (
-        <Text>
-          <Image source={require('../assets//images/meal.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Prepared Foods"/>
-        </Text>
+          <Image
+            source={require("../assets//images/meal.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Prepared Foods"
+          />
         );
       case "spreads":
         return (
-        <Text>
-          <Image source={require('../assets//images/toast.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Spreads"/>
-        </Text>
+          <Image
+            source={require("../assets//images/toast.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Spreads"
+          />
         );
       case "fresh herbs":
         return (
-        <Text>
-          <Image source={require('../assets//images/herbs.png')} style={{ width: 65, height: 65 }} accessibilityLabel="Fresh Herbs"/>
-        </Text>
+          <Image
+            source={require("../assets//images/herbs.png")}
+            style={{ width: 65, height: 65 }}
+            accessibilityLabel="Fresh Herbs"
+          />
         );
       case "frozen foods":
         return (
-        <Text>
-          <Image source={require('../assets//images/frozen-food.png')} style={{ width: 55, height: 55 }} accessibilityLabel="Frozen Foods" />
-        </Text>
+          <Image
+            source={require("../assets//images/frozen-food.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Frozen Foods"
+          />
         );
       default:
-        return ":question:"
+        return "❓";
     }
   };
-  
+
   const [modalOpen, setModalOpen] = useState(false);
   async function removeValue() {
     try {
       const storedList = await AsyncStorage.getItem("my-list");
       const currentList = storedList ? JSON.parse(storedList) : [];
-      const updatedList = currentList.filter((p: Product) => p.id !== product.id);
+      const updatedList = currentList.filter(
+        (p: Product) => p.id !== product.id
+      );
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
       getProducts(); // Refresh product list
       setModalOpen(false); // Close modal
@@ -231,40 +272,50 @@ const ExpiredProductCard = ({ product, getProducts }) => {
   }
   return (
     <View
-    style={{
-      flexDirection: "row",
-      alignItems: "center",
-      borderBottomColor: "black",
-      borderBottomWidth: 1,
-      padding: 10,
-      marginHorizontal: 20,
-      marginVertical: 10
-    }}
-  >
-    <View style={{ width: "20%", justifyContent: "center", alignItems: "center" }}>
-      {getCategoryEmoji(product.category)}
-    </View>
-  
-    <View style={{ flex: 1, paddingHorizontal: 10 }}>
-      <Text style={{ color: "#003366", fontSize: 20 }}>{product.name}</Text>
-      <Text style={{ color: "#003366", fontSize: 16 }}>{product.expiry}</Text>
-    </View>
-  
-    <TouchableOpacity
       style={{
-        backgroundColor: "#900101",
-        height: 35,
-        justifyContent: "center",
+        flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 15,
-        borderRadius: 20,
+        borderBottomColor: "black",
+        borderBottomWidth: 1,
+        padding: 10,
+        marginHorizontal: 20,
+        marginVertical: 10,
       }}
-      onPress={() => setModalOpen(true)}
     >
-      <Text style={{ color: "white", fontSize: 16 }}>Delete</Text>
-    </TouchableOpacity>
-  
-    <DeleteModal visible={modalOpen} onClose={() => setModalOpen(false)} onDelete={removeValue} />
+      <View
+        style={{ width: "20%", justifyContent: "center", alignItems: "center" }}
+      >
+        {Platform.OS === "ios" ? (
+          <Text>{getCategoryEmoji(product.category)}</Text>
+        ) : (
+          getCategoryEmoji(product.category)
+        )}
+      </View>
+
+      <View style={{ flex: 1, paddingHorizontal: 10 }}>
+        <Text style={{ color: "#003366", fontSize: 20 }}>{product.name}</Text>
+        <Text style={{ color: "#003366", fontSize: 16 }}>{product.expiry}</Text>
+      </View>
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#900101",
+          height: 35,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingHorizontal: 15,
+          borderRadius: 20,
+        }}
+        onPress={() => setModalOpen(true)}
+      >
+        <Text style={{ color: "white", fontSize: 16 }}>Delete</Text>
+      </TouchableOpacity>
+
+      <DeleteModal
+        visible={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onDelete={removeValue}
+      />
     </View>
   );
 };
