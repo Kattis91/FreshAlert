@@ -209,6 +209,16 @@ export default function Info({ navigation }) {
           />{" "}
           - Made by amonrat rungreangfangsai.
         </Text>
+
+        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify" }}>
+          <Image
+            source={require("../assets//images/man.png")}
+            style={{ width: 20, height: 20 }}
+            accessibilityLabel="Dairy"
+          />{" "}
+          - Made by Leremy.
+        </Text>
+
       </View>
     </ScrollView>
   );
