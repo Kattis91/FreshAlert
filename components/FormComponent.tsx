@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "./deleteModal";
 import useProductValidation from "@/hooks/useProductValidation";
 import { useFocusEffect } from "expo-router";
+import Toast from "react-native-toast-message";
 
 type Product = {
   id: number;
@@ -106,19 +107,19 @@ const FormComponent = ({
       );
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
 
-      Alert.alert(
+      const showToast = (text, text2) => {
+        Toast.show({
+          type: 'info',
+          text1: text,
+          text2: text2 ? text2 : null
+        });
+      }
+
+      showToast(
         "Product removed:",
         `Product: ${product?.name} \n Expiry date: ${product?.expiry}`,
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              console.log("OK pressed");
-              navigation.navigate("Your Products");
-            },
-          },
-        ]
       );
+      navigation.navigate("Your Products")
     } catch (e) {
       console.error("Failed to remove item.", e);
     }
@@ -277,6 +278,7 @@ const FormComponent = ({
             />
           </View>
         )}
+        <Toast/>
       </View>
     </TouchableWithoutFeedback>
   );

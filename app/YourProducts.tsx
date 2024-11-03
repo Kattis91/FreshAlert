@@ -18,6 +18,7 @@ import { useFocusEffect } from "expo-router";
 import DropDownPickerComponent from "@/components/DropDownPicker";
 import { styles } from "@/styles/styles";
 import LinearGradient from "react-native-linear-gradient";
+import Toast from "react-native-toast-message";
 
 export default function YourProducts({ navigation }) {
   type Product = {
@@ -36,6 +37,7 @@ export default function YourProducts({ navigation }) {
   const [filterType, setFilterType] = useState("ALL");
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<string | null>(null);
+  const [info, setInfo] = useState(false);
 
   const categories = [
     { label: "All Categories", value: "" },
@@ -160,6 +162,14 @@ export default function YourProducts({ navigation }) {
     return newDate;
   };
 
+  const checkInfo = async () => {
+    const data = await AsyncStorage.getItem("info");
+    if (JSON.parse(data)) {
+      console.log(JSON.parse(data));
+      setInfo(true);
+    }
+  };
+
   const calculateDaysDifference = (expiryDate: string) => {
     const currentDate = resetTime(new Date());
     const expiry = resetTime(new Date(expiryDate));
@@ -228,6 +238,7 @@ export default function YourProducts({ navigation }) {
 
   useEffect(() => {
     filterProducts();
+    checkInfo();
   }, [filterType, categoryValue, searchText, productData]);
 
   useFocusEffect(
@@ -303,6 +314,7 @@ export default function YourProducts({ navigation }) {
       style={{ flex: 1 }}
     >
       <SafeAreaView style={{ flex: 1, margin: 10 }}>
+        <Toast />
         <View
           style={{
             justifyContent: "center",
@@ -409,12 +421,64 @@ export default function YourProducts({ navigation }) {
 
         {productData.length === 0 ? (
           <View>
-            <Text style={styles.emptyText}>- You Have No Products -</Text>
-            <Image
-              source={require("../assets//images/man.png")}
-              style={{ width: 165, height: 165, alignSelf: "center" }}
-              accessibilityLabel="Seafood"
-            />
+            {!info ? (
+              <View
+                style={
+                  {
+                    // flex: 1,
+                    // justifyContent: "center",
+                    // paddingHorizontal: 30,
+                  }
+                }
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 30,
+                    marginBottom: 15,
+                    color: "#534b52",
+                  }}
+                >
+                  Welcome to FreshAlert!
+                </Text>
+
+                <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                  Keep your food fresh for longer and avoid unnecessary food
+                  waste with our smart app.
+                </Text>
+                <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                  FreshAlert helps you easily keep track of the expiration dates
+                  of your refrigerated and frozen goods.
+                </Text>
+                <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                  Receive timely reminders and plan better meals - all to save
+                  both money and the environment.
+                </Text>
+                <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                  Get started by adding your items, and we'll take care of the
+                  rest! Let FreshAlert make your refrigerator management easier
+                  and smarter.
+                </Text>
+
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    navigation.navigate("add", { screen: "Add Product" });
+                  }}
+                >
+                  <Text style={styles.buttonText}>ADD PRODUCT</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <>
+                <Text style={styles.emptyText}>- You Have No Products -</Text>
+                <Image
+                  source={require("../assets//images/man.png")}
+                  style={{ width: 165, height: 165, alignSelf: "center" }}
+                  accessibilityLabel="Seafood"
+                />
+              </>
+            )}
           </View>
         ) : filteredProductData.length === 0 ? (
           <Text style={styles.emptyText}>
