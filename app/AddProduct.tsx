@@ -3,9 +3,10 @@ import useDateValidation from "@/hooks/useDateValidation";
 import useProductValidation from "@/hooks/useProductValidation";
 import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
-import { Alert, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Button, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import Toast from "react-native-toast-message";
 
 export default function AddProducts({ navigation }) {
 
@@ -54,6 +55,14 @@ export default function AddProducts({ navigation }) {
       console.log('Validation failed'); // Log validation failure
       return;
     }
+    
+    const showToast = (text, text2) => {
+      Toast.show({
+        type: 'info',
+        text1: text,
+        text2: text2 ? text2 : null
+      });
+    }
 
     const product: Product = {
       id: new Date().getTime(),
@@ -74,7 +83,17 @@ export default function AddProducts({ navigation }) {
       // Save the updated list back to AsyncStorage
       await AsyncStorage.setItem("my-list", JSON.stringify(newList));
 
-      Alert.alert("Product added:", `Product: ${productName} \n Expiry date: ${expiryDate}`);
+      const data = await AsyncStorage.getItem("info");
+      if (!JSON.parse(data)) {
+        console.log(JSON.parse(data));
+        AsyncStorage.setItem("info", JSON.stringify({
+          "gotStarted": false
+        }))
+      }
+
+
+
+      showToast(`${productName} added:`, `Expiry date: ${expiryDate}`);
 
       setProductName("");
       setExpiryDate("");
@@ -82,7 +101,7 @@ export default function AddProducts({ navigation }) {
 
     } catch (error) {
       console.error("Failed to add product", error);
-      Alert.alert("Failed to add product");
+      showToast("Failed to add product");
     }
   }
 

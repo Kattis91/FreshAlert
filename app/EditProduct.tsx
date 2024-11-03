@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { Alert, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import Toast from "react-native-toast-message";
 
 
 type Product = {
@@ -83,6 +84,14 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       return;
     }
 
+    const showToast = (text, text2) => {
+      Toast.show({
+        type: 'info',
+        text1: text,
+        text2: text2 ? text2 : null
+      });
+    }
+
     const updatedProduct: Product = {
       ...product,
       title: productName,
@@ -100,26 +109,19 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         currentList[productIndex] = updatedProduct;
         await AsyncStorage.setItem("my-list", JSON.stringify(currentList));
 
-        Alert.alert(
+        showToast(
           "Product updated:",
           `Product: ${productName} \n Expiry date: ${expiryDate}`,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                console.log("OK pressed");
-                navigation.navigate("Your Products");
-              }
-            }
-          ]
         );
 
+        navigation.navigate("Your Products")
+
       } else {
-        Alert.alert("Product not found in the list");
+        showToast("Product not found in the list");
       }
     } catch (error) {
       console.error("Failed to update product", error);
-      Alert.alert("Failed to update product");
+      showToast("Failed to update product");
     }
   }
 
@@ -131,7 +133,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       const updatedList = currentList.filter((p: Product) => p.id !== product.id);
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
 
-      Alert.alert("Product removed:", `Product: ${product.name} \n Expiry date: ${product.expiry}`);
+      showToast("Product removed:", `Product: ${product.name} \n Expiry date: ${product.expiry}`);
 
       navigation.navigate("Your Products");
 
