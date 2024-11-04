@@ -19,6 +19,7 @@ import DropDownPickerComponent from "@/components/DropDownPicker";
 import { styles } from "@/styles/styles";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 
 export default function YourProducts({ navigation }) {
   type Product = {
@@ -309,225 +310,249 @@ export default function YourProducts({ navigation }) {
   };
 
   return (
-    
-      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor:"#f4f4f6" }}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            marginVertical: 10,
-          }}
-        >
-          <Image
-            source={require("../assets/images/fridge.gif")}
-            style={{ width: 45, height: 45, marginRight: 8 }}
-          />
-          <Text style={{ fontSize: 24, fontWeight: "bold" }}>FreshAlert</Text>
-        </View>
+    <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#f4f4f6" }}>
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          marginVertical: 10,
+        }}
+      >
+        <Image
+          source={require("../assets/images/fridge.gif")}
+          style={{ width: 45, height: 45, marginRight: 8 }}
+        />
+        <Text style={{ fontSize: 24, fontWeight: "bold" }}>FreshAlert</Text>
+      </View>
 
+      <View style={styles.Search}>
+        <TabBarIcon name="search" size={17} style={{ marginRight: 10 }}/>
         <TextInput
-          style={styles.TextInputS}
           placeholder="Search by date or name"
           value={searchText}
           onChangeText={setSearchText}
-           placeholderTextColor="black"
+          placeholderTextColor="black"
         />
+      </View>
 
-        {openCategory && (
-          <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
+      {openCategory && (
+        <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1, // Make sure it is above other components but below dropdown
+              backgroundColor: "transparent", // Keep it transparent
+            }}
+          />
+        </TouchableWithoutFeedback>
+      )}
+
+      <DropDownPickerComponent
+        openCategory={openCategory}
+        categoryValue={categoryValue}
+        categories={categories}
+        setCategoryValue={setCategoryValue}
+        setOpenCategory={setOpenCategory}
+        placeholder="Filter by category"
+      />
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: 10,
+          marginBottom: 10,
+        }}
+      >
+        <TouchableHighlight
+          style={
+            filterType == "ALL" ? styles.filterTabActiveALL : styles.filterTab
+          }
+          onPress={showAll}
+        >
+          <View>
+            <Text
+              style={{ color: filterType === "ALL" ? "#ffffff" : "#000000" }}
+            >
+              {filterButton}
+            </Text>
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={
+            filterType == "EXPIRING_SOON"
+              ? styles.filterTabActiveRed
+              : styles.filterTab
+          }
+          onPress={showExpiringSoon}
+        >
+          <View>
+            <Text
+              style={{
+                color: filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000",
+              }}
+            >
+              3 Days
+            </Text>
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={
+            filterType == "EXPIRING_7_DAYS"
+              ? styles.filterTabActiveYellow
+              : styles.filterTab
+          }
+          onPress={showExpiringIn7Days}
+        >
+          <View>
+            <Text>4-7 Days</Text>
+          </View>
+        </TouchableHighlight>
+
+        {/* Safe */}
+        <TouchableHighlight
+          style={
+            filterType == "EXPIRING_AFTER_7_DAYS"
+              ? styles.filterTabActiveGreen
+              : styles.filterTab
+          }
+          onPress={showExpiringAfter7Days}
+        >
+          <View>
+            <Text
+              style={{
+                color:
+                  filterType === "EXPIRING_AFTER_7_DAYS"
+                    ? "#ffffff"
+                    : "#000000",
+              }}
+            >
+              {" "}
+              Safe
+            </Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+
+      {productData.length === 0 ? (
+        <View>
+          {!info ? (
             <View
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                zIndex: 1, // Make sure it is above other components but below dropdown
-                backgroundColor: "transparent", // Keep it transparent
+                justifyContent: "center",
+                paddingHorizontal: 20,
               }}
-            />
-          </TouchableWithoutFeedback>
-        )}
-
-        <DropDownPickerComponent
-          openCategory={openCategory}
-          categoryValue={categoryValue}
-          categories={categories}
-          setCategoryValue={setCategoryValue}
-          setOpenCategory={setOpenCategory}
-          placeholder="Filter by category"
-        />
-
-        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 10, marginBottom: 10 }}>
-          <TouchableHighlight
-            style={
-              filterType == "ALL" ? styles.filterTabActiveALL : styles.filterTab
-            }
-            onPress={showAll}
-          >
-            <View>
+            >
               <Text
-                style={{ color: filterType === "ALL" ? "#ffffff" : "#000000" }}
+                style={{
+                  textAlign: "center",
+                  fontSize: 26,
+                  marginBottom: 15,
+                  marginTop: 20,
+                  color: "#534b52",
+                }}
               >
-                {filterButton}
+                Welcome to FreshAlert! 🌿
               </Text>
-            </View>
-          </TouchableHighlight>
 
-          <TouchableHighlight
-            style={
-              filterType == "EXPIRING_SOON"
-                ? styles.filterTabActiveRed
-                : styles.filterTab
-            }
-            onPress={showExpiringSoon}
-          >
-            <View>
-            <Text style={{ color: filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000" }}>
-    3 Days</Text>
-            </View>
-          </TouchableHighlight>
+              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                Keep your food fresh for longer and avoid unnecessary food waste
+                with our smart app.
+              </Text>
+              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                FreshAlert helps you easily keep track of the expiration dates
+                of your refrigerated and frozen goods.
+              </Text>
+              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                Receive timely reminders and plan better meals - all to save
+                both money and the environment.
+              </Text>
+              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+                Get started by adding your items, and we'll take care of the
+                rest! Let FreshAlert make your refrigerator management easier
+                and smarter.
+              </Text>
 
-          <TouchableHighlight
-            style={
-              filterType == "EXPIRING_7_DAYS"
-                ? styles.filterTabActiveYellow
-                : styles.filterTab
-            }
-            onPress={showExpiringIn7Days}
-          >
-            <View>
-              <Text>4-7 Days</Text>
-            </View>
-          </TouchableHighlight>
-
-          {/* Safe */}
-          <TouchableHighlight
-            style={
-              filterType == "EXPIRING_AFTER_7_DAYS"
-                ? styles.filterTabActiveGreen
-                : styles.filterTab
-            }
-            onPress={showExpiringAfter7Days}
-          >
-            <View>
-              <Text style={{ color: filterType === "EXPIRING_AFTER_7_DAYS" ? "#ffffff" : "#000000" }}> Safe</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-
-        {productData.length === 0 ? (
-          <View>
-            {!info ? (
-              <View
-                style={
-                  {
-                     justifyContent: "center",
-                     paddingHorizontal: 20,
-                  }
-                }
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 26,
-                    marginBottom: 15,
-                    marginTop: 20,
-                    color: "#534b52",
-                  }}
-                >
-                  Welcome to FreshAlert! 🌿
-                </Text>
-
-                <Text style={{ fontSize: 16, marginBottom: 15 }}>
-                  Keep your food fresh for longer and avoid unnecessary food
-                  waste with our smart app.
-                </Text>
-                <Text style={{ fontSize: 16, marginBottom: 15 }}>
-                  FreshAlert helps you easily keep track of the expiration dates
-                  of your refrigerated and frozen goods.
-                </Text>
-                <Text style={{ fontSize: 16, marginBottom: 15 }}>
-                  Receive timely reminders and plan better meals - all to save
-                  both money and the environment.
-                </Text>
-                <Text style={{ fontSize: 16, marginBottom: 15 }}>
-                  Get started by adding your items, and we'll take care of the
-                  rest! Let FreshAlert make your refrigerator management easier
-                  and smarter.
-                </Text>
-
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    navigation.navigate("add", { screen: "Add Product" });
-                  }}
-                >
-                  <Text style={styles.buttonText}>Add your first product!</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <>
-                <Text style={styles.emptyText}>- You Have No Products -</Text>
-                <Image
-                  source={require("../assets//images/man.png")}
-                  style={{ width: 165, height: 165, alignSelf: "center" }}
-                  accessibilityLabel="Man"
-                />
-              </>
-            )}
-          </View>
-        ) : filteredProductData.length === 0 ? (
-          <Text style={{marginTop: 150}}>
-            <Text style={{fontSize: 26, color: "#003366", textAlign: "center"}}>  {getCategoryMessage()}</Text> 
-          </Text>
-        ) : (
-          <FlatList
-            key={numColumns}
-            data={[...filteredProductData].reverse()}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Edit Product", { product: item })
-                }
-                activeOpacity={0.7}
+                style={styles.button}
+                onPress={() => {
+                  navigation.navigate("add", { screen: "Add Product" });
+                }}
               >
-                <View style={[styles.viewCon, { width: itemWidth }]}>
-                  <View style={styles.viewIcon}>
-                    {Platform.OS === "ios" ? (
-                      <Text style={styles.categoryEmoji}>
-                        {getCategoryEmoji(item.category)}
-                      </Text>
-                    ) : (
-                      getCategoryEmoji(item.category)
-                    )}
-                  </View>
-
-                  <Text
-                    style={styles.titleText}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.title}
-                  </Text>
-
-                  <View style={styles.expiryContainer}>
-                    <Text style={styles.expiryText}>{item.expiry}</Text>
-                    <View
-                      style={[
-                        styles.circleIndicator,
-                        { backgroundColor: getCircleColor(item.expiry) },
-                      ]}
-                    />
-                  </View>
-                </View>
+                <Text style={styles.buttonText}>Add your first product!</Text>
               </TouchableOpacity>
-            )}
-            numColumns={numColumns}
-          />
-        )}
-      </SafeAreaView>
+            </View>
+          ) : (
+            <>
+              <Text style={styles.emptyText}>- You Have No Products -</Text>
+              <Image
+                source={require("../assets//images/man.png")}
+                style={{ width: 165, height: 165, alignSelf: "center" }}
+                accessibilityLabel="Man"
+              />
+            </>
+          )}
+        </View>
+      ) : filteredProductData.length === 0 ? (
+        <Text style={{ marginTop: 150 }}>
+          <Text style={{ fontSize: 26, color: "#003366", textAlign: "center" }}>
+            {" "}
+            {getCategoryMessage()}
+          </Text>
+        </Text>
+      ) : (
+        <FlatList
+          key={numColumns}
+          data={[...filteredProductData].reverse()}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Edit Product", { product: item })
+              }
+              activeOpacity={0.7}
+            >
+              <View style={[styles.viewCon, { width: itemWidth }]}>
+                <View style={styles.viewIcon}>
+                  {Platform.OS === "ios" ? (
+                    <Text style={styles.categoryEmoji}>
+                      {getCategoryEmoji(item.category)}
+                    </Text>
+                  ) : (
+                    getCategoryEmoji(item.category)
+                  )}
+                </View>
+
+                <Text
+                  style={styles.titleText}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {item.title}
+                </Text>
+
+                <View style={styles.expiryContainer}>
+                  <Text style={styles.expiryText}>{item.expiry}</Text>
+                  <View
+                    style={[
+                      styles.circleIndicator,
+                      { backgroundColor: getCircleColor(item.expiry) },
+                    ]}
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+          numColumns={numColumns}
+        />
+      )}
+    </SafeAreaView>
   );
 }

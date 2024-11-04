@@ -232,6 +232,16 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },  
+  Search: { 
+    padding: 8,
+    borderRadius: 12,
+    backgroundColor:"white",
+    borderColor: '#10A78B',
+    borderWidth: 1,
+    marginBottom: 20,
+    textAlign: 'center',
+    flexDirection: 'row',
+  }, 
   errorText: {
     color: 'red',
     marginBottom: 5,
