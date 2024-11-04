@@ -294,18 +294,22 @@ export default function YourProducts({ navigation }) {
   const filterButton = categoryValue ? `All ${categoryValue}` : "All products";
 
   const getCategoryMessage = () => {
-    let categoryMessage = categoryValue
-      ? `within the ${categoryValue} category`
-      : "";
+    let categoryMessage = categoryValue ? `within the ${categoryValue} category` : "";
+    let searchMessage = searchText ? `matching "${searchText}"` : "";
+  
+    let combinedMessage = categoryMessage && searchMessage
+      ? `${categoryMessage} ${searchMessage}`
+      : categoryMessage || searchMessage;
+  
     switch (filterType) {
       case "EXPIRING_SOON":
-        return `No products found ${categoryMessage} that expire within 3 days`;
+        return `No products found ${combinedMessage} that expire within 3 days`;
       case "EXPIRING_7_DAYS":
-        return `No products found ${categoryMessage} that expire within 4-7 days`;
+        return `No products found ${combinedMessage} that expire within 4-7 days`;
       case "EXPIRING_AFTER_7_DAYS":
-        return `No products found ${categoryMessage} that are safe to consume`;
+        return `No products found ${combinedMessage} that are safe to consume`;
       default:
-        return `No products found ${categoryMessage}.`;
+        return `No products found ${combinedMessage}`;
     }
   };
 
@@ -327,7 +331,12 @@ export default function YourProducts({ navigation }) {
       </View>
 
       <View style={styles.Search}>
-        <TabBarIcon name="search" size={17} style={{ marginRight: 10 }}/>
+        {Platform.OS === "ios" ? ( 
+          <TabBarIcon name="search" size={17} style={{ marginRight: 10 }}/>
+        ) : (
+          <TabBarIcon name="search" size={23} style={{ marginRight: 10 }}/>
+        )
+        }
         <TextInput
           placeholder="Search by date or name"
           value={searchText}
