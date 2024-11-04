@@ -1,6 +1,6 @@
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
-import { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Image,
   Linking,
@@ -13,11 +13,29 @@ import { styles } from "@/styles/styles";
 
 export default function Info({ navigation }) {
 
+  const [isFocused, setIsFocused] = React.useState(true);
+
   const openExternalLink = async () => {
     const url = "https://www.flaticon.com/";
     const supported = await Linking.canOpenURL(url);
     Linking.openURL(url);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      // This function will be called when the screen is focused
+      setIsFocused(true);
+      return () => {
+        // This function will be called when the screen is unfocused
+        setIsFocused(false);
+        navigation.goBack();
+      };
+    }, [navigation])
+  );
+
+  if (!isFocused) {
+    return null;
+  }
 
   return (
     <ScrollView
@@ -64,10 +82,11 @@ export default function Info({ navigation }) {
         </Text>
 
         <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify" }}>
-          <Text style={{ fontWeight: "bold" }}>To check your products</Text> visit the main page where you can filter them
-          by category or expiration date. Below the list of categories, there is
-          a filter that sorts the products based on the number of days remaining
-          until each product's expiration.
+          <Text style={{ fontWeight: "bold" }}>To check your products</Text>{" "}
+          visit the main page where you can filter them by category or
+          expiration date. Below the list of categories, there is a filter that
+          sorts the products based on the number of days remaining until each
+          product's expiration.
         </Text>
 
         <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify" }}>
@@ -82,38 +101,63 @@ export default function Info({ navigation }) {
         </Text>
 
         <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify" }}>
-        <Text style={{ fontWeight: "bold" }}>Search</Text> - You can find your data using the Search function by entering
-          either the product name or expiration date.
+          <Text style={{ fontWeight: "bold" }}>Search</Text> - You can find your
+          data using the Search function by entering either the product name or
+          expiration date.
         </Text>
 
         <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify" }}>
-        <Text style={{ fontWeight: "bold" }}>Edit | Delete</Text> - The products added to the application can be modified
-          or deleted by selecting the product you wish to change.
+          <Text style={{ fontWeight: "bold" }}>Edit | Delete</Text> - The
+          products added to the application can be modified or deleted by
+          selecting the product you wish to change.
         </Text>
 
         <Text style={{ fontSize: 14, marginBottom: 20, textAlign: "justify" }}>
-        <Text style={{ fontWeight: "bold" }}>Notifications</Text> will be sent when a product has 7 days left until
-          expiration, and another notification will be issued when there are
-          only 3 days remaining.
+          <Text style={{ fontWeight: "bold" }}>Notifications</Text> will be sent
+          when a product has 7 days left until expiration, and another
+          notification will be issued when there are only 3 days remaining.
         </Text>
 
-        <View style={{ height: 1, backgroundColor: "black", marginVertical: 10 }} />
+        <View
+          style={{ height: 1, backgroundColor: "black", marginVertical: 10 }}
+        />
 
         <Text style={{ fontSize: 14, marginBottom: 10, textAlign: "justify" }}>
-          We, the creators of the app, are <Text style={{ fontWeight: "bold" }}>Ekaterina Durneva Svedmark, Arlinda
-          Islami</Text> and <Text style={{ fontWeight: "bold" }}>Subhojit Saha.</Text> We are studying app development at Malmö
-          Yrkeshögskola, and this app is our first project.
+          We, the creators of the app, are{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            Ekaterina Durneva Svedmark, Arlinda Islami
+          </Text>{" "}
+          and <Text style={{ fontWeight: "bold" }}>Subhojit Saha.</Text> We are
+          studying app development at Malmö Yrkeshögskola, and this app is our
+          first project.
         </Text>
 
-        <View style={{ height: 1, backgroundColor: "black", marginVertical: 10 }} />
+        <View
+          style={{ height: 1, backgroundColor: "black", marginVertical: 10 }}
+        />
 
-        <Text style={{ fontSize: 16, marginBottom: 15, textAlign: "justify", fontWeight: "bold" }}>
+        <Text
+          style={{
+            fontSize: 16,
+            marginBottom: 15,
+            textAlign: "justify",
+            fontWeight: "bold",
+          }}
+        >
           Credits:
         </Text>
 
         <Text style={{ fontSize: 16, marginBottom: 15, textAlign: "justify" }}>
           All the icons are owned by
-          <Text style={{ color: "#0A7763"}} onPress={() => {openExternalLink()}}> www.flaticon.com </Text>
+          <Text
+            style={{ color: "#0A7763" }}
+            onPress={() => {
+              openExternalLink();
+            }}
+          >
+            {" "}
+            www.flaticon.com{" "}
+          </Text>
           Find the authors of the icons below:
         </Text>
 
@@ -218,7 +262,6 @@ export default function Info({ navigation }) {
           />{" "}
           - Made by Leremy.
         </Text>
-
       </View>
     </ScrollView>
   );
