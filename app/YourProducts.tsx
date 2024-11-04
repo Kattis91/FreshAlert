@@ -359,7 +359,7 @@ export default function YourProducts({ navigation }) {
           placeholder="Filter by category"
         />
 
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 10, marginBottom: 10 }}>
           <TouchableHighlight
             style={
               filterType == "ALL" ? styles.filterTabActiveALL : styles.filterTab
@@ -423,21 +423,21 @@ export default function YourProducts({ navigation }) {
               <View
                 style={
                   {
-                    // flex: 1,
-                    // justifyContent: "center",
-                    // paddingHorizontal: 30,
+                     justifyContent: "center",
+                     paddingHorizontal: 20,
                   }
                 }
               >
                 <Text
                   style={{
                     textAlign: "center",
-                    fontSize: 30,
+                    fontSize: 26,
                     marginBottom: 15,
+                    marginTop: 20,
                     color: "#534b52",
                   }}
                 >
-                  Welcome to FreshAlert!
+                  Welcome to FreshAlert! 🌿
                 </Text>
 
                 <Text style={{ fontSize: 16, marginBottom: 15 }}>
@@ -464,7 +464,7 @@ export default function YourProducts({ navigation }) {
                     navigation.navigate("add", { screen: "Add Product" });
                   }}
                 >
-                  <Text style={styles.buttonText}>ADD PRODUCT</Text>
+                  <Text style={styles.buttonText}>Add your first product!</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -473,7 +473,7 @@ export default function YourProducts({ navigation }) {
                 <Image
                   source={require("../assets//images/man.png")}
                   style={{ width: 165, height: 165, alignSelf: "center" }}
-                  accessibilityLabel="Seafood"
+                  accessibilityLabel="Man"
                 />
               </>
             )}

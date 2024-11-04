@@ -64,7 +64,7 @@ export default function HomeScreen() {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: '#0A7763', // Change header background color
+            backgroundColor: '#10A78B', // Change header background color
           },
           headerTintColor: '#fff', // Change header text color
         }}
