@@ -3,7 +3,8 @@ import useDateValidation from "@/hooks/useDateValidation";
 import useProductValidation from "@/hooks/useProductValidation";
 import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import { Alert, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
@@ -72,6 +73,13 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       setDate(new Date(product.expiry || Date.now()));
     }
   }, [product]);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () =>  
+        navigation.goBack();
+    }, [])
+  );
 
   useDateValidation(date, dateChanged);
   const validateProduct = useProductValidation();
