@@ -80,7 +80,7 @@ export default function Trash() {
               margin: 15,
             }}
           >
-            Expired Products
+            Out of freshness:
           </Text>
           <View style={{ paddingHorizontal: 270 }}>
             <TouchableOpacity
@@ -93,9 +93,8 @@ export default function Trash() {
             >
               <Text
                 style={{
-                  color: "#00a5cf",
+                  color: "red",
                   fontSize: 16,
-                  textDecorationLine: "underline",
                 }}
               >
                 DELETE ALL

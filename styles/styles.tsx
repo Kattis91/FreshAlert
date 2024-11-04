@@ -154,7 +154,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 20,
-    backgroundColor: 'green',
+    backgroundColor: '#0A7763',
     borderWidth: 1,
     borderColor: 'green',
   },

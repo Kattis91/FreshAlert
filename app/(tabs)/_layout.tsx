@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Text } from 'react-native';
+import { Platform, Text } from 'react-native';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -48,11 +48,19 @@ export default function TabLayout() {
         options={{
           title: 'Add',
           tabBarIcon: ({ focused }) => (
-            <Ionicons 
-              name={focused ? 'add-circle' : 'add-circle-outline'}
-              size={focused ? 32 : 30} 
-              color="white"
-            />
+            Platform.OS === 'ios' ? (
+              <Ionicons 
+                name={focused ? 'add-circle' : 'add-circle-outline'}
+                size={focused ? 32 : 30} 
+                color="white"
+              />
+            ) : (
+              <TabBarIcon
+                name={focused ? "add-circle" : "add-circle-outline"}
+                color="white"
+                size={focused ? 31 : 30}
+              />
+            )
           ),
           tabBarLabel: ({ focused }) => (
             <Text

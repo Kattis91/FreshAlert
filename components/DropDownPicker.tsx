@@ -45,7 +45,7 @@ const DropDownPickerComponent = ({
         padding: 10,
       }}
       textStyle={{ color: "black", fontSize: 16 }} // Tekst modern
-      placeholderStyle={{ color: "black", fontSize: 14 }} 
+      placeholderStyle={{ color:  changeColor === 'true' ? "black" : "white", fontSize: 14 }} 
       labelStyle={{ color: changeColor === 'true' ? "black" : "white", fontSize: 14 }} 
       scrollViewProps={{
         nestedScrollEnabled: true,
