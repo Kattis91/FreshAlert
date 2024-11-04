@@ -76,20 +76,26 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   useDateValidation(date, dateChanged);
   const validateProduct = useProductValidation();
 
+
+  const showToast = (text, text2) => {
+    Toast.show({
+      type: 'info',
+      text1: text,
+      text2: text2 ? text2 : null,
+      onHide: () => {
+        navigation.navigate("Your Products")
+      },
+      visibilityTime: 500
+    });
+    console.log("here")
+  }
+
   async function Edit() {
 
     const isValid = validateProduct(productName, expiryDate, categoryValue, setErrorMessages );
     if (!isValid) {
       console.log('Validation failed'); // Log validation failure
       return;
-    }
-
-    const showToast = (text, text2) => {
-      Toast.show({
-        type: 'info',
-        text1: text,
-        text2: text2 ? text2 : null
-      });
     }
 
     const updatedProduct: Product = {
@@ -114,7 +120,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
           `Product: ${productName} \n Expiry date: ${expiryDate}`,
         );
 
-        navigation.navigate("Your Products")
+        // navigation.navigate("Your Products")
 
       } else {
         showToast("Product not found in the list");
@@ -135,7 +141,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
       showToast("Product removed:", `Product: ${product.name} \n Expiry date: ${product.expiry}`);
 
-      navigation.navigate("Your Products");
+      // navigation.navigate("Your Products");
 
     } catch (e) {
       console.error("Failed to remove item.", e);
@@ -145,7 +151,6 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   return (
 
     <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#f4f4f6" }}>
-
     <FormComponent
       product={product}
       productName={productName}
