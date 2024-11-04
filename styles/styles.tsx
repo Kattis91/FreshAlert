@@ -170,7 +170,7 @@ export const styles = StyleSheet.create({
   emptyText: {
     textAlign: 'center',
     fontSize: 20,
-    color: '#534b52',
+    color: "#003366",
     fontWeight: 'regular',
     marginVertical: 30,
   },

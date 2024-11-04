@@ -456,25 +456,25 @@ export default function YourProducts({ navigation }) {
                   fontSize: 26,
                   marginBottom: 15,
                   marginTop: 20,
-                  color: "#534b52",
+                  color: "#003366",
                 }}
               >
                 Welcome to FreshAlert! 🌿
               </Text>
 
-              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
                 Keep your food fresh for longer and avoid unnecessary food waste
                 with our smart app.
               </Text>
-              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
                 FreshAlert helps you easily keep track of the expiration dates
                 of your refrigerated and frozen goods.
               </Text>
-              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
                 Receive timely reminders and plan better meals - all to save
                 both money and the environment.
               </Text>
-              <Text style={{ fontSize: 16, marginBottom: 15 }}>
+              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
                 Get started by adding your items, and we'll take care of the
                 rest! Let FreshAlert make your refrigerator management easier
                 and smarter.
