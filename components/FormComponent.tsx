@@ -242,12 +242,10 @@ const FormComponent = ({
         />
          {errorMessages.categoryValue && <Text style={styles.errorText}>{errorMessages.categoryValue}</Text>}
 
-        <View style={styles.button}>
-          <Button
-            title={buttontext}
-            color={Platform.OS === "ios" ? "white" : "#0A7763"}
-            onPress={ handleButtonClick}
-          />
+        <View>
+          <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
+            <Text style={styles.buttonText}>{buttontext}</Text>
+          </TouchableOpacity>
         </View>
 
         {button2text && button2click && (
