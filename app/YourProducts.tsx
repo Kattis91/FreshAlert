@@ -13,6 +13,7 @@ import {
   Image,
   Platform,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 import { useFocusEffect } from "expo-router";
 import DropDownPickerComponent from "@/components/DropDownPicker";
@@ -248,6 +249,9 @@ export default function YourProducts({ navigation }) {
       return () => {
         // This function will be called when the screen is unfocused
         setOpenCategory(false);
+        setFilterType("ALL");
+        setCategoryValue(null);
+        setSearchText("");
       };
     }, [])
   );
@@ -294,13 +298,16 @@ export default function YourProducts({ navigation }) {
   const filterButton = categoryValue ? `All ${categoryValue}` : "All products";
 
   const getCategoryMessage = () => {
-    let categoryMessage = categoryValue ? `within the ${categoryValue} category` : "";
+    let categoryMessage = categoryValue
+      ? `within the ${categoryValue} category`
+      : "";
     let searchMessage = searchText ? `matching "${searchText}"` : "";
-  
-    let combinedMessage = categoryMessage && searchMessage
-      ? `${categoryMessage} ${searchMessage}`
-      : categoryMessage || searchMessage;
-  
+
+    let combinedMessage =
+      categoryMessage && searchMessage
+        ? `${categoryMessage} ${searchMessage}`
+        : categoryMessage || searchMessage;
+
     switch (filterType) {
       case "EXPIRING_SOON":
         return `No products found ${combinedMessage} that expire within 3 days`;
@@ -325,18 +332,19 @@ export default function YourProducts({ navigation }) {
       >
         <Image
           source={require("../assets/images/fridge.gif")}
-          style={{ width: 45, height: 45, marginRight: 8 }}
+          style={{ width: 45, height: 45, marginRight: 4 }}
         />
-        <Text style={{ fontSize: 24, fontWeight: "bold" }}>FreshAlert</Text>
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: "#003366" }}>
+          FreshAlert
+        </Text>
       </View>
 
       <View style={styles.Search}>
-        {Platform.OS === "ios" ? ( 
-          <TabBarIcon name="search" size={17} style={{ marginRight: 10 }}/>
+        {Platform.OS === "ios" ? (
+          <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
         ) : (
-          <TabBarIcon name="search" size={23} style={{ marginRight: 10 }}/>
-        )
-        }
+          <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
+        )}
         <TextInput
           placeholder="Search by date or name"
           value={searchText}
@@ -451,56 +459,90 @@ export default function YourProducts({ navigation }) {
       </View>
 
       {productData.length === 0 ? (
-        <View>
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            paddingHorizontal: 20,
+          }}
+        >
           {!info ? (
-            <View
-              style={{
-                justifyContent: "center",
-                paddingHorizontal: 20,
-              }}
-            >
+            <View>
               <Text
                 style={{
                   textAlign: "center",
                   fontSize: 26,
-                  marginBottom: 15,
-                  marginTop: 20,
+                  marginBottom: 10,
                   color: "#003366",
                 }}
               >
-                Welcome to FreshAlert! 🌿
+                Welcome to FreshAlert!
               </Text>
+              <Image
+                source={require("../assets/images/fresh-2.png")}
+                style={{
+                  width: 45,
+                  height: 45,
+                  alignSelf: "center",
+                  marginBottom: 10,
+                }}
+              />
 
-              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
+              <Text
+                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+              >
                 Keep your food fresh for longer and avoid unnecessary food waste
                 with our smart app.
               </Text>
-              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
+              <Text
+                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+              >
                 FreshAlert helps you easily keep track of the expiration dates
                 of your refrigerated and frozen goods.
               </Text>
-              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
+              <Text
+                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+              >
                 Receive timely reminders and plan better meals - all to save
                 both money and the environment.
               </Text>
-              <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
+              <Text
+                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+              >
                 Get started by adding your items, and we'll take care of the
                 rest! Let FreshAlert make your refrigerator management easier
                 and smarter.
               </Text>
 
               <TouchableOpacity
-                style={styles.button}
+                style={{
+                  width: "50%",
+                  alignSelf: "center",
+                  backgroundColor: "#10A78B",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 10,
+                  borderRadius: 30,
+                  marginTop: 20,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 8,
+                  height: 50,
+                }}
                 onPress={() => {
                   navigation.navigate("add", { screen: "Add Product" });
                 }}
               >
-                <Text style={styles.buttonText}>Add your first product!</Text>
+                <Text style={styles.buttonText}>DIVE IN</Text>
               </TouchableOpacity>
             </View>
           ) : (
             <>
-              <Text style={styles.emptyText}>- You Have No Products -</Text>
+              <Text style={styles.emptyText}>
+                Nothing here right now! Add products to keep track of freshness
+                and expiry.
+              </Text>
               <Image
                 source={require("../assets//images/man.png")}
                 style={{ width: 165, height: 165, alignSelf: "center" }}
@@ -508,7 +550,7 @@ export default function YourProducts({ navigation }) {
               />
             </>
           )}
-        </View>
+        </ScrollView>
       ) : filteredProductData.length === 0 ? (
         <Text style={{ marginTop: 150 }}>
           <Text style={{ fontSize: 26, color: "#003366", textAlign: "center" }}>
