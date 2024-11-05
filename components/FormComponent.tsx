@@ -171,6 +171,7 @@ const FormComponent = ({
             fontSize: 25,
             textAlign: "center",
             marginBottom: 25,
+            color: "#003366",
           }}
         >
           {addoredit}
@@ -257,6 +258,7 @@ const FormComponent = ({
                 textAlign: "center",
                 marginBottom: 25,
                 marginTop: 20,
+                color: "#003366",
               }}
             >
               Or delete the item:
@@ -273,7 +275,7 @@ const FormComponent = ({
               }}
               onPress={() => setModalOpen(true)}
             >
-              <Text style={{ color: "white", fontSize: 16 }}>
+              <Text style={styles.buttonText}>
                 {button2text}
               </Text>
             </TouchableOpacity>
