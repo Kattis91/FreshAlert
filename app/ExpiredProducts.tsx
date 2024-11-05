@@ -82,12 +82,13 @@ export default function Trash() {
           >
             Out of freshness:
           </Text>
-          <View style={{ paddingHorizontal: 270 }}>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
             <TouchableOpacity
               style={{
                 width: 150,
                 justifyContent: "center",
                 alignItems: "center",
+                marginBottom: 10,
               }}
               onPress={() => setConfirmDeleteAllVisible(true)}
             >
@@ -97,7 +98,7 @@ export default function Trash() {
                   fontSize: 16,
                 }}
               >
-                DELETE ALL
+                Delete all products
               </Text>
             </TouchableOpacity>
 
@@ -142,8 +143,13 @@ const EmptyBin = () => {
         }}
       >
         <Text style={{ fontSize: 28, color: "#003366", textAlign: "center" }}>
-          You do not have any expired products right now.
+        All clear! No expired products right now
         </Text>
+        <Image
+          source={require("../assets//images/fresh-3.png")}
+          style={{ width: 200, height: 200, marginTop: 20 }}
+          accessibilityLabel="Fresh"
+        />
       </View>
     </SafeAreaView>
   );
