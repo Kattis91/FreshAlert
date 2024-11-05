@@ -544,7 +544,7 @@ export default function YourProducts({ navigation }) {
                 and expiry.
               </Text>
               <Image
-                source={require("../assets//images/man.png")}
+                source={require("../assets//images/mini-fridge.png")}
                 style={{ width: 165, height: 165, alignSelf: "center" }}
                 accessibilityLabel="Man"
               />
@@ -552,12 +552,21 @@ export default function YourProducts({ navigation }) {
           )}
         </ScrollView>
       ) : filteredProductData.length === 0 ? (
-        <Text style={{ marginTop: 150 }}>
-          <Text style={{ fontSize: 26, color: "#003366", textAlign: "center" }}>
-            {" "}
-            {getCategoryMessage()}
+        <View style={{ marginTop: 30 }}>
+          <Image
+            source={require("../assets//images/man.png")}
+            style={{ width: 165, height: 165, alignSelf: "center" }}
+            accessibilityLabel="not-found"
+          />
+          <Text style={{ marginTop: 25 }}>
+            <Text
+              style={{ fontSize: 26, color: "#003366", textAlign: "center" }}
+            >
+              {" "}
+              {getCategoryMessage()}
+            </Text>
           </Text>
-        </Text>
+        </View>
       ) : (
         <FlatList
           key={numColumns}
