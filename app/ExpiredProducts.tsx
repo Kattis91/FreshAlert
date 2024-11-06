@@ -95,7 +95,7 @@ export default function Trash() {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 16,
+                  fontSize: 16
                 }}
               >
                 Delete all products
@@ -147,7 +147,7 @@ const EmptyBin = () => {
         </Text>
         <Image
           source={require("../assets//images/fresh-3.png")}
-          style={{ width: 200, height: 200, marginTop: 20 }}
+          style={{ width: 150, height: 150, marginTop: 20 }}
           accessibilityLabel="Fresh"
         />
       </View>
