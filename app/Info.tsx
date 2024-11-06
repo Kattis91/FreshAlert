@@ -164,6 +164,48 @@ export default function Info({ navigation }) {
 
         <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
           <Image
+            source={require("../assets//images/fresh-2.png")}
+            style={{ width: 20, height: 20 }}
+            accessibilityLabel="Fresh"
+          />
+          ,{" "}
+          <Image
+            source={require("../assets//images/fresh-3.png")}
+            style={{ width: 20, height: 20, marginTop: -3 }}
+            accessibilityLabel="Fresh"
+          />
+          ,{" "}
+          <Image
+            source={require("../assets//images/fruits.png")}
+            style={{ width: 20, height: 20 }}
+            accessibilityLabel="Fruits"
+          />
+          ,{" "}
+          <Image
+            source={require("../assets//images/herbs.png")}
+            style={{ width: 20, height: 20 }}
+            accessibilityLabel="Herbs"
+          />{" "}
+          and
+          <Image
+            source={require("../assets//images/fridge.gif")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Fridge"
+          />
+          - Made by Freepik.
+        </Text>
+
+        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+          <Image
+            source={require("../assets//images/mini-fridge.png")}
+            style={{ width: 20, height: 20, marginTop: -3 }}
+            accessibilityLabel="Mini-fridge"
+          />{" "}
+          - Made by vectorsmarket15.
+        </Text>
+
+        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+          <Image
             source={require("../assets//images/dairy-products.png")}
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Dairy"
@@ -175,7 +217,7 @@ export default function Info({ navigation }) {
           <Image
             source={require("../assets//images/beef.png")}
             style={{ width: 20, height: 20, marginTop: -2 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Beef"
           />{" "}
           - Made by DinosoftLabs.
         </Text>
@@ -184,37 +226,16 @@ export default function Info({ navigation }) {
           <Image
             source={require("../assets//images/seafood.png")}
             style={{ width: 20, height: 20, marginTop: -3 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Seafood"
           />{" "}
           - Made by Kanyanee Watanajitkasem.
         </Text>
 
         <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
           <Image
-            source={require("../assets//images/fruits.png")}
-            style={{ width: 20, height: 20 }}
-            accessibilityLabel="Dairy"
-          />{" "}
-          ,
-          <Image
-            source={require("../assets//images/herbs.png")}
-            style={{ width: 20, height: 20 }}
-            accessibilityLabel="Dairy"
-          />{" "}
-          and
-          <Image
-            source={require("../assets//images/fridge.gif")}
-            style={{ width: 20, height: 20, marginTop: -2 }}
-            accessibilityLabel="Dairy"
-          />
-          - Made by Freepik.
-        </Text>
-
-        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
-          <Image
             source={require("../assets//images/vegetable.png")}
             style={{ width: 20, height: 20, marginTop: -2 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Vegetable"
           />{" "}
           - Made by justicon.
         </Text>
@@ -223,7 +244,7 @@ export default function Info({ navigation }) {
           <Image
             source={require("../assets//images/condiment-ingredient.png")}
             style={{ width: 20, height: 20 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Condiment"
           />{" "}
           - Made by SetitikPixelStudio.
         </Text>
@@ -232,7 +253,7 @@ export default function Info({ navigation }) {
           <Image
             source={require("../assets//images/beverages.png")}
             style={{ width: 20, height: 20 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Beverages"
           />{" "}
           - Made by ultimatearm.
         </Text>
@@ -241,7 +262,7 @@ export default function Info({ navigation }) {
           <Image
             source={require("../assets//images/meal.png")}
             style={{ width: 20, height: 20 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Meal"
           />{" "}
           - Made by Flat Icons.
         </Text>
@@ -250,7 +271,7 @@ export default function Info({ navigation }) {
           <Image
             source={require("../assets//images/frozen-food.png")}
             style={{ width: 20, height: 20 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Frozen foods"
           />{" "}
           - Made by amonrat rungreangfangsai.
         </Text>
@@ -259,7 +280,7 @@ export default function Info({ navigation }) {
           <Image
             source={require("../assets//images/man.png")}
             style={{ width: 20, height: 20 }}
-            accessibilityLabel="Dairy"
+            accessibilityLabel="Empty"
           />{" "}
           - Made by Leremy.
         </Text>
