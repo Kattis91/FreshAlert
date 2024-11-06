@@ -336,7 +336,7 @@ export default function YourProducts({ navigation }) {
         <ActivityIndicator size="large" color="#10A78B" />
       </View>
     );
-  } else if (info) {
+  } else {
     return (
       <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#f4f4f6" }}>
         <View
