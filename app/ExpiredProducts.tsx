@@ -69,7 +69,7 @@ export default function Trash() {
   };
 
   return expiredProducts.length > 0 ? (
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
       <ScrollView>
         <View>
           <Text
@@ -134,7 +134,7 @@ export default function Trash() {
 
 const EmptyBin = () => {
   return (
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
       <View
         style={{
           flex: 1,

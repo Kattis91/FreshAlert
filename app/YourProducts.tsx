@@ -338,7 +338,7 @@ export default function YourProducts({ navigation }) {
     );
   } else {
     return (
-      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#f4f4f6" }}>
+      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#FFF8EC" }}>
         <View
           style={{
             justifyContent: "center",

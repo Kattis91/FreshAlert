@@ -184,7 +184,7 @@ const FormComponent = ({
           onChangeText={handleProductNameChange}
           value={productName}
           placeholder="Enter product name"
-          placeholderTextColor="black"
+          placeholderTextColor="#6b7a99"
         />
 
         {errorMessages.productName && <Text style={styles.errorText}>{errorMessages.productName}</Text>}
@@ -198,7 +198,7 @@ const FormComponent = ({
           onChangeText={setExpiryDate}
           value={expiryDate}
           placeholder="Add expiry date"
-          placeholderTextColor="black"
+          placeholderTextColor="#6b7a99"
         />
          {errorMessages.expiryDate && <Text style={styles.errorText}>{errorMessages.expiryDate}</Text>}
 

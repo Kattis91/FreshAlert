@@ -108,7 +108,7 @@ export default function AddProducts({ navigation }) {
   return (
 
    
-      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#f4f4f6" }}>
+      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#FFF8EC" }}>
 
         <FormComponent
           productName={productName}
