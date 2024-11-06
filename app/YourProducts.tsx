@@ -421,6 +421,7 @@ export default function YourProducts({ navigation }) {
           </TouchableWithoutFeedback>
         )}
 
+      {!info ? ( 
         <TouchableWithoutFeedback
           onPress={() => {
             if (!info) {
@@ -438,8 +439,20 @@ export default function YourProducts({ navigation }) {
               placeholder="Filter by category"
               disabled={!info ? true : false}
             />
-          </View>
+            </View>
         </TouchableWithoutFeedback>
+      ) : (
+        <DropDownPickerComponent
+          openCategory={openCategory}
+          categoryValue={categoryValue}
+          categories={categories}
+          setCategoryValue={setCategoryValue}
+          setOpenCategory={setOpenCategory}
+          placeholder="Filter by category"
+          disabled={!info ? true : false}
+        />
+      )}
+
 
         <View
           style={{
