@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   TouchableHighlight,
@@ -15,6 +15,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import { useFocusEffect } from "expo-router";
 import DropDownPickerComponent from "@/components/DropDownPicker";
@@ -330,6 +331,31 @@ export default function YourProducts({ navigation }) {
     }
   };
 
+  const buttonAnim = useRef(new Animated.Value(1)).current;
+
+  // Function to trigger button highlight animation
+  const highlightButton = () => {
+    console.log("Highlight button animation triggered");
+    Animated.sequence([
+      Animated.timing(buttonAnim, {
+        toValue: 1.2, // Use a larger scale for clear visibility
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(buttonAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  // Function to trigger when disabled input is pressed
+  const redirectToDiveIn = () => {
+    console.log("Redirecting to Dive In");
+    highlightButton();
+  };
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -356,20 +382,28 @@ export default function YourProducts({ navigation }) {
           </Text>
         </View>
 
-        <View style={styles.Search}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (!info) {
+              redirectToDiveIn();
+            }
+          }}
+        >
+          <View style={styles.Search}>
           {Platform.OS === "ios" ? (
             <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
           ) : (
             <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
           )}
-          <TextInput
-            placeholder="Search by date or name"
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholderTextColor="black"
-            editable={info ? true : false}
-          />
-        </View>
+            <TextInput
+              placeholder="Search by date or name"
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholderTextColor="black"
+              editable={info ? true : false} // Still control editability
+            />
+          </View>
+        </TouchableWithoutFeedback>
 
         {openCategory && (
           <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
@@ -386,7 +420,7 @@ export default function YourProducts({ navigation }) {
             />
           </TouchableWithoutFeedback>
         )}
-
+        
         <DropDownPickerComponent
           openCategory={openCategory}
           categoryValue={categoryValue}
@@ -537,29 +571,32 @@ export default function YourProducts({ navigation }) {
                   and smarter.
                 </Text>
 
-                <TouchableOpacity
-                  style={{
-                    width: "50%",
-                    alignSelf: "center",
-                    backgroundColor: "#10A78B",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: 10,
-                    borderRadius: 30,
-                    marginBottom: 20,
-                    marginTop: 10,
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 8,
-                    height: 50,
-                  }}
-                  onPress={() => {
-                    navigation.navigate("add", { screen: "Add Product" });
-                  }}
-                >
-                  <Text style={styles.buttonText}>DIVE IN</Text>
-                </TouchableOpacity>
+                <Animated.View style={{ transform: [{ scale: buttonAnim }] }}>
+                  <TouchableOpacity
+                    style={{
+                      width: "50%",
+                      alignSelf: "center",
+                      backgroundColor: "#10A78B",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: 10,
+                      borderRadius: 30,
+                      marginBottom: 20,
+                      marginTop: 10,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 4 },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 8,
+                      height: 50,
+                    }}
+                    onPress={() => {
+                      console.log("Navigating to Add Product screen");
+                      navigation.navigate("add", { screen: "Add Product" });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>DIVE IN</Text>
+                  </TouchableOpacity>
+                </Animated.View>
               </View>
             ) : (
               <>
