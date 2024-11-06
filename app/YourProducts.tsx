@@ -390,11 +390,11 @@ export default function YourProducts({ navigation }) {
           }}
         >
           <View style={styles.Search}>
-          {Platform.OS === "ios" ? (
-            <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
-          ) : (
-            <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
-          )}
+            {Platform.OS === "ios" ? (
+              <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
+            ) : (
+              <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
+            )}
             <TextInput
               placeholder="Search by date or name"
               value={searchText}
@@ -420,16 +420,26 @@ export default function YourProducts({ navigation }) {
             />
           </TouchableWithoutFeedback>
         )}
-        
-        <DropDownPickerComponent
-          openCategory={openCategory}
-          categoryValue={categoryValue}
-          categories={categories}
-          setCategoryValue={setCategoryValue}
-          setOpenCategory={setOpenCategory}
-          placeholder="Filter by category"
-          disabled={!info ? true : false}
-        />
+
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (!info) {
+              redirectToDiveIn();
+            }
+          }}
+        >
+          <View>
+            <DropDownPickerComponent
+              openCategory={openCategory}
+              categoryValue={categoryValue}
+              categories={categories}
+              setCategoryValue={setCategoryValue}
+              setOpenCategory={setOpenCategory}
+              placeholder="Filter by category"
+              disabled={!info ? true : false}
+            />
+          </View>
+        </TouchableWithoutFeedback>
 
         <View
           style={{
@@ -443,7 +453,13 @@ export default function YourProducts({ navigation }) {
             style={
               filterType == "ALL" ? styles.filterTabActiveALL : styles.filterTab
             }
-            onPress={showAll}
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              } else {
+                showAll();
+              }
+            }}
             disabled={!info ? true : false}
           >
             <View>
