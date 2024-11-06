@@ -9,6 +9,7 @@ type DropDownPickerProps = {
   setOpenCategory: (open: boolean) => void;
   placeholder?: string;
   changeColor?: string;
+  disabled?: boolean;
 };
 
 const DropDownPickerComponent = ({
@@ -18,11 +19,12 @@ const DropDownPickerComponent = ({
   setCategoryValue,
   setOpenCategory,
   placeholder,
-  changeColor
+  changeColor,
+  disabled,
 }: DropDownPickerProps) => {
   return (
     <DropDownPicker 
-      style={{...styles.formInputs, backgroundColor: changeColor === 'true' ? "#FBE8CF" : "#10A78B",  }}
+      style={{...styles.formInputs, backgroundColor: changeColor === 'true' ? "#FBE8CF" : "#10A78B" }}
       open={openCategory}
       value={categoryValue}
       items={categories}
@@ -61,6 +63,7 @@ const DropDownPickerComponent = ({
       selectedItemContainerStyle={{
         backgroundColor: '#10A78B', 
       }}
+      disabled={disabled}  
     />
   );
 };
