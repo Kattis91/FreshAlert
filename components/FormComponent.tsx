@@ -149,6 +149,14 @@ const FormComponent = ({
     }, [])
   );
 
+  const handleProductNameChange = (text: string) => {
+    setProductName(text);
+    if (errorMessages.productName) {
+      setErrorMessages((prev) => ({ ...prev, productName: undefined }));
+    }
+  };
+
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -163,6 +171,7 @@ const FormComponent = ({
             fontSize: 25,
             textAlign: "center",
             marginBottom: 25,
+            color: "#003366",
           }}
         >
           {addoredit}
@@ -172,7 +181,7 @@ const FormComponent = ({
 
         <TextInput
           style={styles.formInputs2}
-          onChangeText={setProductName}
+          onChangeText={handleProductNameChange}
           value={productName}
           placeholder="Enter product name"
           placeholderTextColor="black"
@@ -234,12 +243,10 @@ const FormComponent = ({
         />
          {errorMessages.categoryValue && <Text style={styles.errorText}>{errorMessages.categoryValue}</Text>}
 
-        <View style={styles.button}>
-          <Button
-            title={buttontext}
-            color={Platform.OS === "ios" ? "white" : "#0A7763"}
-            onPress={ handleButtonClick}
-          />
+        <View>
+          <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
+            <Text style={styles.buttonText}>{buttontext}</Text>
+          </TouchableOpacity>
         </View>
 
         {button2text && button2click && (
@@ -251,6 +258,7 @@ const FormComponent = ({
                 textAlign: "center",
                 marginBottom: 25,
                 marginTop: 20,
+                color: "#003366",
               }}
             >
               Or delete the item:
@@ -267,7 +275,7 @@ const FormComponent = ({
               }}
               onPress={() => setModalOpen(true)}
             >
-              <Text style={{ color: "white", fontSize: 16 }}>
+              <Text style={styles.buttonText}>
                 {button2text}
               </Text>
             </TouchableOpacity>

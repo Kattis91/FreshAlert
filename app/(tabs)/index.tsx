@@ -61,7 +61,14 @@ export default function HomeScreen() {
   return (
     <>
       <Toast />
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#10A78B', // Change header background color
+          },
+          headerTintColor: '#fff', // Change header text color
+        }}
+      >
         <Stack.Screen
           name="Your Products"
           component={YourProducts}
@@ -90,7 +97,9 @@ export default function HomeScreen() {
           options={({ navigation }) => ({
             headerLeft: () =>
               Platform.OS === "ios" ? (
-                <Button title="< Back" onPress={() => navigation.goBack()} />
+                <Button title="< Back" onPress={() => navigation.goBack()} 
+                color="white"
+                />
               ) : null,
           })}
         />

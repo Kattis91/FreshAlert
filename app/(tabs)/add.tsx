@@ -18,32 +18,7 @@ export default function AddScreen() {
       headerTintColor: '#fff', // Change header text color
     }}
   >
-      <Stack.Screen name="Add Product" component={AddProduct}
-        options={({ navigation }) => ({
-          headerRight: () => (
-            <TabBarIcon
-              name='information-circle-outline'
-              color="#fff"
-              onPress={() => navigation.navigate('Info')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-       name="Info"
-       component={Info}
-       options={({ navigation }) => ({
-        headerLeft: () => (
-          Platform.OS === "ios" ? (
-            <Button
-              title="< Back"
-              onPress={() => navigation.goBack()}
-               color="white"
-            />
-          ) : null
-        ),
-      })}
-    />
+      <Stack.Screen name="Add Product" component={AddProduct} />  
     </Stack.Navigator>
   );
 }
