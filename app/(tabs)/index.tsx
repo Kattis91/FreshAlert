@@ -78,18 +78,8 @@ export default function HomeScreen() {
           })}
         />
         <Stack.Screen
-          name="Get Started"
-          component={GetStartedScreen}
-          options={({ navigation }) => ({
-            headerRight: () => renderInfoIcon({ navigation }),
-          })}
-        />
-        <Stack.Screen
           name="Edit Product"
           component={EditProduct}
-          options={({ navigation }) => ({
-            headerRight: () => renderInfoIcon({ navigation }),
-          })}
         />
         <Stack.Screen
           name="Info"
