@@ -4,10 +4,10 @@ import useProductValidation from "@/hooks/useProductValidation";
 import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { Alert, Button, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Button, Platform, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
-import PushNotification from 'react-native-push-notification';
+import PushNotification from "react-native-push-notification";
 
 export default function AddProducts({ navigation }) {
 
@@ -66,7 +66,7 @@ export default function AddProducts({ navigation }) {
         sound: true,
       },
       popInitialNotification: true,
-      requestPermissions: true,
+      requestPermissions: Platform.OS === 'ios',
     });
   };
 
@@ -152,10 +152,7 @@ export default function AddProducts({ navigation }) {
         }))
       }
 
-
-
       showToast(`${productName} added:`, `Expiry date: ${expiryDate}`);
-      scheduleNotificationNow(product)
       scheduleNotificationOnExpiry(product)
       scheduleNotificationSevenDayBefore(product)
       scheduleNotificationThreeDayBefore(product)
