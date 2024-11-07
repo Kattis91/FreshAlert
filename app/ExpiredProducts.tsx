@@ -69,7 +69,7 @@ export default function Trash() {
   };
 
   return expiredProducts.length > 0 ? (
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
       <ScrollView>
         <View>
           <Text
@@ -95,7 +95,7 @@ export default function Trash() {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 16,
+                  fontSize: 16
                 }}
               >
                 Delete all products
@@ -134,7 +134,7 @@ export default function Trash() {
 
 const EmptyBin = () => {
   return (
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
       <View
         style={{
           flex: 1,
@@ -147,7 +147,7 @@ const EmptyBin = () => {
         </Text>
         <Image
           source={require("../assets//images/fresh-3.png")}
-          style={{ width: 200, height: 200, marginTop: 20 }}
+          style={{ width: 150, height: 150, marginTop: 20 }}
           accessibilityLabel="Fresh"
         />
       </View>

@@ -158,7 +158,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   return (
 
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#f4f4f6" }}>
+    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#FFF8EC" }}>
     <FormComponent
       product={product}
       productName={productName}

@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   TouchableHighlight,
@@ -14,6 +14,8 @@ import {
   Platform,
   TouchableWithoutFeedback,
   ScrollView,
+  ActivityIndicator,
+  Animated,
 } from "react-native";
 import { useFocusEffect } from "expo-router";
 import DropDownPickerComponent from "@/components/DropDownPicker";
@@ -39,7 +41,9 @@ export default function YourProducts({ navigation }) {
   const [filterType, setFilterType] = useState("ALL");
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<string | null>(null);
+
   const [info, setInfo] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const categories = [
     { label: "All Categories", value: "" },
@@ -149,7 +153,7 @@ export default function YourProducts({ navigation }) {
           />
         );
       default:
-        return "❓";
+        return ":question:";
     }
   };
 
@@ -162,14 +166,6 @@ export default function YourProducts({ navigation }) {
     const newDate = new Date(date);
     newDate.setHours(0, 0, 0, 0);
     return newDate;
-  };
-
-  const checkInfo = async () => {
-    const data = await AsyncStorage.getItem("info");
-    if (JSON.parse(data)) {
-      console.log(JSON.parse(data));
-      setInfo(true);
-    }
   };
 
   const calculateDaysDifference = (expiryDate: string) => {
@@ -229,8 +225,25 @@ export default function YourProducts({ navigation }) {
       setFilteredProductData(updatedProducts);
     } catch (error) {
       console.error("Failed to load products", error);
+    } finally {
+      setIsLoading(false); // End loading state
     }
   }
+
+  const checkInfo = async () => {
+    const data = await AsyncStorage.getItem("info");
+    setInfo(data ? JSON.parse(data) : false);
+  };
+
+  useEffect(() => {
+    // Fetch both product data and info
+    setIsLoading(true);
+    const fetchData = async () => {
+      await checkInfo();
+      await getProducts();
+    };
+    fetchData();
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -240,19 +253,17 @@ export default function YourProducts({ navigation }) {
 
   useEffect(() => {
     filterProducts();
-    checkInfo();
   }, [filterType, categoryValue, searchText, productData]);
 
   useFocusEffect(
     React.useCallback(() => {
-      // This function will be called when the screen is focused
-      return () => {
-        // This function will be called when the screen is unfocused
-        setOpenCategory(false);
-        setFilterType("ALL");
-        setCategoryValue(null);
-        setSearchText("");
-      };
+      setIsLoading(true);
+      getProducts();
+      setOpenCategory(false);
+      setFilterType("ALL");
+      setCategoryValue(null);
+      setSearchText("");
+      return () => setIsLoading(false); // Reset loading state on unfocus
     }, [])
   );
 
@@ -320,299 +331,449 @@ export default function YourProducts({ navigation }) {
     }
   };
 
-  return (
-    <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#f4f4f6" }}>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-          marginVertical: 10,
-        }}
-      >
-        <Image
-          source={require("../assets/images/fridge.gif")}
-          style={{ width: 45, height: 45, marginRight: 4 }}
-        />
-        <Text style={{ fontSize: 24, fontWeight: "bold", color: "#003366" }}>
-          FreshAlert
-        </Text>
+  const buttonAnim = useRef(new Animated.Value(1)).current;
+  const [buttonText, setButtonText] = useState("Dive In");
+
+  // Function to trigger button highlight animation
+  const highlightButton = () => {
+    console.log("Highlight button animation triggered");
+    Animated.sequence([
+      Animated.timing(buttonAnim, {
+        toValue: 1.2, // Use a larger scale for clear visibility
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(buttonAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  // Function to trigger when disabled input is pressed
+  const redirectToDiveIn = () => {
+    console.log("Redirecting to Dive In");
+    highlightButton();
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#10A78B" />
       </View>
-
-      <View style={styles.Search}>
-        {Platform.OS === "ios" ? (
-          <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
-        ) : (
-          <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
-        )}
-        <TextInput
-          placeholder="Search by date or name"
-          value={searchText}
-          onChangeText={setSearchText}
-          placeholderTextColor="black"
-        />
-      </View>
-
-      {openCategory && (
-        <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 1, // Make sure it is above other components but below dropdown
-              backgroundColor: "transparent", // Keep it transparent
-            }}
-          />
-        </TouchableWithoutFeedback>
-      )}
-
-      <DropDownPickerComponent
-        openCategory={openCategory}
-        categoryValue={categoryValue}
-        categories={categories}
-        setCategoryValue={setCategoryValue}
-        setOpenCategory={setOpenCategory}
-        placeholder="Filter by category"
-      />
-
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 10,
-          marginBottom: 10,
-        }}
-      >
-        <TouchableHighlight
-          style={
-            filterType == "ALL" ? styles.filterTabActiveALL : styles.filterTab
-          }
-          onPress={showAll}
-        >
-          <View>
-            <Text
-              style={{ color: filterType === "ALL" ? "#ffffff" : "#000000" }}
-            >
-              {filterButton}
-            </Text>
-          </View>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={
-            filterType == "EXPIRING_SOON"
-              ? styles.filterTabActiveRed
-              : styles.filterTab
-          }
-          onPress={showExpiringSoon}
-        >
-          <View>
-            <Text
-              style={{
-                color: filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000",
-              }}
-            >
-              3 Days
-            </Text>
-          </View>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={
-            filterType == "EXPIRING_7_DAYS"
-              ? styles.filterTabActiveYellow
-              : styles.filterTab
-          }
-          onPress={showExpiringIn7Days}
-        >
-          <View>
-            <Text>4-7 Days</Text>
-          </View>
-        </TouchableHighlight>
-
-        {/* Safe */}
-        <TouchableHighlight
-          style={
-            filterType == "EXPIRING_AFTER_7_DAYS"
-              ? styles.filterTabActiveGreen
-              : styles.filterTab
-          }
-          onPress={showExpiringAfter7Days}
-        >
-          <View>
-            <Text
-              style={{
-                color:
-                  filterType === "EXPIRING_AFTER_7_DAYS"
-                    ? "#ffffff"
-                    : "#000000",
-              }}
-            >
-              {" "}
-              Safe
-            </Text>
-          </View>
-        </TouchableHighlight>
-      </View>
-
-      {productData.length === 0 ? (
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
+    );
+  } else {
+    return (
+      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#FFF8EC" }}>
+        <View
+          style={{
             justifyContent: "center",
-            paddingHorizontal: 20,
+            alignItems: "center",
+            flexDirection: "row",
+            marginVertical: 10,
           }}
         >
-          {!info ? (
-            <View>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 26,
-                  marginBottom: 10,
-                  color: "#003366",
-                }}
-              >
-                Welcome to FreshAlert!
-              </Text>
-              <Image
-                source={require("../assets/images/fresh-2.png")}
-                style={{
-                  width: 45,
-                  height: 45,
-                  alignSelf: "center",
-                  marginBottom: 10,
-                }}
-              />
-
-              <Text
-                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-              >
-                Keep your food fresh for longer and avoid unnecessary food waste
-                with our smart app.
-              </Text>
-              <Text
-                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-              >
-                FreshAlert helps you easily keep track of the expiration dates
-                of your refrigerated and frozen goods.
-              </Text>
-              <Text
-                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-              >
-                Receive timely reminders and plan better meals - all to save
-                both money and the environment.
-              </Text>
-              <Text
-                style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-              >
-                Get started by adding your items, and we'll take care of the
-                rest! Let FreshAlert make your refrigerator management easier
-                and smarter.
-              </Text>
-
-              <TouchableOpacity
-                style={{
-                  width: "50%",
-                  alignSelf: "center",
-                  backgroundColor: "#10A78B",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: 10,
-                  borderRadius: 30,
-                  marginTop: 20,
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 8,
-                  height: 50,
-                }}
-                onPress={() => {
-                  navigation.navigate("add", { screen: "Add Product" });
-                }}
-              >
-                <Text style={styles.buttonText}>DIVE IN</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <>
-              <Text style={styles.emptyText}>
-                Nothing here right now! Add products to keep track of freshness
-                and expiry.
-              </Text>
-              <Image
-                source={require("../assets//images/mini-fridge.png")}
-                style={{ width: 165, height: 165, alignSelf: "center" }}
-                accessibilityLabel="Man"
-              />
-            </>
-          )}
-        </ScrollView>
-      ) : filteredProductData.length === 0 ? (
-        <View style={{ marginTop: 30 }}>
           <Image
-            source={require("../assets//images/man.png")}
-            style={{ width: 165, height: 165, alignSelf: "center" }}
-            accessibilityLabel="not-found"
+            source={require("../assets/images/fridge.gif")}
+            style={{ width: 45, height: 45, marginRight: 4 }}
           />
-          <Text style={{ marginTop: 25 }}>
-            <Text
-              style={{ fontSize: 26, color: "#003366", textAlign: "center" }}
-            >
-              {" "}
-              {getCategoryMessage()}
-            </Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: "#003366" }}>
+            FreshAlert
           </Text>
         </View>
-      ) : (
-        <FlatList
-          key={numColumns}
-          data={[...filteredProductData].reverse()}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Edit Product", { product: item })
+
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (!info) {
+              redirectToDiveIn();
+            }
+          }}
+        >
+          <View style={styles.Search}>
+            {Platform.OS === "ios" ? (
+              <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
+            ) : (
+              <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
+            )}
+            <TextInput
+              placeholder="Search by date or name"
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholderTextColor="black"
+              editable={info ? true : false} // Still control editability
+            />
+          </View>
+        </TouchableWithoutFeedback>
+
+        {openCategory && (
+          <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 1, // Make sure it is above other components but below dropdown
+                backgroundColor: "transparent", // Keep it transparent
+              }}
+            />
+          </TouchableWithoutFeedback>
+        )}
+
+        {!info ? (
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
               }
-              activeOpacity={0.7}
-            >
-              <View style={[styles.viewCon, { width: itemWidth }]}>
-                <View style={styles.viewIcon}>
-                  {Platform.OS === "ios" ? (
-                    <Text style={styles.categoryEmoji}>
-                      {getCategoryEmoji(item.category)}
-                    </Text>
-                  ) : (
-                    getCategoryEmoji(item.category)
-                  )}
+            }}
+          >
+            <View>
+              <DropDownPickerComponent
+                openCategory={openCategory}
+                categoryValue={categoryValue}
+                categories={categories}
+                setCategoryValue={setCategoryValue}
+                setOpenCategory={setOpenCategory}
+                placeholder="Filter by category"
+                disabled={!info ? true : false}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        ) : (
+          <DropDownPickerComponent
+            openCategory={openCategory}
+            categoryValue={categoryValue}
+            categories={categories}
+            setCategoryValue={setCategoryValue}
+            setOpenCategory={setOpenCategory}
+            placeholder="Filter by category"
+            disabled={!info ? true : false}
+          />
+        )}
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
+          {/* All */}
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
+          >
+            <View>
+              <TouchableHighlight
+                style={
+                  filterType == "ALL"
+                    ? styles.filterTabActiveALL
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showAll();
+                  }
+                }}
+                disabled={!info ? true : false}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color: filterType === "ALL" ? "#ffffff" : "#000000",
+                    }}
+                  >
+                    {filterButton}
+                  </Text>
                 </View>
+              </TouchableHighlight>
+            </View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
+          >
+            <View>
+              <TouchableHighlight
+                style={
+                  filterType == "EXPIRING_SOON"
+                    ? styles.filterTabActiveRed
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showExpiringSoon();
+                  }
+                }}
+                disabled={!info ? true : false}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color:
+                        filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000",
+                    }}
+                  >
+                    3 Days
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </TouchableWithoutFeedback>
+
+          {/* 4-7 Days */}
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
+          >
+            <View>
+              <TouchableHighlight
+                style={
+                  filterType == "EXPIRING_7_DAYS"
+                    ? styles.filterTabActiveYellow
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showExpiringIn7Days();
+                  }
+                }}
+                disabled={!info ? true : false}
+              >
+                <View>
+                  <Text>4-7 Days</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </TouchableWithoutFeedback>
+
+          {/* Safe */}
+
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
+          >
+            <View>
+              <TouchableHighlight
+                style={
+                  filterType == "EXPIRING_AFTER_7_DAYS"
+                    ? styles.filterTabActiveGreen
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showExpiringAfter7Days();
+                  }
+                }}
+                disabled={!info ? true : false}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color:
+                        filterType === "EXPIRING_AFTER_7_DAYS"
+                          ? "#ffffff"
+                          : "#000000",
+                    }}
+                  >
+                    {" "}
+                    Safe
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+
+        {productData.length === 0 ? (
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: "center",
+              paddingHorizontal: 20,
+            }}
+          >
+            {!info ? (
+              <View>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 26,
+                    marginBottom: 10,
+                    color: "#003366",
+                  }}
+                >
+                  Welcome to FreshAlert!
+                </Text>
+                <Image
+                  source={require("../assets/images/fresh-2.png")}
+                  style={{
+                    width: 45,
+                    height: 45,
+                    alignSelf: "center",
+                    marginBottom: 10,
+                  }}
+                />
 
                 <Text
-                  style={styles.titleText}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
+                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
                 >
-                  {item.title}
+                  Keep your food fresh for longer and avoid unnecessary food
+                  waste with our smart app.
+                </Text>
+                <Text
+                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+                >
+                  FreshAlert helps you easily keep track of the expiration dates
+                  of your refrigerated and frozen goods.
+                </Text>
+                <Text
+                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+                >
+                  Receive timely reminders and plan better meals - all to save
+                  both money and the environment.
+                </Text>
+                <Text
+                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+                >
+                  Get started by adding your items, and we'll take care of the
+                  rest! Let FreshAlert make your refrigerator management easier
+                  and smarter.
                 </Text>
 
-                <View style={styles.expiryContainer}>
-                  <Text style={styles.expiryText}>{item.expiry}</Text>
-                  <View
-                    style={[
-                      styles.circleIndicator,
-                      { backgroundColor: getCircleColor(item.expiry) },
-                    ]}
-                  />
-                </View>
+                <Animated.View style={{ transform: [{ scale: buttonAnim }] }}>
+                  <TouchableOpacity
+                    style={{
+                      width: "50%",
+                      alignSelf: "center",
+                      backgroundColor: "#10A78B",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: 10,
+                      borderRadius: 30,
+                      marginBottom: 20,
+                      marginTop: 10,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 4 },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 8,
+                      height: 50,
+                    }}
+                    onPress={() => {
+                      console.log("Navigating to Add Product screen");
+                      navigation.navigate("add", { screen: "Add Product" });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>DIVE IN</Text>
+                  </TouchableOpacity>
+                </Animated.View>
               </View>
-            </TouchableOpacity>
-          )}
-          numColumns={numColumns}
-        />
-      )}
-    </SafeAreaView>
-  );
+            ) : (
+              <>
+                <Image
+                  source={require("../assets//images/mini-fridge.png")}
+                  style={{ width: 165, height: 165, alignSelf: "center" }}
+                  accessibilityLabel="Man"
+                />
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: "#003366",
+                    textAlign: "center",
+                  }}
+                >
+                  Nothing here right now! Add products to keep track of
+                  freshness and expiry.
+                </Text>
+              </>
+            )}
+          </ScrollView>
+        ) : filteredProductData.length === 0 ? (
+          <View style={{ marginTop: 30 }}>
+            <Image
+              source={require("../assets//images/man.png")}
+              style={{ width: 165, height: 165, alignSelf: "center" }}
+              accessibilityLabel="not-found"
+            />
+            <Text style={{ marginTop: 25, textAlign: "center" }}>
+              <Text style={{ fontSize: 26, color: "#003366" }}>
+                {" "}
+                {getCategoryMessage()}
+              </Text>
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            key={numColumns}
+            data={[...filteredProductData].reverse()}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Edit Product", { product: item })
+                }
+                activeOpacity={0.7}
+              >
+                <View style={[styles.viewCon, { width: itemWidth }]}>
+                  <View style={styles.viewIcon}>
+                    {Platform.OS === "ios" ? (
+                      <Text style={styles.categoryEmoji}>
+                        {getCategoryEmoji(item.category)}
+                      </Text>
+                    ) : (
+                      getCategoryEmoji(item.category)
+                    )}
+                  </View>
+
+                  <Text
+                    style={styles.titleText}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {item.title}
+                  </Text>
+
+                  <View style={styles.expiryContainer}>
+                    <Text style={styles.expiryText}>{item.expiry}</Text>
+                    <View
+                      style={[
+                        styles.circleIndicator,
+                        { backgroundColor: getCircleColor(item.expiry) },
+                      ]}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )}
+            numColumns={numColumns}
+          />
+        )}
+      </SafeAreaView>
+    );
+  }
 }

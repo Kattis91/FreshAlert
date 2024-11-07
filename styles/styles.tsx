@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   label: {
     textTransform: "uppercase",
     fontSize: 16,
-    color: "#6b7a82",
+    color: "black",
     marginBottom: 10,
     marginLeft: 4,
     alignSelf: "flex-start",
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   formInputs: {
-    borderColor: "#10A78B",
+    borderColor: "#10a78b",
     borderWidth: 1,
     height: 45,
     borderRadius: 12,
@@ -34,13 +34,13 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formInputs2: {
-    borderColor: "#10A78B",
+    borderColor: "#006066",
     borderWidth: 1,
     height: 45,
     borderRadius: 12,
     width: "100%",
     paddingHorizontal: 10,
-    backgroundColor: "#FBE8CF",
+    backgroundColor: "#fff",
     fontSize: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -176,7 +176,7 @@ export const styles = StyleSheet.create({
   },
   viewCon: {
     height: 140,
-    backgroundColor: '#F4CE9C',
+    backgroundColor: '#FAD4BB',
     borderRadius: 12,
     margin: 6.5,
     paddingVertical: 12,
