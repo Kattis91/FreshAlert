@@ -490,6 +490,7 @@ export default function YourProducts({ navigation }) {
                   <Text
                     style={{
                       color: filterType === "ALL" ? "#ffffff" : "#000000",
+                      fontWeight: filterType === "ALL" ? "bold" : "normal",
                     }}
                   >
                     {filterButton}
@@ -527,6 +528,7 @@ export default function YourProducts({ navigation }) {
                     style={{
                       color:
                         filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000",
+                        fontWeight: filterType === "EXPIRING_SOON" ? "bold" : "normal",
                     }}
                   >
                     3 Days
@@ -548,7 +550,7 @@ export default function YourProducts({ navigation }) {
               <TouchableHighlight
                 style={
                   filterType == "EXPIRING_7_DAYS"
-                    ? styles.filterTabActiveYellow
+                    ? styles.filterTabActiveOrange
                     : styles.filterTab
                 }
                 onPress={() => {
@@ -561,7 +563,15 @@ export default function YourProducts({ navigation }) {
                 disabled={!info ? true : false}
               >
                 <View>
-                  <Text>4-7 Days</Text>
+                <Text
+                    style={{
+                      color:
+                        filterType === "EXPIRING_7_DAYS" ? "#ffffff" : "#000000",
+                        fontWeight: filterType === "EXPIRING_7_DAYS" ? "bold" : "normal",
+                    }}
+                  >
+                    4-7 Days
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -599,6 +609,7 @@ export default function YourProducts({ navigation }) {
                         filterType === "EXPIRING_AFTER_7_DAYS"
                           ? "#ffffff"
                           : "#000000",
+                        fontWeight: filterType === "EXPIRING_AFTER_7_DAYS" ? "bold" : "normal",
                     }}
                   >
                     {" "}

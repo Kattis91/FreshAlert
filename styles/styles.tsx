@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
   },
   filterTabActiveALL: {
     padding: 10,
-    margin: 5,
+    margin: 3,
     borderRadius: 20,
     backgroundColor: '#10A78B',
     borderWidth: 1,
@@ -136,23 +136,23 @@ export const styles = StyleSheet.create({
   },
   filterTabActiveRed: {
     padding: 10,
-    margin: 5,
+    margin: 3,
     borderRadius: 20,
     backgroundColor: 'red',
     borderWidth: 1,
     borderColor: 'red',
   },
-  filterTabActiveYellow: {
+  filterTabActiveOrange: {
     padding: 10,
-    margin: 5,
+    margin: 3,
     borderRadius: 20,
-    backgroundColor: 'yellow',
+    backgroundColor: 'orange',
     borderWidth: 1,
-    borderColor: 'yellow',
+    borderColor: 'orange',
   },
   filterTabActiveGreen: {
     padding: 10,
-    margin: 5,
+    margin: 3,
     borderRadius: 20,
     backgroundColor: '#0A7763',
     borderWidth: 1,
