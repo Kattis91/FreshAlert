@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
+import PushNotification from 'react-native-push-notification';
 
 export default function AddProducts({ navigation }) {
 
@@ -45,6 +46,66 @@ export default function AddProducts({ navigation }) {
   const [dateChanged, setDateChanged] = useState(false);
 
   useDateValidation(date, dateChanged);
+
+  useEffect(() => {
+    setupPushNotifications();
+  }, []);
+
+  const setupPushNotifications = () => {
+    PushNotification.configure({
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+        notification.finish(PushNotification.FetchResult.NoData);
+      },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
+  };
+
+  const scheduleNotificationOnExpiry = (product: Product) => {
+    const notificationDate = new Date(product.expiry);
+    notificationDate.setDate(notificationDate.getDate()); // Notify 1 day before expiry
+
+    PushNotification.localNotificationSchedule({
+      channelId: 'default-channel-id',
+      title: 'Product Expiring Soon',
+      message: `${product.name} is expiring today!`,
+      date: notificationDate,
+      allowWhileIdle: true,
+    });
+  };
+  const scheduleNotificationThreeDayBefore = (product: Product) => {
+    const notificationDate = new Date(product.expiry);
+    notificationDate.setDate(notificationDate.getDate() - 1); // Notify 1 day before expiry
+
+    PushNotification.localNotificationSchedule({
+      channelId: 'default-channel-id',
+      title: 'Product Expiring Soon',
+      message: `${product.name} is expiring in 3 days!`,
+      date: notificationDate,
+      allowWhileIdle: true,
+    });
+  };
+  const scheduleNotificationSevenDayBefore = (product: Product) => {
+    const notificationDate = new Date(product.expiry);
+    notificationDate.setDate(notificationDate.getDate() - 1); // Notify 1 day before expiry
+
+    PushNotification.localNotificationSchedule({
+      channelId: 'default-channel-id',
+      title: 'Product Expiring Soon',
+      message: `${product.name} is expiring in a week!`,
+      date: notificationDate,
+      allowWhileIdle: true,
+    });
+  };
 
   const validateProduct = useProductValidation();
 
@@ -94,6 +155,10 @@ export default function AddProducts({ navigation }) {
 
 
       showToast(`${productName} added:`, `Expiry date: ${expiryDate}`);
+      scheduleNotificationNow(product)
+      scheduleNotificationOnExpiry(product)
+      scheduleNotificationSevenDayBefore(product)
+      scheduleNotificationThreeDayBefore(product)
 
       setProductName("");
       setExpiryDate("");
@@ -109,7 +174,6 @@ export default function AddProducts({ navigation }) {
 
    
       <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#f4f4f6" }}>
-
         <FormComponent
           productName={productName}
           setProductName={setProductName}
