@@ -332,6 +332,7 @@ export default function YourProducts({ navigation }) {
   };
 
   const buttonAnim = useRef(new Animated.Value(1)).current;
+  const [buttonText, setButtonText] = useState("Dive In");
 
   // Function to trigger button highlight animation
   const highlightButton = () => {
@@ -421,38 +422,37 @@ export default function YourProducts({ navigation }) {
           </TouchableWithoutFeedback>
         )}
 
-      {!info ? ( 
-        <TouchableWithoutFeedback
-          onPress={() => {
-            if (!info) {
-              redirectToDiveIn();
-            }
-          }}
-        >
-          <View>
-            <DropDownPickerComponent
-              openCategory={openCategory}
-              categoryValue={categoryValue}
-              categories={categories}
-              setCategoryValue={setCategoryValue}
-              setOpenCategory={setOpenCategory}
-              placeholder="Filter by category"
-              disabled={!info ? true : false}
-            />
+        {!info ? (
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
+          >
+            <View>
+              <DropDownPickerComponent
+                openCategory={openCategory}
+                categoryValue={categoryValue}
+                categories={categories}
+                setCategoryValue={setCategoryValue}
+                setOpenCategory={setOpenCategory}
+                placeholder="Filter by category"
+                disabled={!info ? true : false}
+              />
             </View>
-        </TouchableWithoutFeedback>
-      ) : (
-        <DropDownPickerComponent
-          openCategory={openCategory}
-          categoryValue={categoryValue}
-          categories={categories}
-          setCategoryValue={setCategoryValue}
-          setOpenCategory={setOpenCategory}
-          placeholder="Filter by category"
-          disabled={!info ? true : false}
-        />
-      )}
-
+          </TouchableWithoutFeedback>
+        ) : (
+          <DropDownPickerComponent
+            openCategory={openCategory}
+            categoryValue={categoryValue}
+            categories={categories}
+            setCategoryValue={setCategoryValue}
+            setOpenCategory={setOpenCategory}
+            placeholder="Filter by category"
+            disabled={!info ? true : false}
+          />
+        )}
 
         <View
           style={{
@@ -462,86 +462,152 @@ export default function YourProducts({ navigation }) {
             marginBottom: 10,
           }}
         >
-          <TouchableHighlight
-            style={
-              filterType == "ALL" ? styles.filterTabActiveALL : styles.filterTab
-            }
+          {/* All */}
+          <TouchableWithoutFeedback
             onPress={() => {
               if (!info) {
                 redirectToDiveIn();
-              } else {
-                showAll();
               }
             }}
-            disabled={!info ? true : false}
           >
             <View>
-              <Text
-                style={{ color: filterType === "ALL" ? "#ffffff" : "#000000" }}
-              >
-                {filterButton}
-              </Text>
-            </View>
-          </TouchableHighlight>
-
-          <TouchableHighlight
-            style={
-              filterType == "EXPIRING_SOON"
-                ? styles.filterTabActiveRed
-                : styles.filterTab
-            }
-            onPress={showExpiringSoon}
-            disabled={!info ? true : false}
-          >
-            <View>
-              <Text
-                style={{
-                  color: filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000",
+              <TouchableHighlight
+                style={
+                  filterType == "ALL"
+                    ? styles.filterTabActiveALL
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showAll();
+                  }
                 }}
+                disabled={!info ? true : false}
               >
-                3 Days
-              </Text>
+                <View>
+                  <Text
+                    style={{
+                      color: filterType === "ALL" ? "#ffffff" : "#000000",
+                    }}
+                  >
+                    {filterButton}
+                  </Text>
+                </View>
+              </TouchableHighlight>
             </View>
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
 
-          <TouchableHighlight
-            style={
-              filterType == "EXPIRING_7_DAYS"
-                ? styles.filterTabActiveYellow
-                : styles.filterTab
-            }
-            onPress={showExpiringIn7Days}
-            disabled={!info ? true : false}
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
           >
             <View>
-              <Text>4-7 Days</Text>
+              <TouchableHighlight
+                style={
+                  filterType == "EXPIRING_SOON"
+                    ? styles.filterTabActiveRed
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showExpiringSoon();
+                  }
+                }}
+                disabled={!info ? true : false}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color:
+                        filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000",
+                    }}
+                  >
+                    3 Days
+                  </Text>
+                </View>
+              </TouchableHighlight>
             </View>
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
+
+          {/* 4-7 Days */}
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
+          >
+            <View>
+              <TouchableHighlight
+                style={
+                  filterType == "EXPIRING_7_DAYS"
+                    ? styles.filterTabActiveYellow
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showExpiringIn7Days();
+                  }
+                }}
+                disabled={!info ? true : false}
+              >
+                <View>
+                  <Text>4-7 Days</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </TouchableWithoutFeedback>
 
           {/* Safe */}
-          <TouchableHighlight
-            style={
-              filterType == "EXPIRING_AFTER_7_DAYS"
-                ? styles.filterTabActiveGreen
-                : styles.filterTab
-            }
-            onPress={showExpiringAfter7Days}
-            disabled={!info ? true : false}
+
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                redirectToDiveIn();
+              }
+            }}
           >
             <View>
-              <Text
-                style={{
-                  color:
-                    filterType === "EXPIRING_AFTER_7_DAYS"
-                      ? "#ffffff"
-                      : "#000000",
+              <TouchableHighlight
+                style={
+                  filterType == "EXPIRING_AFTER_7_DAYS"
+                    ? styles.filterTabActiveGreen
+                    : styles.filterTab
+                }
+                onPress={() => {
+                  if (!info) {
+                    redirectToDiveIn();
+                  } else {
+                    showExpiringAfter7Days();
+                  }
                 }}
+                disabled={!info ? true : false}
               >
-                {" "}
-                Safe
-              </Text>
+                <View>
+                  <Text
+                    style={{
+                      color:
+                        filterType === "EXPIRING_AFTER_7_DAYS"
+                          ? "#ffffff"
+                          : "#000000",
+                    }}
+                  >
+                    {" "}
+                    Safe
+                  </Text>
+                </View>
+              </TouchableHighlight>
             </View>
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
         </View>
 
         {productData.length === 0 ? (
