@@ -181,7 +181,7 @@ export default function YourProducts({ navigation }) {
     if (dayDiff > 7) {
       return "#0A7763";
     } else if (dayDiff <= 7 && dayDiff > 3) {
-      return "yellow";
+      return "orange";
     } else if (dayDiff <= 3 && dayDiff >= 0) {
       return "red";
     }
@@ -312,7 +312,7 @@ export default function YourProducts({ navigation }) {
     let categoryMessage = categoryValue
       ? `within the ${categoryValue} category`
       : "";
-    let searchMessage = searchText ? `matching "${searchText}"` : "";
+    let searchMessage = searchText ? `matching "${searchText}" ` : "";
 
     let combinedMessage =
       categoryMessage && searchMessage
@@ -325,7 +325,7 @@ export default function YourProducts({ navigation }) {
       case "EXPIRING_7_DAYS":
         return `No products found ${combinedMessage} that expire within 4-7 days`;
       case "EXPIRING_AFTER_7_DAYS":
-        return `No products found ${combinedMessage} that are safe to consume`;
+        return `No products found ${combinedMessage}that are safe to consume`;
       default:
         return `No products found ${combinedMessage}`;
     }
