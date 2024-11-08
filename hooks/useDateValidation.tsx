@@ -26,9 +26,8 @@ useEffect(() => {
     const timeDifference = selectedDateReset.getTime() - currentDate.getTime();
     const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
-    if (daysDifference === 0) {
-      showToast("Note: The expiry date is today.");
-    } else if (daysDifference > 0 && daysDifference <= 7) {
+  
+    if (daysDifference > 0 && daysDifference <= 7) {
       showToast(`The expiry date is within ${daysDifference} days.`);
     } else if (daysDifference < 0) {
       showToast("The expiry date cannot be in the past.");
