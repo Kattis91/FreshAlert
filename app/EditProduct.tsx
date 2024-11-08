@@ -93,7 +93,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       onHide: () => {
         navigation.navigate("Your Products")
       },
-      visibilityTime: 500
+      visibilityTime: 1500
     });
     console.log("here")
   }
