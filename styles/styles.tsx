@@ -158,6 +158,16 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'green',
   },
+  resetButton: {
+    backgroundColor: "#900101",
+    borderRadius: 30,
+    padding: 10,
+    alignSelf: "center",
+    marginBottom: 10,
+    width: "50%",
+    elevation: 3, //(Just for Android)
+    shadowColor: "#000", //(Just for iOS)
+  },
   inputs: {
     borderColor: "#A5D6A7",
     borderWidth: 1,

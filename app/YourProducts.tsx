@@ -633,6 +633,32 @@ export default function YourProducts({ navigation }) {
           </TouchableWithoutFeedback>
         </View>
 
+        {productData.length > 0 && searchText.length > 0 && categoryValue != "" && categoryValue != null? (
+          <TouchableOpacity 
+            onPress={() => (
+              setCategoryValue(null),
+              setSearchText("")
+            )}
+            style={styles.resetButton}
+          >
+            <Text style={{fontSize: 14, textAlign: "center", color: "white"}}>Reset all the filters</Text>
+          </TouchableOpacity>
+        ) : productData.length > 0 && searchText.length > 0 ? (
+          <TouchableOpacity 
+            onPress={() => setSearchText("")}
+            style={styles.resetButton}
+          >
+            <Text style={{fontSize: 14, textAlign: "center", color: "white"}}>Clear the search field</Text>
+          </TouchableOpacity>
+        ) : productData.length > 0 && categoryValue != "" && categoryValue != null ? (
+          <TouchableOpacity 
+            onPress={() => setCategoryValue(null)}
+            style={styles.resetButton}
+          >
+            <Text style={{fontSize: 14, textAlign: "center", color: "white"}}>Reset category filter</Text>
+          </TouchableOpacity>
+        ) : null}
+
         {productData.length === 0 ? (
           <ScrollView
             contentContainerStyle={{
@@ -694,7 +720,7 @@ export default function YourProducts({ navigation }) {
                     style={{
                       width: "50%",
                       alignSelf: "center",
-                      backgroundColor: "#10A78B",
+                      backgroundColor: "#338F85",
                       justifyContent: "center",
                       alignItems: "center",
                       padding: 10,
