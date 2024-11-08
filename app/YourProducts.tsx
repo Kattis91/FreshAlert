@@ -525,7 +525,7 @@ export default function YourProducts({ navigation }) {
                   }
                 }}
                 underlayColor={
-                  filterType === "ALL" ? styles.filterTabActiveALL.backgroundColor : styles.filterTab.backgroundColor
+                  filterType === "EXPIRING_SOON" ? styles.filterTabActiveRed.backgroundColor : styles.filterTab.backgroundColor
                 }
                 disabled={!info ? true : false}
               >
@@ -567,7 +567,7 @@ export default function YourProducts({ navigation }) {
                   }
                 }}
                 underlayColor={
-                  filterType === "ALL" ? styles.filterTabActiveALL.backgroundColor : styles.filterTab.backgroundColor
+                  filterType === "EXPIRING_7_DAYS" ? styles.filterTabActiveOrange.backgroundColor : styles.filterTab.backgroundColor
                 }
                 disabled={!info ? true : false}
               >
@@ -610,7 +610,7 @@ export default function YourProducts({ navigation }) {
                   }
                 }}
                 underlayColor={
-                  filterType === "ALL" ? styles.filterTabActiveALL.backgroundColor : styles.filterTab.backgroundColor
+                  filterType === "EXPIRING_AFTER_7_DAYS" ? styles.filterTabActiveGreen.backgroundColor : styles.filterTab.backgroundColor
                 }
                 disabled={!info ? true : false}
               >
