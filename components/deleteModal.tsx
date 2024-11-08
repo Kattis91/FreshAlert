@@ -41,7 +41,7 @@ function DeleteModal(props: DeleteModalProps) {
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                backgroundColor: "#0A7763",
+                backgroundColor: "#338F85",
                 height: 35,
                 justifyContent: "center",
                 minWidth: 80,

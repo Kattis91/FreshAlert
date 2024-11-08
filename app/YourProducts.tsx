@@ -321,9 +321,9 @@ export default function YourProducts({ navigation }) {
 
     switch (filterType) {
       case "EXPIRING_SOON":
-        return `No products found ${combinedMessage} that expire within 3 days`;
+        return `No products found ${combinedMessage}that expire within 3 days`;
       case "EXPIRING_7_DAYS":
-        return `No products found ${combinedMessage} that expire within 4-7 days`;
+        return `No products found ${combinedMessage}that expire within 4-7 days`;
       case "EXPIRING_AFTER_7_DAYS":
         return `No products found ${combinedMessage}that are safe to consume`;
       default:
@@ -484,6 +484,9 @@ export default function YourProducts({ navigation }) {
                     showAll();
                   }
                 }}
+                underlayColor={
+                  filterType === "ALL" ? styles.filterTabActiveALL.backgroundColor : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
@@ -521,6 +524,9 @@ export default function YourProducts({ navigation }) {
                     showExpiringSoon();
                   }
                 }}
+                underlayColor={
+                  filterType === "ALL" ? styles.filterTabActiveALL.backgroundColor : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
@@ -560,6 +566,9 @@ export default function YourProducts({ navigation }) {
                     showExpiringIn7Days();
                   }
                 }}
+                underlayColor={
+                  filterType === "ALL" ? styles.filterTabActiveALL.backgroundColor : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
@@ -600,6 +609,9 @@ export default function YourProducts({ navigation }) {
                     showExpiringAfter7Days();
                   }
                 }}
+                underlayColor={
+                  filterType === "ALL" ? styles.filterTabActiveALL.backgroundColor : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
