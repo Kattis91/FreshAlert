@@ -172,36 +172,50 @@ export default function Info() {
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Fresh"
           />
-          ,{" "}
+          {" "}
+          {" "}
           <Image
             source={require("../assets//images/fresh-3.png")}
             style={{ width: 20, height: 20, marginTop: -3 }}
             accessibilityLabel="Fresh"
           />
-          ,{" "}
+          {" "}
+          {" "}
           <Image
             source={require("../assets//images/fruits.png")}
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Fruits"
           />
-          ,{" "}
+          {" "}
           <Image
             source={require("../assets//images/herbs.png")}
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Herbs"
-          />{" "}
-          ,
+          />
+          {" "}
           <Image
             source={require("../assets//images/fridge.gif")}
             style={{ width: 20, height: 20, marginTop: -2 }}
             accessibilityLabel="Fridge"
           />
-          and {" "}
+          {" "}
           <Image
             source={require("../assets//images/confused.png")}
             style={{ width: 20, height: 20, marginTop: -2 }}
             accessibilityLabel="Question Mark"
           />
+          {" "}
+          <Image
+            source={require("../assets//images/dairy-free.png")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Dairy Free"
+          />{" "}
+          {" "}
+          <Image
+            source={require("../assets//images/vegan.png")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Vegan"
+          />{" "}
           - Made by Freepik.
         </Text>
 

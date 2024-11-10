@@ -154,6 +154,22 @@ export default function YourProducts({ navigation }) {
             accessibilityLabel="Frozen Foods"
           />
         );
+      case "non-dairy products":
+        return (
+          <Image
+            source={require("../assets//images/dairy-free.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Non-Dairy Products"
+          />
+        );
+      case "plant-based proteins":
+        return (
+          <Image
+            source={require("../assets//images/vegan.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Plant-Based Proteins"
+          />
+        );
       default:
         return (
           <Image
