@@ -4,7 +4,7 @@ import useProductValidation from "@/hooks/useProductValidation";
 import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { Alert, Button, Platform, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Button, PermissionsAndroid, Platform, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
 import PushNotification from "react-native-push-notification";
@@ -71,40 +71,52 @@ export default function AddProducts({ navigation }) {
   };
 
   const scheduleNotificationOnExpiry = (product: Product) => {
-    const notificationDate = new Date(product.expiry);
-    notificationDate.setDate(notificationDate.getDate()); // Notify 1 day before expiry
+    const expiryDate = new Date(product.expiry);
+    const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate()} 16:27:00`)
 
     PushNotification.localNotificationSchedule({
-      channelId: 'default-channel-id',
+      channelId: 'FreshAlert',
       title: 'Product Expiring Soon',
       message: `${product.name} is expiring today!`,
       date: notificationDate,
       allowWhileIdle: true,
     });
   };
-  const scheduleNotificationThreeDayBefore = (product: Product) => {
-    const notificationDate = new Date(product.expiry);
-    notificationDate.setDate(notificationDate.getDate() - 1); // Notify 1 day before expiry
 
-    PushNotification.localNotificationSchedule({
-      channelId: 'default-channel-id',
-      title: 'Product Expiring Soon',
-      message: `${product.name} is expiring in 3 days!`,
-      date: notificationDate,
-      allowWhileIdle: true,
-    });
+  const scheduleNotificationThreeDayBefore = (product: Product) => {
+    const expiryDate = new Date(product.expiry);
+    if(expiryDate.getDate() - 3 > 0) {
+
+      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 16:27:00`)
+      
+      PushNotification.localNotificationSchedule({
+        channelId: 'FreshAlert',
+        title: 'Product Expiring Soon',
+        message: `${product.name} is expiring in 3 days!`,
+        date: notificationDate,
+        allowWhileIdle: true,
+      });
+    } else {
+      return;
+    }
   };
   const scheduleNotificationSevenDayBefore = (product: Product) => {
-    const notificationDate = new Date(product.expiry);
-    notificationDate.setDate(notificationDate.getDate() - 1); // Notify 1 day before expiry
+    const expiryDate = new Date(product.expiry);
 
-    PushNotification.localNotificationSchedule({
-      channelId: 'default-channel-id',
-      title: 'Product Expiring Soon',
-      message: `${product.name} is expiring in a week!`,
-      date: notificationDate,
-      allowWhileIdle: true,
-    });
+    if(expiryDate.getDate() - 7 > 0) {
+
+      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 16:27:00`)
+      
+      PushNotification.localNotificationSchedule({
+        channelId: 'FreshAlert',
+        title: 'Product Expiring Soon',
+        message: `${product.name} is expiring in a week!`,
+        date: notificationDate,
+        allowWhileIdle: true,
+      });
+    } else {
+      return;
+    }
   };
 
   const validateProduct = useProductValidation();
