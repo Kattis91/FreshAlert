@@ -190,11 +190,17 @@ export default function Info() {
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Herbs"
           />{" "}
-          and
+          ,
           <Image
             source={require("../assets//images/fridge.gif")}
             style={{ width: 20, height: 20, marginTop: -2 }}
             accessibilityLabel="Fridge"
+          />
+          and {" "}
+          <Image
+            source={require("../assets//images/confused.png")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Question Mark"
           />
           - Made by Freepik.
         </Text>

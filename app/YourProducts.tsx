@@ -155,7 +155,13 @@ export default function YourProducts({ navigation }) {
           />
         );
       default:
-        return ":question:";
+        return (
+          <Image
+            source={require("../assets//images/confused.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Question Mark"
+          />
+        );
     }
   };
 
