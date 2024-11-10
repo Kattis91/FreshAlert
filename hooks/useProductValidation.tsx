@@ -11,7 +11,7 @@ const useProductValidation = () => {
     const errors: { productName?: string; expiryDate?: string; categoryValue?: string } = {};
 
     const trimmedName = productName.trim();
-    const nameRegex = /^[a-zA-Z0-9\såäöÅÄÖ]+$/;
+    const nameRegex = /^[\p{L}\p{N}\s]+$/u;
 
     let isValid = true;
 
