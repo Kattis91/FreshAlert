@@ -51,6 +51,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   const categories = [
     { label: "Dairy", value: "dairy" },
+    { label: "Non-Dairy Products", value: "non-dairy products" },
+    { label: "Plant-Based Proteins", value: "plant-based proteins" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
     { label: "Fruits", value: "fruits" },
