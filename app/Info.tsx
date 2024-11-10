@@ -11,7 +11,9 @@ import {
 } from "react-native";
 import { styles } from "@/styles/styles";
 
-export default function Info({ navigation }) {
+export default function Info() {
+
+  const navigation = useNavigation();
 
   const [isFocused, setIsFocused] = React.useState(true);
 
@@ -28,7 +30,9 @@ export default function Info({ navigation }) {
       return () => {
         // This function will be called when the screen is unfocused
         setIsFocused(false);
-        navigation.goBack();
+        if (navigation.canGoBack()) {
+          navigation.goBack();
+        }
       };
     }, [navigation])
   );
@@ -44,7 +48,7 @@ export default function Info({ navigation }) {
         justifyContent: "center",
         paddingHorizontal: 10,
         paddingVertical: 10,
-        backgroundColor: "#f4f4f6",
+        backgroundColor: "#FFF8EC",
       }}
     >
       <View
@@ -54,7 +58,7 @@ export default function Info({ navigation }) {
           style={{
             textAlign: "center",
             fontSize: 40,
-            color: "#10A78B",
+            color: "#338F85",
             paddingVertical: 15,
           }}
         >
@@ -168,30 +172,50 @@ export default function Info({ navigation }) {
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Fresh"
           />
-          ,{" "}
+          {" "}
+          {" "}
           <Image
             source={require("../assets//images/fresh-3.png")}
             style={{ width: 20, height: 20, marginTop: -3 }}
             accessibilityLabel="Fresh"
           />
-          ,{" "}
+          {" "}
+          {" "}
           <Image
             source={require("../assets//images/fruits.png")}
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Fruits"
           />
-          ,{" "}
+          {" "}
           <Image
             source={require("../assets//images/herbs.png")}
             style={{ width: 20, height: 20 }}
             accessibilityLabel="Herbs"
-          />{" "}
-          and
+          />
+          {" "}
           <Image
             source={require("../assets//images/fridge.gif")}
             style={{ width: 20, height: 20, marginTop: -2 }}
             accessibilityLabel="Fridge"
           />
+          {" "}
+          <Image
+            source={require("../assets//images/confused.png")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Question Mark"
+          />
+          {" "}
+          <Image
+            source={require("../assets//images/dairy-free.png")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Dairy Free"
+          />{" "}
+          {" "}
+          <Image
+            source={require("../assets//images/vegan.png")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Vegan"
+          />{" "}
           - Made by Freepik.
         </Text>
 

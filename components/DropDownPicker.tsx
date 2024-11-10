@@ -24,7 +24,7 @@ const DropDownPickerComponent = ({
 }: DropDownPickerProps) => {
   return (
     <DropDownPicker 
-      style={{...styles.formInputs, backgroundColor: changeColor === 'true' ? "#AFEFE3" : "#10A78B" }}
+      style={{...styles.formInputs, backgroundColor: changeColor === 'true' ? "#AFEFE3" : "#338F85" }}
       open={openCategory}
       value={categoryValue}
       items={categories}
@@ -55,14 +55,15 @@ const DropDownPickerComponent = ({
       }}
       listItemContainerStyle={{
         backgroundColor: "#fff", 
-        borderBottomColor: "#10A78B", 
+        borderBottomColor: "#338F85", 
         borderBottomWidth: 1,
         paddingVertical: 10, 
       }}
       listItemLabelStyle={{ color: "black", fontSize: 14 }} 
       selectedItemContainerStyle={{
-        backgroundColor: '#10A78B', 
+        backgroundColor: '#338F85', 
       }}
+      selectedItemLabelStyle={{ color: "white" }}
       disabled={disabled}  
     />
   );

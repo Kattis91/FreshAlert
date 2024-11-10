@@ -48,6 +48,8 @@ export default function YourProducts({ navigation }) {
   const categories = [
     { label: "All Categories", value: "" },
     { label: "Dairy", value: "dairy" },
+    { label: "Non-Dairy Products", value: "non-dairy products" },
+    { label: "Plant-Based Proteins", value: "plant-based proteins" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
     { label: "Fruits", value: "fruits" },
@@ -152,8 +154,30 @@ export default function YourProducts({ navigation }) {
             accessibilityLabel="Frozen Foods"
           />
         );
+      case "non-dairy products":
+        return (
+          <Image
+            source={require("../assets//images/dairy-free.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Non-Dairy Products"
+          />
+        );
+      case "plant-based proteins":
+        return (
+          <Image
+            source={require("../assets//images/vegan.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Plant-Based Proteins"
+          />
+        );
       default:
-        return ":question:";
+        return (
+          <Image
+            source={require("../assets//images/confused.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Question Mark"
+          />
+        );
     }
   };
 
@@ -321,9 +345,9 @@ export default function YourProducts({ navigation }) {
 
     switch (filterType) {
       case "EXPIRING_SOON":
-        return `No products found ${combinedMessage} that expire within 3 days`;
+        return `No products found ${combinedMessage}that expire within 3 days`;
       case "EXPIRING_7_DAYS":
-        return `No products found ${combinedMessage} that expire within 4-7 days`;
+        return `No products found ${combinedMessage}that expire within 4-7 days`;
       case "EXPIRING_AFTER_7_DAYS":
         return `No products found ${combinedMessage}that are safe to consume`;
       default:
@@ -332,7 +356,7 @@ export default function YourProducts({ navigation }) {
   };
 
   const buttonAnim = useRef(new Animated.Value(1)).current;
-  const [buttonText, setButtonText] = useState("Dive In");
+  const ScrollViewRef = useRef(null);
 
   // Function to trigger button highlight animation
   const highlightButton = () => {
@@ -351,10 +375,13 @@ export default function YourProducts({ navigation }) {
     ]).start();
   };
 
-  // Function to trigger when disabled input is pressed
-  const redirectToDiveIn = () => {
-    console.log("Redirecting to Dive In");
-    highlightButton();
+  // Function to scroll to the end of the screen and highlight the button
+  const scrollToButtonAndHighlight = () => {
+    ScrollViewRef.current.scrollToEnd({ animated: true });
+
+    setTimeout(() => {
+      highlightButton();
+    }, 500);
   };
 
   if (isLoading) {
@@ -382,29 +409,57 @@ export default function YourProducts({ navigation }) {
             FreshAlert
           </Text>
         </View>
-
-        <TouchableWithoutFeedback
-          onPress={() => {
-            if (!info) {
-              redirectToDiveIn();
-            }
-          }}
-        >
-          <View style={styles.Search}>
-            {Platform.OS === "ios" ? (
-              <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
-            ) : (
-              <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
+        
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                scrollToButtonAndHighlight();
+              }
+            }}
+          >
+            <View style={{...styles.Search, flex: searchText.length > 0 ? 2 : 1 }}>
+              {Platform.OS === "ios" ? (
+                <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
+              ) : (
+                <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
+              )}
+              <TextInput
+                placeholder="Search by date or name"
+                value={searchText}
+                onChangeText={setSearchText}
+                placeholderTextColor="black"
+                editable={info ? true : false} // Still control editability
+                maxLength={30}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        
+          <View>
+            {productData.length > 0 && searchText.length > 0 && (
+              <TouchableOpacity
+                onPress={() => setSearchText("")}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#900101",
+                  borderRadius: 30,
+                  padding: 10,
+                  marginBottom: 20,
+                  marginLeft: 10,
+                  alignSelf: "center",
+                  elevation: 3, //(Just for Android)
+                  shadowColor: "#000", //(Just for iOS)
+                }}
+              >
+              <Text
+                style={{ fontSize: 14, textAlign: "center", color: "white" }}
+              >
+                Clear the field
+              </Text>
+              </TouchableOpacity>
             )}
-            <TextInput
-              placeholder="Search by date or name"
-              value={searchText}
-              onChangeText={setSearchText}
-              placeholderTextColor="black"
-              editable={info ? true : false} // Still control editability
-            />
           </View>
-        </TouchableWithoutFeedback>
+        </View>
 
         {openCategory && (
           <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
@@ -426,7 +481,7 @@ export default function YourProducts({ navigation }) {
           <TouchableWithoutFeedback
             onPress={() => {
               if (!info) {
-                redirectToDiveIn();
+                scrollToButtonAndHighlight();
               }
             }}
           >
@@ -454,6 +509,19 @@ export default function YourProducts({ navigation }) {
           />
         )}
 
+          {productData.length > 0 && categoryValue != "" && categoryValue != null && (
+            <TouchableOpacity
+              onPress={() => setCategoryValue(null)}
+              style={styles.resetButton}
+            >
+              <Text
+                style={{ fontSize: 14, textAlign: "center", color: "white" }}
+              >
+                Reset category filter
+              </Text>
+            </TouchableOpacity>
+          )}
+
         <View
           style={{
             flexDirection: "row",
@@ -466,7 +534,7 @@ export default function YourProducts({ navigation }) {
           <TouchableWithoutFeedback
             onPress={() => {
               if (!info) {
-                redirectToDiveIn();
+                scrollToButtonAndHighlight();
               }
             }}
           >
@@ -479,11 +547,16 @@ export default function YourProducts({ navigation }) {
                 }
                 onPress={() => {
                   if (!info) {
-                    redirectToDiveIn();
+                    scrollToButtonAndHighlight();
                   } else {
                     showAll();
                   }
                 }}
+                underlayColor={
+                  filterType === "ALL"
+                    ? styles.filterTabActiveALL.backgroundColor
+                    : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
@@ -503,7 +576,7 @@ export default function YourProducts({ navigation }) {
           <TouchableWithoutFeedback
             onPress={() => {
               if (!info) {
-                redirectToDiveIn();
+                scrollToButtonAndHighlight();
               }
             }}
           >
@@ -516,11 +589,16 @@ export default function YourProducts({ navigation }) {
                 }
                 onPress={() => {
                   if (!info) {
-                    redirectToDiveIn();
+                    scrollToButtonAndHighlight();
                   } else {
                     showExpiringSoon();
                   }
                 }}
+                underlayColor={
+                  filterType === "EXPIRING_SOON"
+                    ? styles.filterTabActiveRed.backgroundColor
+                    : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
@@ -528,7 +606,8 @@ export default function YourProducts({ navigation }) {
                     style={{
                       color:
                         filterType === "EXPIRING_SOON" ? "#ffffff" : "#000000",
-                        fontWeight: filterType === "EXPIRING_SOON" ? "bold" : "normal",
+                      fontWeight:
+                        filterType === "EXPIRING_SOON" ? "bold" : "normal",
                     }}
                   >
                     3 Days
@@ -542,7 +621,7 @@ export default function YourProducts({ navigation }) {
           <TouchableWithoutFeedback
             onPress={() => {
               if (!info) {
-                redirectToDiveIn();
+                scrollToButtonAndHighlight();
               }
             }}
           >
@@ -555,19 +634,27 @@ export default function YourProducts({ navigation }) {
                 }
                 onPress={() => {
                   if (!info) {
-                    redirectToDiveIn();
+                    scrollToButtonAndHighlight();
                   } else {
                     showExpiringIn7Days();
                   }
                 }}
+                underlayColor={
+                  filterType === "EXPIRING_7_DAYS"
+                    ? styles.filterTabActiveOrange.backgroundColor
+                    : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
-                <Text
+                  <Text
                     style={{
                       color:
-                        filterType === "EXPIRING_7_DAYS" ? "#ffffff" : "#000000",
-                        fontWeight: filterType === "EXPIRING_7_DAYS" ? "bold" : "normal",
+                        filterType === "EXPIRING_7_DAYS"
+                          ? "#ffffff"
+                          : "#000000",
+                      fontWeight:
+                        filterType === "EXPIRING_7_DAYS" ? "bold" : "normal",
                     }}
                   >
                     4-7 Days
@@ -582,7 +669,7 @@ export default function YourProducts({ navigation }) {
           <TouchableWithoutFeedback
             onPress={() => {
               if (!info) {
-                redirectToDiveIn();
+                scrollToButtonAndHighlight();
               }
             }}
           >
@@ -595,11 +682,16 @@ export default function YourProducts({ navigation }) {
                 }
                 onPress={() => {
                   if (!info) {
-                    redirectToDiveIn();
+                    scrollToButtonAndHighlight();
                   } else {
                     showExpiringAfter7Days();
                   }
                 }}
+                underlayColor={
+                  filterType === "EXPIRING_AFTER_7_DAYS"
+                    ? styles.filterTabActiveGreen.backgroundColor
+                    : styles.filterTab.backgroundColor
+                }
                 disabled={!info ? true : false}
               >
                 <View>
@@ -609,7 +701,10 @@ export default function YourProducts({ navigation }) {
                         filterType === "EXPIRING_AFTER_7_DAYS"
                           ? "#ffffff"
                           : "#000000",
-                        fontWeight: filterType === "EXPIRING_AFTER_7_DAYS" ? "bold" : "normal",
+                      fontWeight:
+                        filterType === "EXPIRING_AFTER_7_DAYS"
+                          ? "bold"
+                          : "normal",
                     }}
                   >
                     {" "}
@@ -621,169 +716,170 @@ export default function YourProducts({ navigation }) {
           </TouchableWithoutFeedback>
         </View>
 
-        {productData.length === 0 ? (
-          <ScrollView
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: "center",
-              paddingHorizontal: 20,
-            }}
-          >
-            {!info ? (
-              <View>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 26,
-                    marginBottom: 10,
-                    color: "#003366",
-                  }}
-                >
-                  Welcome to FreshAlert!
-                </Text>
-                <Image
-                  source={require("../assets/images/fresh-2.png")}
-                  style={{
-                    width: 45,
-                    height: 45,
-                    alignSelf: "center",
-                    marginBottom: 10,
-                  }}
-                />
-
-                <Text
-                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-                >
-                  Keep your food fresh for longer and avoid unnecessary food
-                  waste with our smart app.
-                </Text>
-                <Text
-                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-                >
-                  FreshAlert helps you easily keep track of the expiration dates
-                  of your refrigerated and frozen goods.
-                </Text>
-                <Text
-                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-                >
-                  Receive timely reminders and plan better meals - all to save
-                  both money and the environment.
-                </Text>
-                <Text
-                  style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
-                >
-                  Get started by adding your items, and we'll take care of the
-                  rest! Let FreshAlert make your refrigerator management easier
-                  and smarter.
-                </Text>
-
-                <Animated.View style={{ transform: [{ scale: buttonAnim }] }}>
-                  <TouchableOpacity
+          {productData.length === 0 ? (
+            <ScrollView
+              ref={ScrollViewRef}
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: "center",
+                paddingHorizontal: 20,
+              }}
+            >
+              {!info ? (
+                <View>
+                  <Text
                     style={{
-                      width: "50%",
-                      alignSelf: "center",
-                      backgroundColor: "#10A78B",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: 10,
-                      borderRadius: 30,
-                      marginBottom: 20,
-                      marginTop: 10,
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 4 },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 8,
-                      height: 50,
-                    }}
-                    onPress={() => {
-                      console.log("Navigating to Add Product screen");
-                      navigation.navigate("add", { screen: "Add Product" });
+                      textAlign: "center",
+                      fontSize: 26,
+                      marginBottom: 10,
+                      color: "#003366",
                     }}
                   >
-                    <Text style={styles.buttonText}>DIVE IN</Text>
-                  </TouchableOpacity>
-                </Animated.View>
-              </View>
-            ) : (
-              <>
-                <Image
-                  source={require("../assets//images/mini-fridge.png")}
-                  style={{ width: 165, height: 165, alignSelf: "center" }}
-                  accessibilityLabel="Man"
-                />
-                <Text
-                  style={{
-                    fontSize: 25,
-                    color: "#003366",
-                    textAlign: "center",
-                  }}
-                >
-                  Nothing here right now! Add products to keep track of
-                  freshness and expiry.
-                </Text>
-              </>
-            )}
-          </ScrollView>
-        ) : filteredProductData.length === 0 ? (
-          <View style={{ marginTop: 30 }}>
-            <Image
-              source={require("../assets//images/man.png")}
-              style={{ width: 165, height: 165, alignSelf: "center" }}
-              accessibilityLabel="not-found"
-            />
-            <Text style={{ marginTop: 25, textAlign: "center" }}>
-              <Text style={{ fontSize: 26, color: "#003366" }}>
-                {" "}
-                {getCategoryMessage()}
-              </Text>
-            </Text>
-          </View>
-        ) : (
-          <FlatList
-            key={numColumns}
-            data={[...filteredProductData].reverse()}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Edit Product", { product: item })
-                }
-                activeOpacity={0.7}
-              >
-                <View style={[styles.viewCon, { width: itemWidth }]}>
-                  <View style={styles.viewIcon}>
-                    {Platform.OS === "ios" ? (
-                      <Text style={styles.categoryEmoji}>
-                        {getCategoryEmoji(item.category)}
-                      </Text>
-                    ) : (
-                      getCategoryEmoji(item.category)
-                    )}
-                  </View>
+                    Welcome to FreshAlert!
+                  </Text>
+                  <Image
+                    source={require("../assets/images/fresh-2.png")}
+                    style={{
+                      width: 45,
+                      height: 45,
+                      alignSelf: "center",
+                      marginBottom: 10,
+                    }}
+                  />
 
                   <Text
-                    style={styles.titleText}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
+                    style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
                   >
-                    {item.title}
+                    Keep your food fresh for longer and avoid unnecessary food
+                    waste with our smart app.
+                  </Text>
+                  <Text
+                    style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+                  >
+                    FreshAlert helps you easily keep track of the expiration
+                    dates of your refrigerated and frozen goods.
+                  </Text>
+                  <Text
+                    style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+                  >
+                    Receive timely reminders and plan better meals - all to save
+                    both money and the environment.
+                  </Text>
+                  <Text
+                    style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}
+                  >
+                    Get started by adding your items, and we'll take care of the
+                    rest! Let FreshAlert make your refrigerator management
+                    easier and smarter.
                   </Text>
 
-                  <View style={styles.expiryContainer}>
-                    <Text style={styles.expiryText}>{item.expiry}</Text>
-                    <View
-                      style={[
-                        styles.circleIndicator,
-                        { backgroundColor: getCircleColor(item.expiry) },
-                      ]}
-                    />
-                  </View>
+                  <Animated.View style={{ transform: [{ scale: buttonAnim }] }}>
+                    <TouchableOpacity
+                      style={{
+                        width: "50%",
+                        alignSelf: "center",
+                        backgroundColor: "#338F85",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 10,
+                        borderRadius: 30,
+                        marginBottom: 20,
+                        marginTop: 10,
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 4 },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 8,
+                        height: 50,
+                      }}
+                      onPress={() => {
+                        console.log("Navigating to Add Product screen");
+                        navigation.navigate("add", { screen: "Add Product" });
+                      }}
+                    >
+                      <Text style={styles.buttonText}>DIVE IN</Text>
+                    </TouchableOpacity>
+                  </Animated.View>
                 </View>
-              </TouchableOpacity>
-            )}
-            numColumns={numColumns}
-          />
-        )}
+              ) : (
+                <>
+                  <Image
+                    source={require("../assets//images/mini-fridge.png")}
+                    style={{ width: 165, height: 165, alignSelf: "center" }}
+                    accessibilityLabel="Man"
+                  />
+                  <Text
+                    style={{
+                      fontSize: 25,
+                      color: "#003366",
+                      textAlign: "center",
+                    }}
+                  >
+                    Nothing here right now! Add products to keep track of
+                    freshness and expiry.
+                  </Text>
+                </>
+              )}
+            </ScrollView>
+          ) : filteredProductData.length === 0 ? (
+            <View style={{ marginTop: 30 }}>
+              <Image
+                source={require("../assets//images/man.png")}
+                style={{ width: 165, height: 165, alignSelf: "center" }}
+                accessibilityLabel="not-found"
+              />
+              <Text style={{ marginTop: 25, textAlign: "center" }}>
+                <Text style={{ fontSize: 26, color: "#003366" }}>
+                  {" "}
+                  {getCategoryMessage()}
+                </Text>
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              key={numColumns}
+              data={[...filteredProductData].reverse()}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Edit Product", { product: item })
+                  }
+                  activeOpacity={0.7}
+                >
+                  <View style={[styles.viewCon, { width: itemWidth }]}>
+                    <View style={styles.viewIcon}>
+                      {Platform.OS === "ios" ? (
+                        <Text style={styles.categoryEmoji}>
+                          {getCategoryEmoji(item.category)}
+                        </Text>
+                      ) : (
+                        getCategoryEmoji(item.category)
+                      )}
+                    </View>
+
+                    <Text
+                      style={styles.titleText}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.title}
+                    </Text>
+
+                    <View style={styles.expiryContainer}>
+                      <Text style={styles.expiryText}>{item.expiry}</Text>
+                      <View
+                        style={[
+                          styles.circleIndicator,
+                          { backgroundColor: getCircleColor(item.expiry) },
+                        ]}
+                      />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+              numColumns={numColumns}
+            />
+          )}
       </SafeAreaView>
     );
   }

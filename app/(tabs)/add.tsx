@@ -13,7 +13,7 @@ export default function AddScreen() {
     <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: '#10A78B', // Change header background color
+        backgroundColor: '#338F85', // Change header background color
       },
       headerTintColor: '#fff', // Change header text color
     }}
