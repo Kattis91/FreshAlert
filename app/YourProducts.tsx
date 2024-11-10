@@ -385,29 +385,57 @@ export default function YourProducts({ navigation }) {
             FreshAlert
           </Text>
         </View>
-
-        <TouchableWithoutFeedback
-          onPress={() => {
-            if (!info) {
-              scrollToButtonAndHighlight();
-            }
-          }}
-        >
-          <View style={styles.Search}>
-            {Platform.OS === "ios" ? (
-              <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
-            ) : (
-              <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
+        
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!info) {
+                scrollToButtonAndHighlight();
+              }
+            }}
+          >
+            <View style={{...styles.Search, flex: searchText.length > 0 ? 2 : 1 }}>
+              {Platform.OS === "ios" ? (
+                <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
+              ) : (
+                <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
+              )}
+              <TextInput
+                placeholder="Search by date or name"
+                value={searchText}
+                onChangeText={setSearchText}
+                placeholderTextColor="black"
+                editable={info ? true : false} // Still control editability
+                maxLength={30}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        
+          <View>
+            {productData.length > 0 && searchText.length > 0 && (
+              <TouchableOpacity
+                onPress={() => setSearchText("")}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#900101",
+                  borderRadius: 30,
+                  padding: 10,
+                  marginBottom: 20,
+                  marginLeft: 10,
+                  alignSelf: "center",
+                  elevation: 3, //(Just for Android)
+                  shadowColor: "#000", //(Just for iOS)
+                }}
+              >
+              <Text
+                style={{ fontSize: 14, textAlign: "center", color: "white" }}
+              >
+                Clear the field
+              </Text>
+              </TouchableOpacity>
             )}
-            <TextInput
-              placeholder="Search by date or name"
-              value={searchText}
-              onChangeText={setSearchText}
-              placeholderTextColor="black"
-              editable={info ? true : false} // Still control editability
-            />
           </View>
-        </TouchableWithoutFeedback>
+        </View>
 
         {openCategory && (
           <TouchableWithoutFeedback onPress={() => setOpenCategory(false)}>
@@ -456,6 +484,19 @@ export default function YourProducts({ navigation }) {
             disabled={!info ? true : false}
           />
         )}
+
+          {productData.length > 0 && categoryValue != "" && categoryValue != null && (
+            <TouchableOpacity
+              onPress={() => setCategoryValue(null)}
+              style={styles.resetButton}
+            >
+              <Text
+                style={{ fontSize: 14, textAlign: "center", color: "white" }}
+              >
+                Reset category filter
+              </Text>
+            </TouchableOpacity>
+          )}
 
         <View
           style={{
@@ -650,35 +691,6 @@ export default function YourProducts({ navigation }) {
             </View>
           </TouchableWithoutFeedback>
         </View>
-
-        {productData.length > 0 && searchText.length > 0 && categoryValue != "" && categoryValue != null ? (
-          <TouchableOpacity
-            onPress={() => (setCategoryValue(null), setSearchText(""))}
-            style={styles.resetButton}
-          >
-            <Text style={{ fontSize: 14, textAlign: "center", color: "white" }}>
-              Reset all the filters
-            </Text>
-          </TouchableOpacity>
-        ) : productData.length > 0 && searchText.length > 0 ? (
-          <TouchableOpacity
-            onPress={() => setSearchText("")}
-            style={styles.resetButton}
-          >
-            <Text style={{ fontSize: 14, textAlign: "center", color: "white" }}>
-              Clear the search field
-            </Text>
-          </TouchableOpacity>
-        ) : productData.length > 0 && categoryValue != "" && categoryValue != null ? (
-          <TouchableOpacity
-            onPress={() => setCategoryValue(null)}
-            style={styles.resetButton}
-          >
-            <Text style={{ fontSize: 14, textAlign: "center", color: "white" }}>
-              Reset category filter
-            </Text>
-          </TouchableOpacity>
-        ) : null}
 
           {productData.length === 0 ? (
             <ScrollView
