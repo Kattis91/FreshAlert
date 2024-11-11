@@ -152,17 +152,18 @@ export default function Info() {
           Credits:
         </Text>
 
-        <Text style={{ fontSize: 16, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 16, marginBottom: 15, color: "#003366" }}>
           All the icons are owned by
           <Text
-            style={{ color: "#0A7763" }}
+            style={{ color: "#338F85" }}
             onPress={() => {
               openExternalLink();
             }}
-          >
+          > 
             {" "}
-            www.flaticon.com{" "}
+            www.flaticon.com.{" "}
           </Text>
+          {"\n"}
           Find the authors of the icons below:
         </Text>
 

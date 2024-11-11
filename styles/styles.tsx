@@ -119,6 +119,7 @@ export const styles = StyleSheet.create({
   filterTab: {
     padding: 7,
     margin: 5,
+    marginHorizontal: 4,
     borderRadius: 25,
     borderColor: '#338F85',
     borderWidth: 1,
@@ -163,7 +164,6 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
     padding: 10,
     alignSelf: "center",
-    marginBottom: 10,
     width: "50%",
     elevation: 3, //(Just for Android)
     shadowColor: "#000", //(Just for iOS)

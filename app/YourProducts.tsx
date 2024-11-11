@@ -350,7 +350,7 @@ export default function YourProducts({ navigation }) {
       case "EXPIRING_7_DAYS":
         return `No products found ${combinedMessage}that expire within 4-7 days`;
       case "EXPIRING_AFTER_7_DAYS":
-        return `No products found ${combinedMessage}that are safe to consume`;
+        return `No products found ${combinedMessage}with more than 7 days until expiry`;
       default:
         return `No products found ${combinedMessage}`;
     }
@@ -711,7 +711,7 @@ export default function YourProducts({ navigation }) {
                     }}
                   >
                     {" "}
-                    Safe
+                    7+ Days
                   </Text>
                 </View>
               </TouchableHighlight>
