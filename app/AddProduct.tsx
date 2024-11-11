@@ -51,9 +51,22 @@ export default function AddProducts({ navigation }) {
 
   useEffect(() => {
     setupPushNotifications();
+    requestNotificationPermission();
   }, []);
 
   const setupPushNotifications = () => {
+
+    PushNotification.createChannel(
+      {
+        channelId: 'FreshAlert', // Make sure this matches your `channelId` in the notification
+        channelName: 'Fresh Alert Notifications',
+        channelDescription: 'A channel for product expiry notifications',
+        importance: PushNotification.Importance.HIGH,
+        vibrate: true,
+      },
+      (created) => console.log(`createChannel returned '${created}'`) // Log the creation process
+    );
+
     PushNotification.configure({
       onRegister: function (token) {
         console.log('TOKEN:', token);
@@ -68,13 +81,24 @@ export default function AddProducts({ navigation }) {
         sound: true,
       },
       popInitialNotification: true,
-      requestPermissions: Platform.OS === 'ios',
+      requestPermissions: Platform.OS === 'ios' ? true : false,
     });
+  };
+
+  const requestNotificationPermission = async () => {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+      );
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Notification permissions not granted');
+      }
+    }
   };
 
   const scheduleNotificationOnExpiry = (product: Product) => {
     const expiryDate = new Date(product.expiry);
-    const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate()} 16:27:00`)
+    const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate()} 14:18:00`)
 
     PushNotification.localNotificationSchedule({
       channelId: 'FreshAlert',
@@ -89,7 +113,7 @@ export default function AddProducts({ navigation }) {
     const expiryDate = new Date(product.expiry);
     if(expiryDate.getDate() - 3 > 0) {
 
-      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 16:27:00`)
+      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 14:06:00`)
       
       PushNotification.localNotificationSchedule({
         channelId: 'FreshAlert',
@@ -107,7 +131,7 @@ export default function AddProducts({ navigation }) {
 
     if(expiryDate.getDate() - 7 > 0) {
 
-      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 16:27:00`)
+      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 13:40:00`)
       
       PushNotification.localNotificationSchedule({
         channelId: 'FreshAlert',
