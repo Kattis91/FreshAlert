@@ -154,7 +154,7 @@ export default function YourProducts({ navigation }) {
             accessibilityLabel="Frozen Foods"
           />
         );
-      case "non-dairy products":
+      case "non-dairy":
         return (
           <Image
             source={require("../assets//images/dairy-free.png")}
@@ -162,7 +162,7 @@ export default function YourProducts({ navigation }) {
             accessibilityLabel="Non-Dairy Products"
           />
         );
-      case "plant-based proteins":
+      case "plant-based":
         return (
           <Image
             source={require("../assets//images/vegan.png")}
