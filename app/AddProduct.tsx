@@ -174,6 +174,7 @@ export default function AddProducts({ navigation }) {
       setProductName("");
       setExpiryDate("");
       setCategoryValue(null);
+      setDate(new Date());
 
     } catch (error) {
       console.error("Failed to add product", error);
