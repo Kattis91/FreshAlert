@@ -272,6 +272,7 @@ export default function YourProducts({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       getProducts(); // Load products when the screen is focused
+      checkInfo();  
     }, [])
   );
 
@@ -356,7 +357,7 @@ export default function YourProducts({ navigation }) {
   };
 
   const buttonAnim = useRef(new Animated.Value(1)).current;
-  const ScrollViewRef = useRef(null);
+  const scrollViewRef = useRef(null);
 
   // Function to trigger button highlight animation
   const highlightButton = () => {
@@ -377,11 +378,13 @@ export default function YourProducts({ navigation }) {
 
   // Function to scroll to the end of the screen and highlight the button
   const scrollToButtonAndHighlight = () => {
-    ScrollViewRef.current.scrollToEnd({ animated: true });
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
 
     setTimeout(() => {
       highlightButton();
     }, 500);
+  }
   };
 
   if (isLoading) {
@@ -430,7 +433,7 @@ export default function YourProducts({ navigation }) {
                 onChangeText={setSearchText}
                 placeholderTextColor="black"
                 editable={info ? true : false} // Still control editability
-                maxLength={30}
+                maxLength={20}
               />
             </View>
           </TouchableWithoutFeedback>
@@ -512,7 +515,7 @@ export default function YourProducts({ navigation }) {
           {productData.length > 0 && categoryValue != "" && categoryValue != null && (
             <TouchableOpacity
               onPress={() => setCategoryValue(null)}
-              style={styles.resetButton}
+              style={{...styles.resetButton, marginTop: 10}}
             >
               <Text
                 style={{ fontSize: 14, textAlign: "center", color: "white" }}
@@ -718,7 +721,7 @@ export default function YourProducts({ navigation }) {
 
           {productData.length === 0 ? (
             <ScrollView
-              ref={ScrollViewRef}
+              ref={scrollViewRef}
               contentContainerStyle={{
                 flexGrow: 1,
                 justifyContent: "center",
@@ -821,6 +824,7 @@ export default function YourProducts({ navigation }) {
               )}
             </ScrollView>
           ) : filteredProductData.length === 0 ? (
+            <ScrollView>
             <View style={{ marginTop: 30 }}>
               <Image
                 source={require("../assets//images/man.png")}
@@ -834,6 +838,7 @@ export default function YourProducts({ navigation }) {
                 </Text>
               </Text>
             </View>
+          </ScrollView>
           ) : (
             <FlatList
               key={numColumns}
