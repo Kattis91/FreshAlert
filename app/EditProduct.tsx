@@ -5,10 +5,14 @@ import { styles } from "@/styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
-import { Alert, SafeAreaView, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Alert,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
-
 
 type Product = {
   id: number;
@@ -28,9 +32,9 @@ interface EditProductProps {
 
 const defaultProduct: Product = {
   id: 0,
-  title: '',
-  name: '',
-  expiry: '',
+  title: "",
+  name: "",
+  expiry: "",
   category: null,
 };
 
@@ -51,8 +55,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   const categories = [
     { label: "Dairy", value: "dairy" },
-    { label: "Non-Dairy Products", value: "non-dairy products" },
-    { label: "Plant-Based Proteins", value: "plant-based proteins" },
+    { label: "Non-Dairy", value: "non-dairy" },
+    { label: "Plant-Based", value: "plant-based" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
     { label: "Fruits", value: "fruits" },
@@ -63,11 +67,11 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
     { label: "Spreads", value: "spreads" },
     { label: "Fresh Herbs", value: "fresh herbs" },
     { label: "Frozen Foods", value: "frozen foods" },
-    { label: "Other", value: "other" }
+    { label: "Other", value: "other" },
   ];
 
   useEffect(() => {
-    console.log('Product prop:', product);
+    console.log("Product prop:", product);
     if (product) {
       setProductName(product.name);
       setCategoryValue(product.category);
@@ -78,33 +82,39 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   useFocusEffect(
     useCallback(() => {
-      return () =>  
-        navigation.goBack();
-    }, [])
+      return () => {
+        if (navigation.canGoBack()) {
+          navigation.goBack();
+        }
+      };
+    }, [navigation])
   );
-
+  
   useDateValidation(date, dateChanged);
   const validateProduct = useProductValidation();
 
-
   const showToast = (text, text2) => {
     Toast.show({
-      type: 'info',
+      type: "info",
       text1: text,
       text2: text2 ? text2 : null,
       onHide: () => {
-        navigation.navigate("Your Products")
+        navigation.navigate("Your Products");
       },
-      visibilityTime: 1500
+      visibilityTime: 1500,
     });
-    console.log("here")
-  }
+    console.log("here");
+  };
 
   async function Edit() {
-
-    const isValid = validateProduct(productName, expiryDate, categoryValue, setErrorMessages );
+    const isValid = validateProduct(
+      productName,
+      expiryDate,
+      categoryValue,
+      setErrorMessages
+    );
     if (!isValid) {
-      console.log('Validation failed'); // Log validation failure
+      console.log("Validation failed"); // Log validation failure
       return;
     }
 
@@ -119,7 +129,9 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
     try {
       const storedList = await AsyncStorage.getItem("my-list");
       const currentList = storedList ? JSON.parse(storedList) : [];
-      const productIndex = currentList.findIndex((p: Product) => p.id === product.id);
+      const productIndex = currentList.findIndex(
+        (p: Product) => p.id === product.id
+      );
 
       if (productIndex !== -1) {
         currentList[productIndex] = updatedProduct;
@@ -127,11 +139,10 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
         showToast(
           "Product updated:",
-          `Product: ${productName} \n Expiry date: ${expiryDate}`,
+          `Product: ${productName} \n Expiry date: ${expiryDate}`
         );
 
         // navigation.navigate("Your Products")
-
       } else {
         showToast("Product not found in the list");
       }
@@ -146,46 +157,51 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       const storedList = await AsyncStorage.getItem("my-list");
       const currentList = storedList ? JSON.parse(storedList) : [];
 
-      const updatedList = currentList.filter((p: Product) => p.id !== product.id);
+      const updatedList = currentList.filter(
+        (p: Product) => p.id !== product.id
+      );
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
 
-      showToast("Product removed:", `Product: ${product.name} \n Expiry date: ${product.expiry}`);
+      showToast(
+        "Product removed:",
+        `Product: ${product.name} \n Expiry date: ${product.expiry}`
+      );
 
       // navigation.navigate("Your Products");
-
     } catch (e) {
       console.error("Failed to remove item.", e);
     }
   }
 
   return (
-
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#FFF8EC" }}>
-    <FormComponent
-      product={product}
-      productName={productName}
-      setProductName={setProductName}
-      expiryDate={expiryDate}
-      setExpiryDate={setExpiryDate}
-      date={date}
-      openDate={openDate}
-      setOpenDate={setOpenDate}
-      setDate={setDate}
-      setDateChanged={setDateChanged}
-      openCategory={openCategory}
-      categoryValue={categoryValue}
-      setCategoryValue={setCategoryValue}
-      categories={categories}
-      setOpenCategory={setOpenCategory}
-      addoredit="Edit Product"
-      buttontext="SAVE"
-      buttonclick={Edit}
-      button2text="DELETE"
-      button2click={removeValue}
-      modalOpen={modalOpen}
-      setModalOpen={setModalOpen}
-      navigation={navigation}
-    />
-</SafeAreaView>
+    <View style={{ flex: 1, backgroundColor: "#FFF8EC" }}>
+      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
+        <FormComponent
+          product={product}
+          productName={productName}
+          setProductName={setProductName}
+          expiryDate={expiryDate}
+          setExpiryDate={setExpiryDate}
+          date={date}
+          openDate={openDate}
+          setOpenDate={setOpenDate}
+          setDate={setDate}
+          setDateChanged={setDateChanged}
+          openCategory={openCategory}
+          categoryValue={categoryValue}
+          setCategoryValue={setCategoryValue}
+          categories={categories}
+          setOpenCategory={setOpenCategory}
+          addoredit="Edit Product"
+          buttontext="SAVE"
+          buttonclick={Edit}
+          button2text="DELETE"
+          button2click={removeValue}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          navigation={navigation}
+        />
+      </SafeAreaView>
+    </View>
   );
 }

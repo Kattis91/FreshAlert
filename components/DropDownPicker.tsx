@@ -41,7 +41,7 @@ const DropDownPickerComponent = ({
       dropDownContainerStyle={{
         backgroundColor: "#fff", 
         width: "100%",
-        maxHeight: 170,
+        maxHeight: changeColor === 'true' ? 140 : 170,
         zIndex: 2,
         borderRadius: 8, 
         padding: 10,

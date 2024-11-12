@@ -46,10 +46,9 @@ export default function YourProducts({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const categories = [
-    { label: "All Categories", value: "" },
     { label: "Dairy", value: "dairy" },
-    { label: "Non-Dairy Products", value: "non-dairy products" },
-    { label: "Plant-Based Proteins", value: "plant-based proteins" },
+    { label: "Non-Dairy", value: "non-dairy" },
+    { label: "Plant-Based", value: "plant-based" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
     { label: "Fruits", value: "fruits" },
@@ -154,7 +153,7 @@ export default function YourProducts({ navigation }) {
             accessibilityLabel="Frozen Foods"
           />
         );
-      case "non-dairy products":
+      case "non-dairy":
         return (
           <Image
             source={require("../assets//images/dairy-free.png")}
@@ -162,7 +161,7 @@ export default function YourProducts({ navigation }) {
             accessibilityLabel="Non-Dairy Products"
           />
         );
-      case "plant-based proteins":
+      case "plant-based":
         return (
           <Image
             source={require("../assets//images/vegan.png")}
@@ -272,6 +271,7 @@ export default function YourProducts({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       getProducts(); // Load products when the screen is focused
+      checkInfo();  
     }, [])
   );
 
@@ -334,29 +334,29 @@ export default function YourProducts({ navigation }) {
 
   const getCategoryMessage = () => {
     let categoryMessage = categoryValue
-      ? `within the ${categoryValue} category`
+      ? `within the ${categoryValue} category `
       : "";
     let searchMessage = searchText ? `matching "${searchText}" ` : "";
 
     let combinedMessage =
-      categoryMessage && searchMessage
-        ? `${categoryMessage} ${searchMessage}`
-        : categoryMessage || searchMessage;
+    categoryMessage && searchMessage
+      ? `${categoryMessage}${searchMessage}`
+      : categoryMessage || searchMessage;
 
     switch (filterType) {
       case "EXPIRING_SOON":
-        return `No products found ${combinedMessage}that expire within 3 days`;
+        return `You have currently no products ${combinedMessage}that expire within 3 days.`;
       case "EXPIRING_7_DAYS":
-        return `No products found ${combinedMessage}that expire within 4-7 days`;
+        return `You have currently no products ${combinedMessage}that expire within 4-7 days.`;
       case "EXPIRING_AFTER_7_DAYS":
-        return `No products found ${combinedMessage}that are safe to consume`;
+        return `You have currently no products ${combinedMessage}that expire in more than 7 days.`;
       default:
-        return `No products found ${combinedMessage}`;
+        return `You have currently no products ${combinedMessage}.`;
     }
   };
 
   const buttonAnim = useRef(new Animated.Value(1)).current;
-  const ScrollViewRef = useRef(null);
+  const scrollViewRef = useRef(null);
 
   // Function to trigger button highlight animation
   const highlightButton = () => {
@@ -377,11 +377,13 @@ export default function YourProducts({ navigation }) {
 
   // Function to scroll to the end of the screen and highlight the button
   const scrollToButtonAndHighlight = () => {
-    ScrollViewRef.current.scrollToEnd({ animated: true });
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
 
     setTimeout(() => {
       highlightButton();
     }, 500);
+  }
   };
 
   if (isLoading) {
@@ -392,7 +394,8 @@ export default function YourProducts({ navigation }) {
     );
   } else {
     return (
-      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#FFF8EC" }}>
+      <View style={{ flex: 1, backgroundColor: "#FFF8EC" }}>
+      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "transparent" }}>
         <View
           style={{
             justifyContent: "center",
@@ -430,7 +433,7 @@ export default function YourProducts({ navigation }) {
                 onChangeText={setSearchText}
                 placeholderTextColor="black"
                 editable={info ? true : false} // Still control editability
-                maxLength={30}
+                maxLength={20}
               />
             </View>
           </TouchableWithoutFeedback>
@@ -449,12 +452,13 @@ export default function YourProducts({ navigation }) {
                   alignSelf: "center",
                   elevation: 3, //(Just for Android)
                   shadowColor: "#000", //(Just for iOS)
+                  justifyContent: "center",
                 }}
               >
               <Text
                 style={{ fontSize: 14, textAlign: "center", color: "white" }}
               >
-                Clear the field
+                Clear
               </Text>
               </TouchableOpacity>
             )}
@@ -512,12 +516,12 @@ export default function YourProducts({ navigation }) {
           {productData.length > 0 && categoryValue != "" && categoryValue != null && (
             <TouchableOpacity
               onPress={() => setCategoryValue(null)}
-              style={styles.resetButton}
+              style={{...styles.resetButton, marginTop: 10}}
             >
               <Text
                 style={{ fontSize: 14, textAlign: "center", color: "white" }}
               >
-                Reset category filter
+                Reset category
               </Text>
             </TouchableOpacity>
           )}
@@ -708,7 +712,7 @@ export default function YourProducts({ navigation }) {
                     }}
                   >
                     {" "}
-                    Safe
+                    7+ Days
                   </Text>
                 </View>
               </TouchableHighlight>
@@ -718,7 +722,7 @@ export default function YourProducts({ navigation }) {
 
           {productData.length === 0 ? (
             <ScrollView
-              ref={ScrollViewRef}
+              ref={scrollViewRef}
               contentContainerStyle={{
                 flexGrow: 1,
                 justifyContent: "center",
@@ -821,6 +825,7 @@ export default function YourProducts({ navigation }) {
               )}
             </ScrollView>
           ) : filteredProductData.length === 0 ? (
+            <ScrollView>
             <View style={{ marginTop: 30 }}>
               <Image
                 source={require("../assets//images/man.png")}
@@ -828,12 +833,13 @@ export default function YourProducts({ navigation }) {
                 accessibilityLabel="not-found"
               />
               <Text style={{ marginTop: 25, textAlign: "center" }}>
-                <Text style={{ fontSize: 26, color: "#003366" }}>
+                <Text style={{ fontSize: 21, color: "#003366" }}>
                   {" "}
                   {getCategoryMessage()}
                 </Text>
               </Text>
             </View>
+          </ScrollView>
           ) : (
             <FlatList
               key={numColumns}
@@ -881,6 +887,7 @@ export default function YourProducts({ navigation }) {
             />
           )}
       </SafeAreaView>
+      </View>
     );
   }
 }

@@ -27,6 +27,8 @@ export default function AddProducts({ navigation }) {
 
   const categories = [
     { label: "Dairy", value: "dairy" },
+    { label: "Non-Dairy", value: "non-dairy" },
+    { label: "Plant-Based", value: "plant-based" },
     { label: "Meat", value: "meat" },
     { label: "Seafood", value: "seafood" },
     { label: "Fruits", value: "fruits" },
@@ -195,6 +197,7 @@ export default function AddProducts({ navigation }) {
       setProductName("");
       setExpiryDate("");
       setCategoryValue(null);
+      setDate(new Date());
 
     } catch (error) {
       console.log(error)
