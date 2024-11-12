@@ -67,73 +67,33 @@ export default function AddProducts({ navigation }) {
     }
   }
 
-  const scheduleNotificationOnExpiry = (product: Product) => {
-    try {
-      const expiryDate = new Date(product.expiry);
-      console.log("Scheduling notification on expiry for:", product.name, "with expiry date:", product.expiry);
-      
-      if (!isNaN(expiryDate.getTime())) {  // Check if expiryDate is valid
-        const notificationDate = new Date(
-          `${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate()} ${Platform.OS === "ios" ? "18:00:00" : null}`
-        );
-  
-        PushNotification.localNotificationSchedule({
-          channelId: 'FreshAlert',
-          title: 'Product Expiring Soon',
-          message: `${product.name} is expiring today!`,
-          date: notificationDate,
-          allowWhileIdle: true,
-        });
-      } else {
-        console.error("Invalid expiry date for notification:", product.expiry);
-      }
-    } catch (error) {
-      console.error("Error in scheduleNotificationOnExpiry:", error);
-    }
-  };
-  
-  const scheduleNotificationThreeDayBefore = (product: Product) => {
+  const scheduleNotificationOneDayBefore = (product: Product) => {
     try {
       const expiryDate = new Date(product.expiry);
       console.log("Scheduling 3-day prior notification for:", product.name, "with expiry date:", product.expiry);
-      
-      if (!isNaN(expiryDate.getTime()) && expiryDate.getDate() - 3 >= new Date().getDate()) {
-        const notificationDate = new Date(
-          `${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} ${Platform.OS === "ios" ? "18:00:00" : null}`
-        );
   
-        PushNotification.localNotificationSchedule({
-          channelId: 'FreshAlert',
-          title: 'Product Expiring Soon',
-          message: `${product.name} is expiring in 3 days!`,
-          date: notificationDate,
-          allowWhileIdle: true,
-        });
-      } else {
-        console.error("Invalid expiry date for 3-day notification:", product.expiry);
-      }
-    } catch (error) {
-      console.error("Error in scheduleNotificationThreeDayBefore:", error);
-    }
-  };
+      // Check if expiryDate is valid
+      if (!isNaN(expiryDate.getTime())) {
+        const currentDate = new Date();
   
-  const scheduleNotificationSevenDayBefore = (product: Product) => {
-    try {
-      const expiryDate = new Date(product.expiry);
-      console.log("Scheduling 7-day prior notification for:", product.name, "with expiry date:", product.expiry);
-      
-      if (!isNaN(expiryDate.getTime()) && expiryDate.getDate() - 7 >= new Date().getDate()) {
-        const notificationDate = new Date(
-          `${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 7} ${Platform.OS === "ios" ? "18:00:00" : null}`
-        );
+        // Create the notification date by subtracting 7 days from the expiry date
+        const notificationDate = new Date(expiryDate);
+        notificationDate.setDate(expiryDate.getDate() - 1);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
   
-        PushNotification.localNotificationSchedule({
-          channelId: 'FreshAlert',
-          title: 'Product Expiring Soon',
-          message: `${product.name} is expiring in a week!`,
-          date: notificationDate,
-          allowWhileIdle: true,
-        });
+        // Ensure the notification date is in the future
+        if (notificationDate > currentDate) {
+          PushNotification.localNotificationSchedule({
+            channelId: 'FreshAlert',
+            title: 'Product Expiring Soon',
+            message: `${product.name} is expiring tomorrow!`,
+            date: notificationDate,
+            allowWhileIdle: true,
+          });
+          console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
+        } else {
+          console.error("Notification date is in the past and will not be scheduled:", notificationDate);
+        }
       } else {
         console.error("Invalid expiry date for 7-day notification:", product.expiry);
       }
@@ -141,7 +101,77 @@ export default function AddProducts({ navigation }) {
       console.error("Error in scheduleNotificationSevenDayBefore:", error);
     }
   };
+
   
+  const scheduleNotificationThreeDaysBefore = (product: Product) => {
+    try {
+      const expiryDate = new Date(product.expiry);
+      console.log("Scheduling 3-day prior notification for:", product.name, "with expiry date:", product.expiry);
+  
+      // Check if expiryDate is valid
+      if (!isNaN(expiryDate.getTime())) {
+        const currentDate = new Date();
+  
+        // Create the notification date by subtracting 7 days from the expiry date
+        const notificationDate = new Date(expiryDate);
+        notificationDate.setDate(expiryDate.getDate() - 3);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
+  
+        // Ensure the notification date is in the future
+        if (notificationDate > currentDate) {
+          PushNotification.localNotificationSchedule({
+            channelId: 'FreshAlert',
+            title: 'Product Expiring Soon',
+            message: `${product.name} is expiring in three days!`,
+            date: notificationDate,
+            allowWhileIdle: true,
+          });
+          console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
+        } else {
+          console.error("Notification date is in the past and will not be scheduled:", notificationDate);
+        }
+      } else {
+        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+    }
+  };
+
+  const scheduleNotificationSevenDaysBefore = (product: Product) => {
+    try {
+      const expiryDate = new Date(product.expiry);
+      console.log("Scheduling 7-day prior notification for:", product.name, "with expiry date:", product.expiry);
+  
+      // Check if expiryDate is valid
+      if (!isNaN(expiryDate.getTime())) {
+        const currentDate = new Date();
+  
+        // Create the notification date by subtracting 7 days from the expiry date
+        const notificationDate = new Date(expiryDate);
+        notificationDate.setDate(expiryDate.getDate() - 7);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
+  
+        // Ensure the notification date is in the future
+        if (notificationDate > currentDate) {
+          PushNotification.localNotificationSchedule({
+            channelId: 'FreshAlert',
+            title: 'Product Expiring Soon',
+            message: `${product.name} is expiring in a week!`,
+            date: notificationDate,
+            allowWhileIdle: true,
+          });
+          console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
+        } else {
+          console.error("Notification date is in the past and will not be scheduled:", notificationDate);
+        }
+      } else {
+        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+    }
+  };
 
   const validateProduct = useProductValidation();
 
@@ -190,9 +220,9 @@ export default function AddProducts({ navigation }) {
       }
 
       showToast(`${productName} added:`, `Expiry date: ${expiryDate}`);
-      scheduleNotificationOnExpiry(product)
-      scheduleNotificationSevenDayBefore(product)
-      scheduleNotificationThreeDayBefore(product)
+      scheduleNotificationOneDayBefore(product)
+      scheduleNotificationSevenDaysBefore(product)
+      scheduleNotificationThreeDaysBefore(product)
 
       setProductName("");
       setExpiryDate("");
@@ -208,9 +238,8 @@ export default function AddProducts({ navigation }) {
 
   return (
 
-   
-      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"#FFF8EC" }}>
-
+    <View style={{ flex: 1, backgroundColor: "#FFF8EC" }}>
+      <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor:"transparent" }}>
         <FormComponent
           productName={productName}
           setProductName={setProductName}
@@ -231,6 +260,6 @@ export default function AddProducts({ navigation }) {
           buttonclick={addProduct}
         />
       </SafeAreaView>
-
+    </View>
   );
 } 
