@@ -46,7 +46,6 @@ export default function YourProducts({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const categories = [
-    { label: "All Categories", value: "" },
     { label: "Dairy", value: "dairy" },
     { label: "Non-Dairy", value: "non-dairy" },
     { label: "Plant-Based", value: "plant-based" },
@@ -335,24 +334,24 @@ export default function YourProducts({ navigation }) {
 
   const getCategoryMessage = () => {
     let categoryMessage = categoryValue
-      ? `within the ${categoryValue} category`
+      ? `within the ${categoryValue} category `
       : "";
     let searchMessage = searchText ? `matching "${searchText}" ` : "";
 
     let combinedMessage =
-      categoryMessage && searchMessage
-        ? `${categoryMessage} ${searchMessage}`
-        : categoryMessage || searchMessage;
+    categoryMessage && searchMessage
+      ? `${categoryMessage}${searchMessage}`
+      : categoryMessage || searchMessage;
 
     switch (filterType) {
       case "EXPIRING_SOON":
-        return `No products found ${combinedMessage}that expire within 3 days`;
+        return `You have no products ${combinedMessage}that expire within 3 days`;
       case "EXPIRING_7_DAYS":
-        return `No products found ${combinedMessage}that expire within 4-7 days`;
+        return `You have no products ${combinedMessage}that expire within 4-7 days`;
       case "EXPIRING_AFTER_7_DAYS":
-        return `No products found ${combinedMessage}with more than 7 days until expiry`;
+        return `You have no products ${combinedMessage}that expire in more than 7 days`;
       default:
-        return `No products found ${combinedMessage}`;
+        return `You have no products ${combinedMessage}`;
     }
   };
 
@@ -395,7 +394,8 @@ export default function YourProducts({ navigation }) {
     );
   } else {
     return (
-      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "#FFF8EC" }}>
+      <View style={{ flex: 1, backgroundColor: "#FFF8EC" }}>
+      <SafeAreaView style={{ flex: 1, margin: 10, backgroundColor: "transparent" }}>
         <View
           style={{
             justifyContent: "center",
@@ -832,7 +832,7 @@ export default function YourProducts({ navigation }) {
                 accessibilityLabel="not-found"
               />
               <Text style={{ marginTop: 25, textAlign: "center" }}>
-                <Text style={{ fontSize: 26, color: "#003366" }}>
+                <Text style={{ fontSize: 21, color: "#003366" }}>
                   {" "}
                   {getCategoryMessage()}
                 </Text>
@@ -886,6 +886,7 @@ export default function YourProducts({ navigation }) {
             />
           )}
       </SafeAreaView>
+      </View>
     );
   }
 }

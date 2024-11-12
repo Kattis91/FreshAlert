@@ -69,64 +69,68 @@ export default function Trash() {
   };
 
   return expiredProducts.length > 0 ? (
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
-      <ScrollView>
-        <View>
-          <Text
-            style={{
-              color: "#003366",
-              fontSize: 30,
-              textAlign: "center",
-              margin: 15,
-            }}
-          >
-            Out of freshness:
-          </Text>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <TouchableOpacity
+    <View style={{ flex: 1, backgroundColor: "#FFF8EC" }}>
+      <SafeAreaView
+        style={{ flex: 1, margin: 8, backgroundColor: "transparent" }}
+      >
+        <ScrollView>
+          <View>
+            <Text
               style={{
-                width: 150,
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: 10,
+                color: "#003366",
+                fontSize: 30,
+                textAlign: "center",
+                margin: 15,
               }}
-              onPress={() => setConfirmDeleteAllVisible(true)}
             >
-              <Text
+              Out of freshness:
+            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <TouchableOpacity
                 style={{
-                  color: "red",
-                  fontSize: 16
+                  width: 150,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 10,
                 }}
+                onPress={() => setConfirmDeleteAllVisible(true)}
               >
-                Delete all products
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: "red",
+                    fontSize: 16,
+                  }}
+                >
+                  Delete all products
+                </Text>
+              </TouchableOpacity>
 
-            {/* Display delete message */}
-            {deleteMessage ? (
-              <Text
-                style={{ color: "green", textAlign: "center", marginTop: 5 }}
-              >
-                {deleteMessage}
-              </Text>
-            ) : null}
+              {/* Display delete message */}
+              {deleteMessage ? (
+                <Text
+                  style={{ color: "green", textAlign: "center", marginTop: 5 }}
+                >
+                  {deleteMessage}
+                </Text>
+              ) : null}
+            </View>
+            {expiredProducts.map((item, i) => (
+              <ExpiredProductCard
+                product={item}
+                key={i}
+                getProducts={getProducts}
+              />
+            ))}
           </View>
-          {expiredProducts.map((item, i) => (
-            <ExpiredProductCard
-              product={item}
-              key={i}
-              getProducts={getProducts}
-            />
-          ))}
-        </View>
-      </ScrollView>
-      {/* Confirmation modal for deleting all expired products */}
-      <ConfirmDeleteAllModal
-        visible={confirmDeleteAllVisible}
-        onClose={() => setConfirmDeleteAllVisible(false)}
-        onConfirm={deleteAllExpiredProducts}
-      />
-    </SafeAreaView>
+        </ScrollView>
+        {/* Confirmation modal for deleting all expired products */}
+        <ConfirmDeleteAllModal
+          visible={confirmDeleteAllVisible}
+          onClose={() => setConfirmDeleteAllVisible(false)}
+          onConfirm={deleteAllExpiredProducts}
+        />
+      </SafeAreaView>
+    </View>
   ) : (
     <EmptyBin />
   );
@@ -134,24 +138,28 @@ export default function Trash() {
 
 const EmptyBin = () => {
   return (
-    <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+    <View style={{ flex: 1, backgroundColor: "#FFF8EC" }}>
+      <SafeAreaView
+        style={{ flex: 1, margin: 8, backgroundColor: "transparent" }}
       >
-        <Text style={{ fontSize: 28, color: "#003366", textAlign: "center" }}>
-        All clear! No expired products right now
-        </Text>
-        <Image
-          source={require("../assets//images/fresh-3.png")}
-          style={{ width: 150, height: 150, marginTop: 20 }}
-          accessibilityLabel="Fresh"
-        />
-      </View>
-    </SafeAreaView>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 23, color: "#003366", textAlign: "center" }}>
+            All clear! No expired products right now.
+          </Text>
+          <Image
+            source={require("../assets//images/fresh-3.png")}
+            style={{ width: 150, height: 150, marginTop: 20 }}
+            accessibilityLabel="Fresh"
+          />
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -255,8 +263,30 @@ const ExpiredProductCard = ({ product, getProducts }) => {
             accessibilityLabel="Frozen Foods"
           />
         );
+      case "non-dairy":
+        return (
+          <Image
+            source={require("../assets//images/dairy-free.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Non-Dairy Products"
+          />
+        );
+      case "plant-based":
+        return (
+          <Image
+            source={require("../assets//images/vegan.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Plant-Based Proteins"
+          />
+        );
       default:
-        return "❓";
+        return (
+          <Image
+            source={require("../assets//images/confused.png")}
+            style={{ width: 55, height: 55 }}
+            accessibilityLabel="Question Mark"
+          />
+        );
     }
   };
 
