@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   deleteButton: {
-    backgroundColor: "#338F85",
+    backgroundColor: "#900101",
     height: 35,
     justifyContent: "center",
     minWidth: 80,
