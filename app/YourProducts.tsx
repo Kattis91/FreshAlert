@@ -345,13 +345,13 @@ export default function YourProducts({ navigation }) {
 
     switch (filterType) {
       case "EXPIRING_SOON":
-        return `You have no products ${combinedMessage}that expire within 3 days`;
+        return `You have currently no products ${combinedMessage}that expire within 3 days.`;
       case "EXPIRING_7_DAYS":
-        return `You have no products ${combinedMessage}that expire within 4-7 days`;
+        return `You have currently no products ${combinedMessage}that expire within 4-7 days.`;
       case "EXPIRING_AFTER_7_DAYS":
-        return `You have no products ${combinedMessage}that expire in more than 7 days`;
+        return `You have currently no products ${combinedMessage}that expire in more than 7 days.`;
       default:
-        return `You have no products ${combinedMessage}`;
+        return `You have currently no products ${combinedMessage}.`;
     }
   };
 
@@ -452,12 +452,13 @@ export default function YourProducts({ navigation }) {
                   alignSelf: "center",
                   elevation: 3, //(Just for Android)
                   shadowColor: "#000", //(Just for iOS)
+                  justifyContent: "center",
                 }}
               >
               <Text
                 style={{ fontSize: 14, textAlign: "center", color: "white" }}
               >
-                Clear the field
+                Clear
               </Text>
               </TouchableOpacity>
             )}
@@ -520,7 +521,7 @@ export default function YourProducts({ navigation }) {
               <Text
                 style={{ fontSize: 14, textAlign: "center", color: "white" }}
               >
-                Reset category filter
+                Reset category
               </Text>
             </TouchableOpacity>
           )}
