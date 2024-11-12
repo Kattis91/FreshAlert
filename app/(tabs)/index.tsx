@@ -11,6 +11,34 @@ import Info from "../Info";
 import { useFocusEffect } from "@react-navigation/native";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import Toast from "react-native-toast-message";
+import PushNotification from "react-native-push-notification";
+
+if(Platform.OS === "android") {
+  PushNotification.createChannel(
+    {
+      channelId: "FreshAlert",
+      channelName: "FreshAlert"
+    },
+    created => console.log(`channel created ${created}`)
+  )
+}
+
+PushNotification.configure({
+  onRegister: function (token) {
+    console.log('TOKEN:', token);
+  },
+  onNotification: function (notification) {
+    console.log('NOTIFICATION:', notification);
+    notification.finish(PushNotification.FetchResult?.NoData);
+  },
+  permissions: {
+    alert: true,
+    badge: true,
+    sound: true,
+  },
+  popInitialNotification: true,
+  requestPermissions: Platform.OS === 'ios',
+});
 
 export default function HomeScreen() {
   const Stack = createNativeStackNavigator();

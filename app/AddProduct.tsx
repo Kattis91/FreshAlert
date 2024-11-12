@@ -48,76 +48,98 @@ export default function AddProducts({ navigation }) {
   useDateValidation(date, dateChanged);
 
   useEffect(() => {
-    setupPushNotifications();
+    requestNotificationPermission()
   }, []);
 
-  const setupPushNotifications = () => {
-    PushNotification.configure({
-      onRegister: function (token) {
-        console.log('TOKEN:', token);
-      },
-      onNotification: function (notification) {
-        console.log('NOTIFICATION:', notification);
-        notification.finish(PushNotification.FetchResult.NoData);
-      },
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true,
-      },
-      popInitialNotification: true,
-      requestPermissions: Platform.OS === 'ios',
-    });
-  };
+  async function requestNotificationPermission() {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      const result = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+      );
+  
+      if (result === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Notification permission granted');
+      } else {
+        console.log('Notification permission denied');
+      }
+    }
+  }
 
   const scheduleNotificationOnExpiry = (product: Product) => {
-    const expiryDate = new Date(product.expiry);
-    const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate()} 16:27:00`)
-
-    PushNotification.localNotificationSchedule({
-      channelId: 'FreshAlert',
-      title: 'Product Expiring Soon',
-      message: `${product.name} is expiring today!`,
-      date: notificationDate,
-      allowWhileIdle: true,
-    });
+    try {
+      const expiryDate = new Date(product.expiry);
+      console.log("Scheduling notification on expiry for:", product.name, "with expiry date:", product.expiry);
+      
+      if (!isNaN(expiryDate.getTime())) {  // Check if expiryDate is valid
+        const notificationDate = new Date(
+          `${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate()} ${Platform.OS === "ios" ? "18:00:00" : null}`
+        );
+  
+        PushNotification.localNotificationSchedule({
+          channelId: 'FreshAlert',
+          title: 'Product Expiring Soon',
+          message: `${product.name} is expiring today!`,
+          date: notificationDate,
+          allowWhileIdle: true,
+        });
+      } else {
+        console.error("Invalid expiry date for notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationOnExpiry:", error);
+    }
   };
-
+  
   const scheduleNotificationThreeDayBefore = (product: Product) => {
-    const expiryDate = new Date(product.expiry);
-    if(expiryDate.getDate() - 3 > 0) {
-
-      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 16:27:00`)
+    try {
+      const expiryDate = new Date(product.expiry);
+      console.log("Scheduling 3-day prior notification for:", product.name, "with expiry date:", product.expiry);
       
-      PushNotification.localNotificationSchedule({
-        channelId: 'FreshAlert',
-        title: 'Product Expiring Soon',
-        message: `${product.name} is expiring in 3 days!`,
-        date: notificationDate,
-        allowWhileIdle: true,
-      });
-    } else {
-      return;
+      if (!isNaN(expiryDate.getTime()) && expiryDate.getDate() - 3 >= new Date().getDate()) {
+        const notificationDate = new Date(
+          `${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} ${Platform.OS === "ios" ? "18:00:00" : null}`
+        );
+  
+        PushNotification.localNotificationSchedule({
+          channelId: 'FreshAlert',
+          title: 'Product Expiring Soon',
+          message: `${product.name} is expiring in 3 days!`,
+          date: notificationDate,
+          allowWhileIdle: true,
+        });
+      } else {
+        console.error("Invalid expiry date for 3-day notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationThreeDayBefore:", error);
     }
   };
+  
   const scheduleNotificationSevenDayBefore = (product: Product) => {
-    const expiryDate = new Date(product.expiry);
-
-    if(expiryDate.getDate() - 7 > 0) {
-
-      const notificationDate = new Date(`${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 3} 16:27:00`)
+    try {
+      const expiryDate = new Date(product.expiry);
+      console.log("Scheduling 7-day prior notification for:", product.name, "with expiry date:", product.expiry);
       
-      PushNotification.localNotificationSchedule({
-        channelId: 'FreshAlert',
-        title: 'Product Expiring Soon',
-        message: `${product.name} is expiring in a week!`,
-        date: notificationDate,
-        allowWhileIdle: true,
-      });
-    } else {
-      return;
+      if (!isNaN(expiryDate.getTime()) && expiryDate.getDate() - 7 >= new Date().getDate()) {
+        const notificationDate = new Date(
+          `${expiryDate.getFullYear()}-${expiryDate.getMonth() + 1}-${expiryDate.getDate() - 7} ${Platform.OS === "ios" ? "18:00:00" : null}`
+        );
+  
+        PushNotification.localNotificationSchedule({
+          channelId: 'FreshAlert',
+          title: 'Product Expiring Soon',
+          message: `${product.name} is expiring in a week!`,
+          date: notificationDate,
+          allowWhileIdle: true,
+        });
+      } else {
+        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationSevenDayBefore:", error);
     }
   };
+  
 
   const validateProduct = useProductValidation();
 
@@ -151,6 +173,7 @@ export default function AddProducts({ navigation }) {
       const currentList = storedList ? JSON.parse(storedList) : [];
 
       // Append the new product to the existing list
+      console.log(product, "product")
       const newList = [...currentList, product];
 
       // Save the updated list back to AsyncStorage
@@ -174,6 +197,7 @@ export default function AddProducts({ navigation }) {
       setCategoryValue(null);
 
     } catch (error) {
+      console.log(error)
       console.error("Failed to add product", error);
       showToast("Failed to add product");
     }
