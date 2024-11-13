@@ -734,7 +734,7 @@ export default function YourProducts({ navigation }) {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 26,
+                      fontSize: 30,
                       marginBottom: 10,
                       color: "#003366",
                     }}
@@ -744,8 +744,8 @@ export default function YourProducts({ navigation }) {
                   <Image
                     source={require("../assets/images/fresh-2.png")}
                     style={{
-                      width: 45,
-                      height: 45,
+                      width: 60,
+                      height: 60,
                       alignSelf: "center",
                       marginBottom: 10,
                     }}
