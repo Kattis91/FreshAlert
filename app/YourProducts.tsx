@@ -738,12 +738,23 @@ export default function YourProducts({ navigation }) {
                     style={{
                       textAlign: "center",
                       fontSize: 30,
-                      marginBottom: 10,
+                      marginBottom: 5,
                       color: "#003366",
                     }}
                   >
                     Welcome to FreshAlert!
                   </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 18,
+                      marginBottom: 15,
+                      color: "#003366",
+                    }}
+                  >
+                    ~Keep It Fresh, Keep It Simple~
+                  </Text>
+
                   <Image
                     source={require("../assets/images/fresh-2.png")}
                     style={{
@@ -755,16 +766,16 @@ export default function YourProducts({ navigation }) {
                   />
 
                   <Text
+                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
+                  >
+                    FreshAlert helps you easily keep track of the expiration
+                    dates of your refrigerated and frozen items.
+                  </Text>
+                  <Text
                     style={{ fontSize: 16, marginBottom: 15, color: "#003366", paddingTop: 10, letterSpacing: 0.5 }}
                   >
                     Keep your food fresh for longer and avoid unnecessary food
                     waste with our smart app.
-                  </Text>
-                  <Text
-                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
-                  >
-                    FreshAlert helps you easily keep track of the expiration
-                    dates of your refrigerated and frozen goods.
                   </Text>
                   <Text
                     style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
