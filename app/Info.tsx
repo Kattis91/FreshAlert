@@ -126,7 +126,7 @@ export default function Info() {
           style={{ height: 1, backgroundColor: "#003366", marginVertical: 10 }}
         />
 
-        <Text style={{ fontSize: 14, marginBottom: 10, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, textAlign: "justify", color: "#003366" }}>
           We, the creators of the app, are{" "}
           <Text style={{ fontWeight: "bold" }}>
             Ekaterina Durneva Svedmark, Arlinda Islami
@@ -137,13 +137,14 @@ export default function Info() {
         </Text>
 
         <View
-          style={{ height: 1, backgroundColor: "#003366", marginVertical: 10 }}
+          style={{ height: 1, backgroundColor: "#003366" }}
         />
 
         <Text
           style={{
             fontSize: 16,
             marginBottom: 15,
+            marginTop: 15,
             textAlign: "justify",
             fontWeight: "bold",
             color: "#003366",

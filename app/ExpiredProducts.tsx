@@ -149,7 +149,7 @@ const EmptyBin = () => {
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 23, color: "#003366", textAlign: "center" }}>
+          <Text style={{ fontSize: 25, color: "#003366", textAlign: "center" }}>
             All clear! No expired products right now.
           </Text>
           <Image

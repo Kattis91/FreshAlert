@@ -26,7 +26,7 @@ export default function TabLayout() {
             <TabBarIcon
               name={focused ? "home" : "home-outline"}
               color="white"
-              size={focused ? 33 : 30}
+              size={30}
             />
           ),
           tabBarLabel: ({ focused }) => (
@@ -58,7 +58,7 @@ export default function TabLayout() {
               <TabBarIcon
                 name={focused ? "add-circle" : "add-circle-outline"}
                 color="white"
-                size={focused ? 31 : 30}
+                size={30}
               />
             )
           ),
@@ -83,7 +83,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <TabBarIcon 
               name={focused ? 'trash' : 'trash-outline'} 
-              size={focused ? 33 : 30} 
+              size={30} 
               color="white"
             />
           ),
