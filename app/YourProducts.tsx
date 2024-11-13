@@ -361,18 +361,21 @@ export default function YourProducts({ navigation }) {
   // Function to trigger button highlight animation
   const highlightButton = () => {
     console.log("Highlight button animation triggered");
-    Animated.sequence([
-      Animated.timing(buttonAnim, {
-        toValue: 1.2, // Use a larger scale for clear visibility
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(buttonAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(buttonAnim, {
+          toValue: 1.2, // Use a larger scale for clear visibility
+          duration: 400, // Increased duration for slower animation
+          useNativeDriver: true,
+        }),
+        Animated.timing(buttonAnim, {
+          toValue: 1,
+          duration: 400, // Increased duration for slower animation
+          useNativeDriver: true,
+        }),
+      ]),
+      { iterations: 2 }
+    ).start();
   };
 
   // Function to scroll to the end of the screen and highlight the button
@@ -752,24 +755,24 @@ export default function YourProducts({ navigation }) {
                   />
 
                   <Text
-                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", paddingTop: 10, textAlign: "justify" }}
+                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", paddingTop: 10, letterSpacing: 0.5 }}
                   >
                     Keep your food fresh for longer and avoid unnecessary food
                     waste with our smart app.
                   </Text>
                   <Text
-                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", textAlign: "justify" }}
+                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
                   >
                     FreshAlert helps you easily keep track of the expiration
                     dates of your refrigerated and frozen goods.
                   </Text>
                   <Text
-                    style={{ fontSize: 16, marginBottom: 15, color: "#003366"}}
+                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
                   >
-                    Receive timely reminders and plan better meals - all to save both money and the environment.
+                    Receive timely reminders and plan better meals{"\n"}- all to save both money and the environment.
                   </Text>
                   <Text
-                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", textAlign: "justify" }}
+                    style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
                   >
                     Get started by adding your items, and we'll take care of the
                     rest! Let FreshAlert make your refrigerator management
