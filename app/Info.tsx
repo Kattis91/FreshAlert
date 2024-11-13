@@ -65,12 +65,12 @@ export default function Info() {
           FreshAlert
         </Text>
 
-        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}>
           Keep your food fresh for longer and avoid unnecessary food waste with
           our smart app.
         </Text>
 
-        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}>
           FreshAlert helps you easily keep track of the expiration dates of your
           refrigerated and frozen goods.
         </Text>
@@ -85,7 +85,7 @@ export default function Info() {
           FreshAlert make your refrigerator management easier and smarter.
         </Text>
 
-        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}>
           <Text style={{ fontWeight: "bold" }}>To check your products</Text>{" "}
           visit the main page where you can filter them by category or
           expiration date. Below the list of categories, there is a filter that
@@ -93,7 +93,7 @@ export default function Info() {
           product's expiration.
         </Text>
 
-        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}>
           You will see the product category represented by an icon, and the
           expiration date will be indicated by a colored light.{"\n"}
           {"\n"}
@@ -104,19 +104,19 @@ export default function Info() {
           🟢 - Product has a longer expiration period.
         </Text>
 
-        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}>
           <Text style={{ fontWeight: "bold" }}>Search</Text> - You can find your
           data using the Search function by entering either the product name or
           expiration date.
         </Text>
 
-        <Text style={{ fontSize: 14, marginBottom: 15, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}>
           <Text style={{ fontWeight: "bold" }}>Edit | Delete</Text> - The
           products added to the application can be modified or deleted by
           selecting the product you wish to change.
         </Text>
 
-        <Text style={{ fontSize: 14, marginBottom: 20, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, marginBottom: 20, color: "#003366" }}>
           <Text style={{ fontWeight: "bold" }}>Notifications</Text> will be sent
           when a product has 7 days left until expiration, and another
           notification will be issued when there are only 3 days remaining.
@@ -126,7 +126,7 @@ export default function Info() {
           style={{ height: 1, backgroundColor: "#003366", marginVertical: 10 }}
         />
 
-        <Text style={{ fontSize: 14, textAlign: "justify", color: "#003366" }}>
+        <Text style={{ fontSize: 14, color: "#003366", marginBottom: 10 }}>
           We, the creators of the app, are{" "}
           <Text style={{ fontWeight: "bold" }}>
             Ekaterina Durneva Svedmark, Arlinda Islami
