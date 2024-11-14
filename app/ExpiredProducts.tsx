@@ -88,10 +88,14 @@ export default function Trash() {
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <TouchableOpacity
                 style={{
-                  width: 150,
+                  width: "60%",
                   justifyContent: "center",
                   alignItems: "center",
                   marginBottom: 10,
+                  backgroundColor: "white",
+                  shadowOpacity: 0.2,
+                  borderRadius: 20,
+                  paddingVertical: 5,
                 }}
                 onPress={() => setConfirmDeleteAllVisible(true)}
               >
@@ -101,7 +105,7 @@ export default function Trash() {
                     fontSize: 16,
                   }}
                 >
-                  Delete all products
+                  Delete all your expired products
                 </Text>
               </TouchableOpacity>
 

@@ -186,7 +186,7 @@ export const styles = StyleSheet.create({
   },
   viewCon: {
     height: 140,
-    backgroundColor: '#F9DBBA',
+    backgroundColor: 'white',
     borderRadius: 12,
     margin: 6.5,
     paddingVertical: 12,
@@ -196,8 +196,10 @@ export const styles = StyleSheet.create({
     elevation: 3, // Dropshadow Android
     shadowColor: '#000', // Dropshadow iOS
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.45,
+    shadowOpacity: 0.25,
     shadowRadius: 6,
+    borderColor: '#338F85',
+    borderWidth: 0.5,
   },
   viewIcon: {
     width: 60,
