@@ -780,7 +780,7 @@ export default function YourProducts({ navigation }) {
                   <Text
                     style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
                   >
-                    Receive timely reminders and plan better meals{"\n"}- all to save both money and the environment.
+                    Receive timely reminders and plan better meals - all to save both money and the environment.
                   </Text>
                   <Text
                     style={{ fontSize: 16, marginBottom: 15, color: "#003366", letterSpacing: 0.5 }}
