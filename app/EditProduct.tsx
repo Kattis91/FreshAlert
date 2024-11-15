@@ -7,12 +7,15 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import {
   Alert,
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
+import PushNotification from "react-native-push-notification";
 
 type Product = {
   id: number;
@@ -93,6 +96,24 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   useDateValidation(date, dateChanged);
   const validateProduct = useProductValidation();
 
+  useEffect(() => {
+    requestNotificationPermission()
+  }, []);
+
+  async function requestNotificationPermission() {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      const result = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+      );
+  
+      if (result === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Notification permission granted');
+      } else {
+        console.log('Notification permission denied');
+      }
+    }
+  }
+
   const showToast = (text, text2) => {
     Toast.show({
       type: "info",
@@ -104,6 +125,10 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       visibilityTime: 1500,
     });
     console.log("here");
+  };
+
+  const cancelNotification = (id: string) => {
+    PushNotification.cancelLocalNotification(id); // Cancels notification with the specified ID
   };
 
   async function Edit() {
@@ -137,6 +162,16 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         currentList[productIndex] = updatedProduct;
         await AsyncStorage.setItem("my-list", JSON.stringify(currentList));
 
+        // Cancel old notifications
+        cancelNotification(`${updatedProduct.id}-1`);
+        cancelNotification(`${updatedProduct.id}-3`);
+        cancelNotification(`${updatedProduct.id}-7`);
+
+        // Schedule new notifications with updated expiry date
+        scheduleNotificationSevenDaysBefore(updatedProduct)
+        scheduleNotificationThreeDaysBefore(updatedProduct)
+        scheduleNotificationOneDayBefore(updatedProduct)
+
         showToast(
           "Product updated:",
           `Product: ${productName} \n Expiry date: ${expiryDate}`
@@ -151,6 +186,126 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       showToast("Failed to update product");
     }
   }
+
+  const scheduleNotificationOneDayBefore = (product: Product) => {
+    try {
+      const expiryDate = new Date(product.expiry);
+      const notificationId = `${product.id}-1`;
+
+      console.log("Rescheduling 1-day prior notification for:", product.name, "with expiry date:", product.expiry);
+  
+      // Check if expiryDate is valid
+      if (!isNaN(expiryDate.getTime())) {
+        const currentDate = new Date();
+  
+        // Create the notification date by subtracting 7 days from the expiry date
+        const notificationDate = new Date(expiryDate);
+        notificationDate.setDate(expiryDate.getDate() - 1);
+        notificationDate.setHours(18, 5, 0, 0); // Set to 18:00:00
+  
+        // Ensure the notification date is in the future
+        if (notificationDate > currentDate) {
+
+          PushNotification.localNotificationSchedule({
+            channelId: 'FreshAlert',
+            title: 'Product Expiring Soon',
+            message: `${product.name} is expiring tomorrow!`,
+            date: notificationDate,
+            allowWhileIdle: true,
+            id: Platform.OS === "ios" ? notificationId : undefined,
+            userInfo: { id: notificationId }, 
+          });
+          console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
+        } else {
+          console.error("Notification date is in the past and will not be scheduled:", notificationDate);
+        }
+      } else {
+        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+    }
+  };
+
+  
+  const scheduleNotificationThreeDaysBefore = (product: Product) => {
+    try {
+      const expiryDate = new Date(product.expiry);
+      const notificationId = `${product.id}-3`;
+      console.log("Rescheduling 3-day prior notification for:", product.name, "with expiry date:", product.expiry);
+  
+      // Check if expiryDate is valid
+      if (!isNaN(expiryDate.getTime())) {
+        const currentDate = new Date();
+  
+        // Create the notification date by subtracting 7 days from the expiry date
+        const notificationDate = new Date(expiryDate);
+        notificationDate.setDate(expiryDate.getDate() - 3);
+        notificationDate.setHours(19, 49, 0, 0); // Set to 18:00:00
+  
+        // Ensure the notification date is in the future
+        if (notificationDate > currentDate) {
+
+          PushNotification.localNotificationSchedule({
+            channelId: 'FreshAlert',
+            title: 'Product Expiring Soon',
+            message: `${product.name} is expiring in three days!`,
+            date: notificationDate,
+            allowWhileIdle: true,
+            id: Platform.OS === "ios" ? notificationId : undefined,
+            userInfo: { id: notificationId },
+          });
+          console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
+        } else {
+          console.error("Notification date is in the past and will not be scheduled:", notificationDate);
+        }
+      } else {
+        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+    }
+  };
+
+  const scheduleNotificationSevenDaysBefore = (product: Product) => {
+    try {
+      const expiryDate = new Date(product.expiry);
+      const notificationId = `${product.id}-7`;
+
+      console.log("Rescheduling 7-day prior notification for:", product.name, "with expiry date:", product.expiry);
+  
+      // Check if expiryDate is valid
+      if (!isNaN(expiryDate.getTime())) {
+        const currentDate = new Date();
+  
+        // Create the notification date by subtracting 7 days from the expiry date
+        const notificationDate = new Date(expiryDate);
+        notificationDate.setDate(expiryDate.getDate() - 7);
+        notificationDate.setHours(19, 49, 0, 0); // Set to 18:00:00
+  
+        // Ensure the notification date is in the future
+        if (notificationDate > currentDate) {
+
+          PushNotification.localNotificationSchedule({
+            channelId: 'FreshAlert',
+            title: 'Product Expiring Soon',
+            message: `${product.name} is expiring in a week!`,
+            date: notificationDate,
+            allowWhileIdle: true,
+            id: Platform.OS === "ios" ? notificationId : undefined,
+            userInfo: { id: notificationId },
+          });
+          console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
+        } else {
+          console.error("Notification date is in the past and will not be scheduled:", notificationDate);
+        }
+      } else {
+        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+      }
+    } catch (error) {
+      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+    }
+  };
 
   async function removeValue() {
     try {
