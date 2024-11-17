@@ -18,6 +18,7 @@ import DeleteModal from "./deleteModal";
 import useProductValidation from "@/hooks/useProductValidation";
 import { useFocusEffect } from "expo-router";
 import Toast from "react-native-toast-message";
+import PushNotification from "react-native-push-notification";
 
 type Product = {
   id: number;
@@ -97,6 +98,10 @@ const FormComponent = ({
     return date.toISOString().split("T")[0]; // Returns in format YYYY-MM-DD
   };
 
+  const cancelNotification = (id: string) => {
+    PushNotification.cancelLocalNotification(id); // Cancels notification with the specified ID
+  };
+
   async function removeValue() {
     try {
       const storedList = await AsyncStorage.getItem("my-list");
@@ -106,6 +111,12 @@ const FormComponent = ({
         (p: Product) => p.id !== product?.id
       );
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
+
+      // Cancel notifications for the deleted product
+      console.log(`Attempting to cancel notifications for product ID: ${product?.id}`);
+      cancelNotification(`${product?.id}-1`);
+      cancelNotification(`${product?.id}-3`);
+      cancelNotification(`${product?.id}-7`);
 
       const showToast = (text, text2) => {
         Toast.show({
