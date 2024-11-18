@@ -81,7 +81,7 @@ export default function AddProducts({ navigation }) {
         // Create the notification date by subtracting 7 days from the expiry date
         const notificationDate = new Date(expiryDate);
         notificationDate.setDate(expiryDate.getDate() - 1);
-        notificationDate.setHours(19, 49, 0, 0); // Set to 18:00:00
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
