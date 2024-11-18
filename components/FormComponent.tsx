@@ -29,7 +29,7 @@ type Product = {
 };
 
 type FormComponentProps = {
-  product: Product | null;
+  product: Product;
   productName: string;
   setProductName: (name: string) => void;
   expiryDate: string;
@@ -108,15 +108,15 @@ const FormComponent = ({
       const currentList = storedList ? JSON.parse(storedList) : [];
 
       const updatedList = currentList.filter(
-        (p: Product) => p.id !== product?.id
+        (p: Product) => p.id !== product.id
       );
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
 
       // Cancel notifications for the deleted product
       console.log(`Attempting to cancel notifications for product ID: ${product?.id}`);
-      cancelNotification(`${product?.id}-1`);
-      cancelNotification(`${product?.id}-3`);
-      cancelNotification(`${product?.id}-7`);
+      cancelNotification(`${product.id}-1`);
+      cancelNotification(`${product.id}-3`);
+      cancelNotification(`${product.id}-7`);
 
       const showToast = (text, text2) => {
         Toast.show({
