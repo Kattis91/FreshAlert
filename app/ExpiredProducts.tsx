@@ -88,7 +88,6 @@ export default function Trash() {
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <TouchableOpacity
                 style={{
-                  width: "60%",
                   justifyContent: "center",
                   alignItems: "center",
                   marginBottom: 10,
@@ -103,6 +102,7 @@ export default function Trash() {
                   style={{
                     color: "red",
                     fontSize: 16,
+                    paddingHorizontal: 10,
                   }}
                 >
                   Delete all your expired products
