@@ -129,6 +129,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   const cancelNotification = (id: string) => {
     PushNotification.cancelLocalNotification(id); // Cancels notification with the specified ID
+    console.log(`Canceling notification with id ${id}`)
   };
 
   async function Edit() {
@@ -163,14 +164,12 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         await AsyncStorage.setItem("my-list", JSON.stringify(currentList));
 
         // Cancel old notifications
-        cancelNotification(`${updatedProduct.id}-1`);
-        cancelNotification(`${updatedProduct.id}-3`);
-        cancelNotification(`${updatedProduct.id}-7`);
+        cancelNotification(product.id);
 
         // Schedule new notifications with updated expiry date
-        scheduleNotificationSevenDaysBefore(updatedProduct)
-        scheduleNotificationThreeDaysBefore(updatedProduct)
         scheduleNotificationOneDayBefore(updatedProduct)
+        scheduleNotificationThreeDaysBefore(updatedProduct)
+        scheduleNotificationSevenDaysBefore(updatedProduct)
 
         showToast(
           "Product updated:",
@@ -190,7 +189,6 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   const scheduleNotificationOneDayBefore = (product: Product) => {
     try {
       const expiryDate = new Date(product.expiry);
-      const notificationId = `${product.id}-1`;
 
       console.log("Rescheduling 1-day prior notification for:", product.name, "with expiry date:", product.expiry);
   
@@ -201,7 +199,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         // Create the notification date by subtracting 7 days from the expiry date
         const notificationDate = new Date(expiryDate);
         notificationDate.setDate(expiryDate.getDate() - 1);
-        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
+        notificationDate.setHours(13, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -212,8 +210,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
             message: `${product.name} is expiring tomorrow!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: Platform.OS === "ios" ? notificationId : undefined,
-            userInfo: { id: notificationId }, 
+            id: product.id,
+            userInfo: { id: product.id }, 
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
         } else {
@@ -231,7 +229,6 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   const scheduleNotificationThreeDaysBefore = (product: Product) => {
     try {
       const expiryDate = new Date(product.expiry);
-      const notificationId = `${product.id}-3`;
       console.log("Rescheduling 3-day prior notification for:", product.name, "with expiry date:", product.expiry);
   
       // Check if expiryDate is valid
@@ -241,7 +238,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         // Create the notification date by subtracting 7 days from the expiry date
         const notificationDate = new Date(expiryDate);
         notificationDate.setDate(expiryDate.getDate() - 3);
-        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
+        notificationDate.setHours(13, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -252,8 +249,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
             message: `${product.name} is expiring in three days!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: Platform.OS === "ios" ? notificationId : undefined,
-            userInfo: { id: notificationId },
+            id: product.id,
+            userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
         } else {
@@ -270,7 +267,6 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   const scheduleNotificationSevenDaysBefore = (product: Product) => {
     try {
       const expiryDate = new Date(product.expiry);
-      const notificationId = `${product.id}-7`;
 
       console.log("Rescheduling 7-day prior notification for:", product.name, "with expiry date:", product.expiry);
   
@@ -281,7 +277,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         // Create the notification date by subtracting 7 days from the expiry date
         const notificationDate = new Date(expiryDate);
         notificationDate.setDate(expiryDate.getDate() - 7);
-        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
+        notificationDate.setHours(13, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -292,8 +288,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
             message: `${product.name} is expiring in a week!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: Platform.OS === "ios" ? notificationId : undefined,
-            userInfo: { id: notificationId },
+            id: product.id,
+            userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
         } else {

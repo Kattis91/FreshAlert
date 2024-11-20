@@ -114,9 +114,7 @@ const FormComponent = ({
 
       // Cancel notifications for the deleted product
       console.log(`Attempting to cancel notifications for product ID: ${product?.id}`);
-      cancelNotification(`${product.id}-1`);
-      cancelNotification(`${product.id}-3`);
-      cancelNotification(`${product.id}-7`);
+      cancelNotification(product.id);
 
       const showToast = (text, text2) => {
         Toast.show({

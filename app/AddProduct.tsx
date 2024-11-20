@@ -70,30 +70,28 @@ export default function AddProducts({ navigation }) {
   const scheduleNotificationOneDayBefore = (product: Product) => {
     try {
       const expiryDate = new Date(product.expiry);
-      const notificationId = `${product.id}-1`;
-
+      
       console.log("Scheduling 1-day prior notification for:", product.name, "with expiry date:", product.expiry);
-  
+      
       // Check if expiryDate is valid
       if (!isNaN(expiryDate.getTime())) {
         const currentDate = new Date();
-  
-        // Create the notification date by subtracting 7 days from the expiry date
+      
+        // Create the notification date by subtracting 1 day from the expiry date
         const notificationDate = new Date(expiryDate);
         notificationDate.setDate(expiryDate.getDate() - 1);
-        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
-  
+        notificationDate.setHours(13, 0, 0, 0); // Set to 23:51:00
+      
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
-
           PushNotification.localNotificationSchedule({
             channelId: 'FreshAlert',
             title: 'Product Expiring Soon',
             message: `${product.name} is expiring tomorrow!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: Platform.OS === "ios" ? notificationId : undefined,
-            userInfo: { id: notificationId },
+            id: product.id,
+            userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
         } else {
@@ -101,7 +99,7 @@ export default function AddProducts({ navigation }) {
         }
       } else {
         console.error("Invalid expiry date for 1-day notification:", product.expiry);
-      }
+      }      
     } catch (error) {
       console.error("Error in scheduleNotificationSevenDayBefore:", error);
     }
@@ -110,7 +108,6 @@ export default function AddProducts({ navigation }) {
   const scheduleNotificationThreeDaysBefore = (product: Product)  => {
     try {
       const expiryDate = new Date(product.expiry);
-      const notificationId = `${product.id}-3`;
 
       console.log("Scheduling 3-day prior notification for:", product.name, "with expiry date:", product.expiry);
   
@@ -121,7 +118,7 @@ export default function AddProducts({ navigation }) {
         // Create the notification date by subtracting 3 days from the expiry date
         const notificationDate = new Date(expiryDate);
         notificationDate.setDate(expiryDate.getDate() - 3);
-        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
+        notificationDate.setHours(13, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -132,8 +129,8 @@ export default function AddProducts({ navigation }) {
             message: `${product.name} is expiring in a week!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: Platform.OS === "ios" ? notificationId : undefined,
-            userInfo: { id: notificationId },
+            id: product.id,
+            userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
         } else {
@@ -150,7 +147,6 @@ export default function AddProducts({ navigation }) {
   const scheduleNotificationSevenDaysBefore = (product: Product)  => {
     try {
       const expiryDate = new Date(product.expiry);
-      const notificationId = `${product.id}-7`;
 
       console.log("Scheduling 7-day prior notification for:", product.name, "with expiry date:", product.expiry);
   
@@ -161,7 +157,7 @@ export default function AddProducts({ navigation }) {
         // Create the notification date by subtracting 7 days from the expiry date
         const notificationDate = new Date(expiryDate);
         notificationDate.setDate(expiryDate.getDate() - 7);
-        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
+        notificationDate.setHours(13, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -172,8 +168,8 @@ export default function AddProducts({ navigation }) {
             message: `${product.name} is expiring in a week!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: Platform.OS === "ios" ? notificationId : undefined,
-            userInfo: { id: notificationId },
+            id: product.id,
+            userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
         } else {
@@ -205,7 +201,7 @@ export default function AddProducts({ navigation }) {
       });
     }
 
-    const productId = new Date().getTime();
+    const productId =`${Date.now() % 4294967295}`;
 
     const product: Product = {
       id: productId,
@@ -235,6 +231,8 @@ export default function AddProducts({ navigation }) {
         }))
       }
 
+
+      console.log(productId, "Product id is", typeof(productId))
       showToast(`${productName} added:`, `Expiry date: ${expiryDate}`);
       scheduleNotificationOneDayBefore(product)
       scheduleNotificationSevenDaysBefore(product)
