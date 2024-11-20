@@ -218,10 +218,10 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
           console.error("Notification date is in the past and will not be scheduled:", notificationDate);
         }
       } else {
-        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+        console.error("Invalid expiry date for 1-day notification:", product.expiry);
       }
     } catch (error) {
-      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+      console.error("Error in scheduleNotificationOneDayBefore:", error);
     }
   };
 
@@ -257,10 +257,10 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
           console.error("Notification date is in the past and will not be scheduled:", notificationDate);
         }
       } else {
-        console.error("Invalid expiry date for 7-day notification:", product.expiry);
+        console.error("Invalid expiry date for 3-day notification:", product.expiry);
       }
     } catch (error) {
-      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+      console.error("Error in scheduleNotificationThreeDaysBefore:", error);
     }
   };
 
@@ -299,7 +299,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         console.error("Invalid expiry date for 7-day notification:", product.expiry);
       }
     } catch (error) {
-      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+      console.error("Error in scheduleNotificationSevenDaysBefore:", error);
     }
   };
 

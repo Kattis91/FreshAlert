@@ -101,7 +101,7 @@ export default function AddProducts({ navigation }) {
         console.error("Invalid expiry date for 1-day notification:", product.expiry);
       }      
     } catch (error) {
-      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+      console.error("Error in scheduleNotificationOneDayBefore:", error);
     }
   };
 
@@ -126,7 +126,7 @@ export default function AddProducts({ navigation }) {
           PushNotification.localNotificationSchedule({
             channelId: 'FreshAlert',
             title: 'Product Expiring Soon',
-            message: `${product.name} is expiring in a week!`,
+            message: `${product.name} is expiring in three days!`,
             date: notificationDate,
             allowWhileIdle: true,
             id: product.id,
@@ -140,7 +140,7 @@ export default function AddProducts({ navigation }) {
         console.error("Invalid expiry date for 3-day notification:", product.expiry);
       }
     } catch (error) {
-      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+      console.error("Error in scheduleNotificationThreeDaysBefore:", error);
     }
   };
 
@@ -179,7 +179,7 @@ export default function AddProducts({ navigation }) {
         console.error("Invalid expiry date for 7-day notification:", product.expiry);
       }
     } catch (error) {
-      console.error("Error in scheduleNotificationSevenDayBefore:", error);
+      console.error("Error in scheduleNotificationSevenDaysBefore:", error);
     }
   };
 
@@ -235,8 +235,8 @@ export default function AddProducts({ navigation }) {
       console.log(productId, "Product id is", typeof(productId))
       showToast(`${productName} added:`, `Expiry date: ${expiryDate}`);
       scheduleNotificationOneDayBefore(product)
-      scheduleNotificationSevenDaysBefore(product)
       scheduleNotificationThreeDaysBefore(product)
+      scheduleNotificationSevenDaysBefore(product)
 
       setProductName("");
       setExpiryDate("");
