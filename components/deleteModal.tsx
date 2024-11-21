@@ -52,7 +52,7 @@ function DeleteModal(props: DeleteModalProps) {
               }}
               onPress={onClose}
             >
-              <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>Cancel</Text>
+              <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>Keep</Text>
             </TouchableOpacity>
           </View>
         </View>
