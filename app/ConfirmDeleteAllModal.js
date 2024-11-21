@@ -19,7 +19,7 @@ const ConfirmDeleteAllModal = ({ visible, onClose, onConfirm }) => {
               onPress={onClose}
               style={styles.cancelButton}
             >
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}>Keep</Text>
             </TouchableOpacity>
           </View>
         </View>
