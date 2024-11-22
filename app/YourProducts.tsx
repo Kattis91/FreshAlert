@@ -181,6 +181,7 @@ export default function YourProducts({ navigation }) {
   };
 
   const [searchText, setSearchText] = useState("");
+  const inputRef = useRef<TextInput>(null);
 
   const [productData, setProductData] = useState<Product[]>([]);
   const [filteredProductData, setFilteredProductData] = useState<Product[]>([]);
@@ -422,6 +423,7 @@ export default function YourProducts({ navigation }) {
               if (!info) {
                 scrollToButtonAndHighlight();
               }
+              inputRef.current && inputRef.current.focus();
             }}
           >
             <View style={{...styles.Search, flex: searchText.length > 0 ? 2 : 1 }}>
@@ -431,6 +433,7 @@ export default function YourProducts({ navigation }) {
                 <TabBarIcon name="search" size={23} style={{ marginRight: 10 }} />
               )}
               <TextInput
+                ref={inputRef}
                 placeholder="Search by date or name"
                 value={searchText}
                 onChangeText={setSearchText}
