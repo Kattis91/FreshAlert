@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Image,
   Text,
@@ -12,6 +12,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "@/components/deleteModal";
 import ConfirmDeleteAllModal from "./ConfirmDeleteAllModal";
+import { useFocusEffect } from "expo-router";
 
 export default function Trash() {
   const [products, setProducts] = useState([]);
@@ -55,6 +56,14 @@ export default function Trash() {
   const expiredProducts = products.filter(
     (item) => resetTime(new Date(item.expiry)) < resetTime(new Date())
   );
+
+  useFocusEffect(
+    useCallback(() => {
+      getProducts();
+    }
+    , [])
+  );
+
   const deleteAllExpiredProducts = async () => {
     try {
       const updatedList = products.filter(
@@ -118,12 +127,14 @@ export default function Trash() {
                 </Text>
               ) : null}
             </View>
-            {expiredProducts.map((item, i) => (
+            {expiredProducts
+              .sort((a, b) => new Date(b.expiry).getTime() - new Date(a.expiry).getTime())
+              .map((item, i) => (
               <ExpiredProductCard
                 product={item}
                 key={i}
                 getProducts={getProducts}
-              />
+              /> 
             ))}
           </View>
         </ScrollView>
