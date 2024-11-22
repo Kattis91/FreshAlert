@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  useColorScheme,
   View,
 } from "react-native";
 import DatePicker from "react-native-date-picker";
@@ -165,6 +166,7 @@ const FormComponent = ({
     }
   };
 
+  const isDarkMode = useColorScheme() === "dark";
 
   return (
     <TouchableWithoutFeedback
@@ -216,6 +218,7 @@ const FormComponent = ({
           open={openDate}
           date={date}
           mode="date"
+          buttonColor={isDarkMode ? "#FFFFFF" : "#000000"}
           onConfirm={(selectedDate) => {
             setOpenDate(false);
             setDate(selectedDate);
