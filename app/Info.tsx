@@ -118,8 +118,8 @@ export default function Info() {
 
         <Text style={{ fontSize: 14, marginBottom: 20, color: "#003366" }}>
           <Text style={{ fontWeight: "bold" }}>Notifications</Text> will be sent
-          when a product has 7 days left until expiration, and another
-          notification will be issued when there are only 3 days remaining.
+          when a product has 7 days and 3 days remaining until expiration, with
+          a final reminder 1 day before it expires.
         </Text>
 
         <View
