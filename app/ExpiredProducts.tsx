@@ -326,7 +326,7 @@ const ExpiredProductCard = ({ product, getProducts }) => {
       style={{
         flexDirection: "row",
         alignItems: "center",
-        borderBottomColor: "black",
+        borderBottomColor: "#003366",
         borderBottomWidth: 1,
         padding: 10,
         marginHorizontal: 20,

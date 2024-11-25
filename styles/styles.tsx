@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   label: {
     textTransform: "uppercase",
     fontSize: 16,
-    color: "black",
+    color: "#003366",
     marginBottom: 10,
     marginLeft: 4,
     alignSelf: "flex-start",

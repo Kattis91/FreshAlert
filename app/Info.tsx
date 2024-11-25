@@ -97,11 +97,11 @@ export default function Info() {
           You will see the product category represented by an icon, and the
           expiration date will be indicated by a colored light.{"\n"}
           {"\n"}
-          🔴 - Product will expire in 3 days.{"\n"}
+          🔴 - The product will expire in 3 days or less.{"\n"}
           {"\n"}
-          🟡 - Product will expire in 7 days.{"\n"}
+          🟠 - The product will expire in 4 to 7 days.{"\n"}
           {"\n"}
-          🟢 - Product has a longer expiration period.
+          🟢 - The product has a longer expiration period.
         </Text>
 
         <Text style={{ fontSize: 14, marginBottom: 15, color: "#003366" }}>
