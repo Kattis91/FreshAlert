@@ -218,6 +218,12 @@ export default function Info() {
             style={{ width: 20, height: 20, marginTop: -2 }}
             accessibilityLabel="Vegan"
           />{" "}
+          {" "}
+          <Image
+            source={require("../assets//images/toast.png")}
+            style={{ width: 20, height: 20, marginTop: -2 }}
+            accessibilityLabel="Vegan"
+          />{" "}
           - Made by Freepik.
         </Text>
 
