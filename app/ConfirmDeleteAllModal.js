@@ -10,14 +10,17 @@ const ConfirmDeleteAllModal = ({ visible, onClose, onConfirm }) => {
           <Text style={styles.title}>Are you sure you want to delete all expired products?</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
+              accessibilityLabel="Delete button"
               onPress={onConfirm}
               style={styles.deleteButton}
             >
               <Text style={styles.buttonText}>Delete</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              accessibilityLabel="Keep button"
               onPress={onClose}
               style={styles.cancelButton}
+
             >
               <Text style={styles.buttonText}>Keep</Text>
             </TouchableOpacity>

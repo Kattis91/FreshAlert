@@ -256,7 +256,11 @@ const FormComponent = ({
          {errorMessages.categoryValue && <Text style={styles.errorText}>{errorMessages.categoryValue}</Text>}
 
         <View>
-          <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
+          <TouchableOpacity 
+            style={styles.button} 
+            onPress={handleButtonClick} 
+            accessibilityLabel={buttontext === "ADD" ? "Add button" : "Edit button"}
+            >
             <Text style={styles.buttonText}>{buttontext}</Text>
           </TouchableOpacity>
         </View>
@@ -285,6 +289,7 @@ const FormComponent = ({
                 width: "80%",
                 elevation: 3, //(Just for Android)
               }}
+              accessibilityLabel="Delete button"
               onPress={() => setModalOpen(true)}
             >
               <Text style={styles.buttonText}>

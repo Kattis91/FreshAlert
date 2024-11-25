@@ -32,6 +32,7 @@ function DeleteModal(props: DeleteModalProps) {
               marginRight: 10,
               borderRadius: 20,
             }}
+              accessibilityLabel="Delete button"
               onPress={() => {
                 onDelete();
                 onClose();
@@ -50,6 +51,7 @@ function DeleteModal(props: DeleteModalProps) {
                 marginBottom: 5,
                 borderRadius: 20,
               }}
+              accessibilityLabel="Keep button"
               onPress={onClose}
             >
               <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>Keep</Text>

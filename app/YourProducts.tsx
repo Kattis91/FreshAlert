@@ -447,6 +447,7 @@ export default function YourProducts({ navigation }) {
           <View>
             {productData.length > 0 && searchText.length > 0 && (
               <TouchableOpacity
+                accessibilityLabel="Clear search button"
                 onPress={() => setSearchText("")}
                 style={{
                   flex: 1,
@@ -521,6 +522,7 @@ export default function YourProducts({ navigation }) {
 
           {productData.length > 0 && categoryValue != "" && categoryValue != null && (
             <TouchableOpacity
+              accessibilityLabel="Reset category button"
               onPress={() => setCategoryValue(null)}
               style={{...styles.resetButton, marginTop: 10}}
             >
@@ -795,6 +797,7 @@ export default function YourProducts({ navigation }) {
 
                   <Animated.View style={{ transform: [{ scale: buttonAnim }] }}>
                     <TouchableOpacity
+                      accessibilityLabel="Dive in button"
                       style={{
                         width: "50%",
                         alignSelf: "center",
@@ -863,6 +866,7 @@ export default function YourProducts({ navigation }) {
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity
+                  accessibilityLabel="Navigation to Edit Product screen"
                   onPress={() =>
                     navigation.navigate("Edit Product", { product: item })
                   }

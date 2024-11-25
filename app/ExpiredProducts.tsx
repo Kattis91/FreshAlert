@@ -105,6 +105,7 @@ export default function Trash() {
                   borderRadius: 20,
                   paddingVertical: 5,
                 }}
+                accessibilityLabel="Delete all expired products"
                 onPress={() => setConfirmDeleteAllVisible(true)}
               >
                 <Text
@@ -356,6 +357,7 @@ const ExpiredProductCard = ({ product, getProducts }) => {
           paddingHorizontal: 15,
           borderRadius: 20,
         }}
+        accessibilityLabel="Delete button"
         onPress={() => setModalOpen(true)}
       >
         <Text style={{ color: "white", fontSize: 16 }}>Delete</Text>
