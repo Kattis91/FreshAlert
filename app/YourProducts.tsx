@@ -464,7 +464,7 @@ export default function YourProducts({ navigation }) {
               <Text
                 style={{ fontSize: 14, textAlign: "center", color: "white" }}
               >
-                Clear
+                Clear search
               </Text>
               </TouchableOpacity>
             )}
@@ -761,8 +761,8 @@ export default function YourProducts({ navigation }) {
                   <Image
                     source={require("../assets/images/fresh-2.png")}
                     style={{
-                      width: 60,
-                      height: 60,
+                      width: 85,
+                      height: 85,
                       alignSelf: "center",
                       marginBottom: 10,
                     }}
