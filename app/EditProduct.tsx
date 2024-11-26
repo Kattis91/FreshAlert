@@ -164,7 +164,9 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
         await AsyncStorage.setItem("my-list", JSON.stringify(currentList));
 
         // Cancel old notifications
-        cancelNotification(product.id);
+        cancelNotification(`${product.id}-1day`);
+        cancelNotification(`${product.id}-3days`);
+        cancelNotification(`${product.id}-7days`);
 
         // Schedule new notifications with updated expiry date
         scheduleNotificationOneDayBefore(updatedProduct)
@@ -210,7 +212,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
             message: `${product.name} is expiring tomorrow!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: product.id,
+            id: `${product.id}-1day`,
             userInfo: { id: product.id }, 
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
@@ -249,7 +251,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
             message: `${product.name} is expiring in three days!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: product.id,
+            id: `${product.id}-3days`,
             userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
@@ -288,7 +290,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
             message: `${product.name} is expiring in a week!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: product.id,
+            id: `${product.id}-7days`,
             userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);

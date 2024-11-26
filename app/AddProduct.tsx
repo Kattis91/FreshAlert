@@ -90,7 +90,7 @@ export default function AddProducts({ navigation }) {
             message: `${product.name} is expiring tomorrow!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: product.id,
+            id: `${product.id}-1day`,
             userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
@@ -129,7 +129,7 @@ export default function AddProducts({ navigation }) {
             message: `${product.name} is expiring in three days!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: product.id,
+            id: `${product.id}-3days`,
             userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
@@ -168,7 +168,7 @@ export default function AddProducts({ navigation }) {
             message: `${product.name} is expiring in a week!`,
             date: notificationDate,
             allowWhileIdle: true,
-            id: product.id,
+            id: `${product.id}-7days`,
             userInfo: { id: product.id },
           });
           console.log(`Notification scheduled successfully for ${product.name} at ${notificationDate}`);
