@@ -18,7 +18,7 @@ function DeleteModal(props: DeleteModalProps) {
     >
       <View style={{ flex: 1, justifyContent: 'center', backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
         <View style={{ width: "80%", padding: 20, backgroundColor: 'white', borderRadius: 8, height: 200, alignSelf: "center", alignItems: "center" }}>
-          <Text style={{ fontSize: 25, marginBottom: 20 }}>Are you sure you want to delete?</Text>
+          <Text style={{ fontSize: 20, marginBottom: 10, color: "#003366" }}>Are you sure? This product will be permanently deleted and cannot be restored.</Text>
           <View style={{ flexDirection: "row", margin: 10 }}>
             <TouchableOpacity
               style={{

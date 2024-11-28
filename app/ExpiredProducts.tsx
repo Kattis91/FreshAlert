@@ -94,6 +94,7 @@ export default function Trash() {
             >
               Out of freshness:
             </Text>
+            {expiredProducts.length > 1 &&
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <TouchableOpacity
                 style={{
@@ -128,6 +129,7 @@ export default function Trash() {
                 </Text>
               ) : null}
             </View>
+            }
             {expiredProducts
               .sort((a, b) => new Date(b.expiry).getTime() - new Date(a.expiry).getTime())
               .map((item, i) => (

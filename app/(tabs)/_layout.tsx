@@ -52,7 +52,7 @@ export default function TabLayout() {
             Platform.OS === 'ios' ? (
               <Ionicons
                 name={focused ? 'add-circle' : 'add-circle-outline'}
-                size={focused ? 32 : 30}
+                size={focused ? 30 : 30}
                 color="white"
                 style={{ paddingRight: isIpad ? 30 : 0 }}
               />
@@ -60,7 +60,7 @@ export default function TabLayout() {
               <TabBarIcon
                 name={focused ? "add-circle" : "add-circle-outline"}
                 color="white"
-                size={isIpad ? 28 : 32} 
+                size={isIpad ? 28 : 30} 
               />
             )
           ),
@@ -101,7 +101,7 @@ export default function TabLayout() {
                     fontWeight: focused ? 'bold' : 'normal',
                   }}
                 >
-                  Trash
+                  Expired
                 </Text>
               )
             : "",

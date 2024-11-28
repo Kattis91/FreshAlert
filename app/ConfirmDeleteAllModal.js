@@ -7,7 +7,7 @@ const ConfirmDeleteAllModal = ({ visible, onClose, onConfirm }) => {
     <Modal transparent visible={visible} animationType="slide">
       <View style={styles.overlay}>
         <View style={styles.modal}>
-          <Text style={styles.title}>Are you sure you want to delete all expired products?</Text>
+          <Text style={styles.title}>Are you sure? All expired products will be permanently deleted and cannot be restored.</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               accessibilityLabel="Delete button"
@@ -47,9 +47,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 25,
+    fontSize: 20,
     marginBottom: 20,
     textAlign: "center",
+    color: "#003366"
   },
   buttonContainer: {
     flexDirection: "row",
