@@ -10,12 +10,14 @@ import {
   PermissionsAndroid,
   Platform,
   SafeAreaView,
+  ScrollView,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Toast from "react-native-toast-message";
 import PushNotification from "react-native-push-notification";
+
 
 type Product = {
   id: number;
@@ -198,10 +200,10 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       if (!isNaN(expiryDate.getTime())) {
         const currentDate = new Date();
   
-        // Create the notification date by subtracting 7 days from the expiry date
+        // Create the notification date by subtracting 1 day from the expiry date
         const notificationDate = new Date(expiryDate);
-        notificationDate.setDate(expiryDate.getDate());
-        notificationDate.setHours(15, 35, 0, 0); // Set to 18:00:00
+        notificationDate.setDate(expiryDate.getDate() - 1);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -237,10 +239,10 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
       if (!isNaN(expiryDate.getTime())) {
         const currentDate = new Date();
   
-        // Create the notification date by subtracting 7 days from the expiry date
+        // Create the notification date by subtracting 3 days from the expiry date
         const notificationDate = new Date(expiryDate);
-        notificationDate.setDate(expiryDate.getDate());
-        notificationDate.setHours(15, 34, 0, 0); // Set to 18:00:00
+        notificationDate.setDate(expiryDate.getDate() - 3);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -278,8 +280,8 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
   
         // Create the notification date by subtracting 7 days from the expiry date
         const notificationDate = new Date(expiryDate);
-        notificationDate.setDate(expiryDate.getDate());
-        notificationDate.setHours(15, 33, 0, 0); // Set to 18:00:00
+        notificationDate.setDate(expiryDate.getDate() - 7);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -328,6 +330,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF8EC" }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <SafeAreaView style={{ flex: 1, margin: 8, backgroundColor: "#FFF8EC" }}>
         <FormComponent
           product={product}
@@ -355,6 +358,7 @@ export default function EditProduct({ route, navigation }: EditProductProps) {
           navigation={navigation}
         />
       </SafeAreaView>
+      </ScrollView>
     </View>
   );
 }

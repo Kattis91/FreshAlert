@@ -79,8 +79,8 @@ export default function AddProducts({ navigation }) {
       
         // Create the notification date by subtracting 1 day from the expiry date
         const notificationDate = new Date(expiryDate);
-        notificationDate.setDate(expiryDate.getDate());
-        notificationDate.setHours(15, 29, 0, 0); // Set to 23:51:00
+        notificationDate.setDate(expiryDate.getDate() - 1);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 23:51:00
       
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -117,8 +117,8 @@ export default function AddProducts({ navigation }) {
   
         // Create the notification date by subtracting 3 days from the expiry date
         const notificationDate = new Date(expiryDate);
-        notificationDate.setDate(expiryDate.getDate());
-        notificationDate.setHours(15, 30, 0, 0); // Set to 18:00:00
+        notificationDate.setDate(expiryDate.getDate() - 3);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -156,8 +156,8 @@ export default function AddProducts({ navigation }) {
   
         // Create the notification date by subtracting 7 days from the expiry date
         const notificationDate = new Date(expiryDate);
-        notificationDate.setDate(expiryDate.getDate());
-        notificationDate.setHours(15, 31, 0, 0); // Set to 18:00:00
+        notificationDate.setDate(expiryDate.getDate() - 7);
+        notificationDate.setHours(18, 0, 0, 0); // Set to 18:00:00
   
         // Ensure the notification date is in the future
         if (notificationDate > currentDate) {
@@ -236,8 +236,8 @@ export default function AddProducts({ navigation }) {
 
       showToast(`${productName} added:`, `Expiry date: ${expiryDate}`);
       scheduleNotificationOneDayBefore(product)
-      scheduleNotificationSevenDaysBefore(product)
       scheduleNotificationThreeDaysBefore(product)
+      scheduleNotificationSevenDaysBefore(product)
 
       setProductName("");
       setExpiryDate("");
