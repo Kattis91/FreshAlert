@@ -425,8 +425,9 @@ export default function YourProducts({ navigation }) {
               }
               inputRef.current && inputRef.current.focus();
             }}
+            hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
           >
-            <View style={{...styles.Search, flex: searchText.length > 0 ? 2 : 1 }}>
+            <View style={{...styles.Search, flex: searchText.length > 0 ? 2 : 1, alignItems: "center", flexDirection: "row" }}>
               {Platform.OS === "ios" ? (
                 <TabBarIcon name="search" size={17} style={{ marginRight: 10 }} />
               ) : (
@@ -440,6 +441,7 @@ export default function YourProducts({ navigation }) {
                 placeholderTextColor="black"
                 editable={info ? true : false} // Still control editability
                 maxLength={20}
+                style={{ minHeight: 24 }}
               />
             </View>
           </TouchableWithoutFeedback>
@@ -564,6 +566,7 @@ export default function YourProducts({ navigation }) {
                     showAll();
                   }
                 }}
+                hitSlop={{ top: 5, bottom: 5 }}
                 underlayColor={
                   filterType === "ALL"
                     ? styles.filterTabActiveALL.backgroundColor
@@ -606,6 +609,7 @@ export default function YourProducts({ navigation }) {
                     showExpiringSoon();
                   }
                 }}
+                hitSlop={{ top: 5, bottom: 5 }}
                 underlayColor={
                   filterType === "EXPIRING_SOON"
                     ? styles.filterTabActiveRed.backgroundColor
@@ -651,6 +655,7 @@ export default function YourProducts({ navigation }) {
                     showExpiringIn7Days();
                   }
                 }}
+                hitSlop={{ top: 5, bottom: 5 }}
                 underlayColor={
                   filterType === "EXPIRING_7_DAYS"
                     ? styles.filterTabActiveOrange.backgroundColor
@@ -699,6 +704,7 @@ export default function YourProducts({ navigation }) {
                     showExpiringAfter7Days();
                   }
                 }}
+                hitSlop={{ top: 5, bottom: 5 }}
                 underlayColor={
                   filterType === "EXPIRING_AFTER_7_DAYS"
                     ? styles.filterTabActiveGreen.backgroundColor
