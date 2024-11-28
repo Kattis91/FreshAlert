@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeleteModal from "@/components/deleteModal";
 import ConfirmDeleteAllModal from "./ConfirmDeleteAllModal";
 import { useFocusEffect } from "expo-router";
+import Toast from 'react-native-toast-message';
 
 export default function Trash() {
   const [products, setProducts] = useState([]);
@@ -71,7 +72,14 @@ export default function Trash() {
       );
       await AsyncStorage.setItem("my-list", JSON.stringify(updatedList));
       setProducts(updatedList); // Update state to reflect changes
-      setDeleteMessage("All expired products have been deleted.");
+     
+
+       // Show toast after successful deletion
+       Toast.show({
+        type: 'success',
+        text1: 'All expired products have been deleted.',
+      });
+      
     } catch (error) {
       console.error("Failed to delete all expired products.", error);
     }
@@ -148,6 +156,7 @@ export default function Trash() {
           onConfirm={deleteAllExpiredProducts}
         />
       </SafeAreaView>
+      <Toast/>
     </View>
   ) : (
     <EmptyBin />
@@ -176,6 +185,7 @@ const EmptyBin = () => {
             accessibilityLabel="Fresh"
           />
         </View>
+        <Toast/>
       </SafeAreaView>
     </View>
   );
