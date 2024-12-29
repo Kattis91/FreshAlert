@@ -20,6 +20,8 @@ import useProductValidation from "@/hooks/useProductValidation";
 import { useFocusEffect } from "expo-router";
 import Toast from "react-native-toast-message";
 import PushNotification from "react-native-push-notification";
+import { format } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 
 type Product = {
   id: number;
@@ -96,7 +98,8 @@ const FormComponent = ({
 
 
   const formatDate = (date: Date) => {
-    return date.toISOString().split("T")[0]; // Returns in format YYYY-MM-DD
+    const zonedDate = toZonedTime(date, Intl.DateTimeFormat().resolvedOptions().timeZone);
+    return format(zonedDate, "yyyy-MM-dd");
   };
 
   const cancelNotification = (id: string) => {
