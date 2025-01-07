@@ -136,6 +136,29 @@ export default function Info() {
           first project.
         </Text>
 
+        <Text
+          style={{
+            fontSize: 14,
+            marginBottom: 15,
+            textAlign: "justify",
+            fontWeight: "bold",
+            color: "#003366",
+          }}
+        >
+          Privacy Policy:
+        </Text>
+        <Text
+            style={{ color: "#338F85", marginBottom: 15 }}
+            onPress={() => {
+              openExternalLink();
+            }}
+          > 
+          {" "}
+          https://subho24.github.io/FreshAlertPrivacyPolicy/{" "}
+        </Text>
+
+
+
         <View
           style={{ height: 1, backgroundColor: "#003366" }}
         />
