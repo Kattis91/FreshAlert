@@ -69,7 +69,8 @@ export default function AddProducts({ navigation }) {
 
   const scheduleNotificationOneDayBefore = (product: Product) => {
     try {
-      const expiryDate = new Date(product.expiry);
+      // Parse the expiry date and ensure it's in the local timezone
+      const expiryDate = new Date(product.expiry + 'T00:00:00.000');
       
       console.log("Scheduling 1-day prior notification for:", product.name, "with expiry date:", product.expiry);
       
@@ -107,7 +108,8 @@ export default function AddProducts({ navigation }) {
 
   const scheduleNotificationThreeDaysBefore = (product: Product)  => {
     try {
-      const expiryDate = new Date(product.expiry);
+      // Parse the expiry date and ensure it's in the local timezone
+      const expiryDate = new Date(product.expiry + 'T00:00:00.000');
 
       console.log("Scheduling 3-day prior notification for:", product.name, "with expiry date:", product.expiry);
   
@@ -146,7 +148,8 @@ export default function AddProducts({ navigation }) {
 
   const scheduleNotificationSevenDaysBefore = (product: Product)  => {
     try {
-      const expiryDate = new Date(product.expiry);
+      // Parse the expiry date and ensure it's in the local timezone
+      const expiryDate = new Date(product.expiry + 'T00:00:00.000');
 
       console.log("Scheduling 7-day prior notification for:", product.name, "with expiry date:", product.expiry);
   
