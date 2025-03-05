@@ -92,6 +92,7 @@ def enableProguardInReleaseBuilds = (findProperty('android.enableProguardInRelea
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
+ * The preferred build flavor of JavaScriptCore (JSC)
  *
  * For example, to use the international variant, you can use:
  * `def jscFlavor = 'org.webkit:android-jsc-intl:+'`
@@ -114,7 +115,7 @@ android {
         applicationId 'com.anonymous.FreshAlert'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 9
         versionName "1.0.0"
     }
     signingConfigs {
